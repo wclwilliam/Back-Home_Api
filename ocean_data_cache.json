@@ -1,0 +1,108 @@
+{
+    "status": "success",
+    "timestamp": "2026-01-25 06:21:36",
+    "cached": false,
+    "data": {
+        "plastic_sea": {
+            "value": 15406,
+            "unit": "Tonnes",
+            "label": "台灣海洋廢棄物清理總量(114年度)",
+            "source": "iOcean 海洋保育署"
+        },
+        "ghost_gear": {
+            "value": 640000,
+            "unit": "Tonnes",
+            "label": "幽靈漁具"
+        },
+        "bycatch": {
+            "value": 9100000,
+            "unit": "Tonnes",
+            "label": "混獲浪費"
+        },
+        "lives_lost": {
+            "value": 1000000,
+            "unit": "Lives",
+            "label": "無辜生命殞落"
+        }
+    },
+    "debug": {
+        "total_api_calls": 12,
+        "successful_calls": 12,
+        "total_records": 234,
+        "calculated_total": 15405.82999999999810825102031230926513671875,
+        "api_calls_detail": [
+            {
+                "source_id": "ce2b42ac-c343-4df7-aa02-68e22d81311f",
+                "success": true,
+                "records": 20,
+                "weight": 1184.703000000000201907823793590068817138671875
+            },
+            {
+                "source_id": "31cda9f1-fbbe-4b65-91fc-dc86d71dc519",
+                "success": true,
+                "records": 20,
+                "weight": 1228.30799999999953797669149935245513916015625
+            },
+            {
+                "source_id": "4a9345e3-3f03-41d6-a5eb-9f741fb91fd4",
+                "success": true,
+                "records": 20,
+                "weight": 1006.0140000000000100044417195022106170654296875
+            },
+            {
+                "source_id": "48d82abd-577d-4aec-b5f1-25cec76ebe5b",
+                "success": true,
+                "records": 20,
+                "weight": 1383.134000000000014551915228366851806640625
+            },
+            {
+                "source_id": "c08e8ef7-9ace-491e-8cf1-d9dd8d66c506",
+                "success": true,
+                "records": 20,
+                "weight": 1055.58699999999998908606357872486114501953125
+            },
+            {
+                "source_id": "efb76d92-d880-49f0-abdd-d64e0c9f6ccc",
+                "success": true,
+                "records": 19,
+                "weight": 1460.936000000000376530806533992290496826171875
+            },
+            {
+                "source_id": "c725b662-2436-422f-a9e8-9cbd1050d807",
+                "success": true,
+                "records": 19,
+                "weight": 986.982999999999947249307297170162200927734375
+            },
+            {
+                "source_id": "312f1044-420f-470d-82ef-7a2af3262c46",
+                "success": true,
+                "records": 19,
+                "weight": 1126.964999999999918145476840436458587646484375
+            },
+            {
+                "source_id": "e04f7f5b-38ba-465b-a4a0-172595a963d6",
+                "success": true,
+                "records": 19,
+                "weight": 1644.936999999999898136593401432037353515625
+            },
+            {
+                "source_id": "d4985722-bc74-4ee8-8362-c9edd3d28283",
+                "success": true,
+                "records": 19,
+                "weight": 1398.00700000000006184563972055912017822265625
+            },
+            {
+                "source_id": "9aa1be1a-55e6-4919-9407-513aa8122938",
+                "success": true,
+                "records": 20,
+                "weight": 1285.71500000000014551915228366851806640625
+            },
+            {
+                "source_id": "4b6798e3-291e-48b7-87fd-ec68b73a102a",
+                "success": true,
+                "records": 19,
+                "weight": 1644.5410000000001673470251262187957763671875
+            }
+        ]
+    }
+}
