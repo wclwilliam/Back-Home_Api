@@ -2,9 +2,9 @@
   $allowed_origins = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "https://tibamef2e.com",
+    "http://localhost:5173", //本地vue default
+    "http://localhost:5174", //本地vue alternate port
+    "https://tibamef2e.com", //部屬上伺服器
   ];
 
   $origin = $_SERVER['HTTP_ORIGIN'] ?? ''; 
