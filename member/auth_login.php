@@ -1,6 +1,6 @@
 <?php
-require_once("./common/cors.php");
-require_once("./common/conn.php");
+require_once("../common/cors.php");
+require_once("../common/conn.php");
 
 header('Content-Type: application/json; charset=utf-8');
 
