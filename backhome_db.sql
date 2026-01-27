@@ -49,6 +49,91 @@ CREATE TABLE `impact_metrics` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- 資料表結構 `admin_user`
+--
+
+CREATE TABLE `admin_user` (
+  `admin_id` VARCHAR(20) NOT NULL COMMENT '管理者帳號 / ID',
+  `admin_name` VARCHAR(50) NOT NULL COMMENT '管理者姓名',
+  `admin_pwd` VARCHAR(100) NOT NULL COMMENT '管理者登入密碼（雜湊）',
+  `admin_role` VARCHAR(10) NOT NULL COMMENT '管理者角色權限',
+  `admin_active` BOOLEAN NOT NULL DEFAULT 1 COMMENT '管理者帳號啟用狀態',
+  `admin_created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '管理者帳號建立時間',
+  `admin_last_login_time` DATETIME NULL COMMENT '管理者最後登入時間',
+  PRIMARY KEY (`admin_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='後台管理者';
+
+--
+-- 資料表結構 `members`
+--
+
+CREATE TABLE `members` (
+  `member_id` INT NOT NULL AUTO_INCREMENT COMMENT '會員識別編號',
+  `member_realname` VARCHAR(50) NOT NULL COMMENT '會員姓名',
+  `member_email` VARCHAR(100) NOT NULL COMMENT '會員 Email（登入帳號）',
+  `member_password` VARCHAR(255) NOT NULL COMMENT '會員登入密碼（bcrypt 雜湊）',
+  `member_phone` VARCHAR(20) DEFAULT NULL COMMENT '聯絡電話',
+  `id_number` VARCHAR(10) DEFAULT NULL COMMENT '身分證字號',
+  `birthday` DATE DEFAULT NULL COMMENT '出生年月日',
+  `emergency` VARCHAR(20) DEFAULT NULL COMMENT '緊急聯絡人',
+  `emergency_tel` VARCHAR(20) DEFAULT NULL COMMENT '緊急聯絡電話',
+  `email_verified_at` DATETIME DEFAULT NULL COMMENT 'Email 驗證成功時間',
+  `member_active` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '會員啟用狀態（0未啟用/1啟用）',
+  `member_created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '會員建立時間',
+  PRIMARY KEY (`member_id`),
+  UNIQUE KEY `uk_members_email` (`member_email`)
+) ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COMMENT='前台會員資料';
+
+--
+-- 資料表結構 `member_email_verification`
+--
+
+CREATE TABLE `member_email_verification` (
+  `verification_id` INT NOT NULL AUTO_INCREMENT COMMENT '驗證流水號',
+  `member_id` INT NOT NULL COMMENT '對應會員識別編號',
+  `code_hash` VARCHAR(255) NOT NULL COMMENT '驗證碼雜湊（不要存明碼）',
+  `expires_at` DATETIME NOT NULL COMMENT '過期時間',
+  `verified_at` DATETIME DEFAULT NULL COMMENT '驗證成功時間',
+  `used_at` DATETIME DEFAULT NULL COMMENT '註冊使用時間',
+  `attempts` INT NOT NULL DEFAULT 0 COMMENT '輸入錯誤次數',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '建立時間',
+  PRIMARY KEY (`verification_id`),
+  CONSTRAINT `fk_verification_member`
+    FOREIGN KEY (`member_id`) REFERENCES `members`(`member_id`)
+    ON DELETE CASCADE
+) ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COMMENT='會員註冊 Email 驗證碼';
+
+--
+-- 傾印資料表的資料 `members`
+--
+
+INSERT INTO `members`
+(
+  `member_realname`,
+  `member_email`,
+  `member_password`
+)
+VALUES
+(
+  '王小明',
+  'test01@example.com',
+  '$2b$10$abcdefghijklmnopqrstuv1234567890abcdefghijklmn'
+);
+
+--
+-- 傾印資料表的資料 `admin_user`
+--
+
+INSERT INTO `admin_user`
+(`admin_id`, `admin_name`, `admin_pwd`, `admin_role`)
+VALUES
+('admin001', '系統管理員', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'super');
+
+--
 -- 傾印資料表的資料 `impact_metrics`
 --
 
