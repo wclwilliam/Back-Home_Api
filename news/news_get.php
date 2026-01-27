@@ -1,7 +1,7 @@
 <?php
   // 1. 載入跨域設定與資料庫連線
-  require_once("./common/cors.php");
-  require_once("./common/conn.php");
+  require_once("../common/cors.php");
+  require_once("../common/conn.php");
 
   // 2. 檢查是否為 GET 請求
   if($_SERVER['REQUEST_METHOD'] == "GET"){
