@@ -13,6 +13,12 @@
 
   try {
     $pdo = new PDO($dsn, $db_user, $db_password);
+    
+    // 設定資料庫連線時區為 Asia/Taipei (UTC+8)
+    $pdo->exec("SET time_zone = '+08:00'");
+    
+    // 設定 PHP 時區（確保一致）
+    date_default_timezone_set('Asia/Taipei');
   } catch (PDOException $e) {
     echo '資料庫連線錯誤：' . $e->getMessage() . '<br>';
     exit();
