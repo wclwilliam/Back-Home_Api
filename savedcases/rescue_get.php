@@ -1,13 +1,13 @@
 <?php
   // 載入 CORS 設定
-  require_once("./common/cors.php");
+  require_once("../common/cors.php");
   
   // 載入資料庫連線設定 ($pdo)
-  require_once("./common/conn.php");
+  require_once("../common/conn.php");
 
   if($_SERVER['REQUEST_METHOD'] == "GET"){
     
-    $sql = "SELECT * FROM `RESCUES` ORDER BY `UPLOAD_DATE` DESC";
+    $sql = "SELECT * FROM `RESCUES` ORDER BY `RESCUE_ID` DESC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
 
