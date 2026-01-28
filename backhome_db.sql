@@ -406,3 +406,159 @@ ALTER TABLE `NEWS`
 ALTER TABLE `NEWS`
   MODIFY `NEWS_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章編號', AUTO_INCREMENT=32;
 COMMIT;
+
+--
+-- 資料表結構 `donations`
+--
+
+CREATE TABLE `donations` (
+  `DONATION_ID` int(11) NOT NULL COMMENT '捐款編號',
+  `MEMBER_ID` int(11) NOT NULL COMMENT '會員識別編號',
+  `AMOUNT` int(11) NOT NULL COMMENT '捐款金額',
+  `DONATION_DATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '捐款時間',
+  `SUBSCRIPTION_ID` int(11) DEFAULT NULL COMMENT '定期定額捐款編號',
+  `PAYMENT_METHOD` varchar(20) NOT NULL COMMENT '金流類型(信用卡、LINE_PAY)',
+  `DONATION_TYPE` varchar(20) NOT NULL COMMENT '捐款類型(單次捐款、定期定額)',
+  `TRANSACTION_ID` varchar(100) NOT NULL COMMENT '交易編號'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `donations`
+--
+
+INSERT INTO `donations` (`DONATION_ID`, `MEMBER_ID`, `AMOUNT`, `DONATION_DATE`, `SUBSCRIPTION_ID`, `PAYMENT_METHOD`, `DONATION_TYPE`, `TRANSACTION_ID`) VALUES
+(1, 1, 1000, '2025-12-01 10:00:00', 101, '信用卡', '定期定額', 'TXN202512010001'),
+(2, 2, 500, '2025-12-02 14:30:00', NULL, 'LINE_PAY', '單次捐款', 'TXN202512020002'),
+(3, 3, 2000, '2025-12-03 09:15:00', NULL, '信用卡', '單次捐款', 'TXN202512030003'),
+(4, 4, 300, '2025-12-05 18:20:00', 102, 'LINE_PAY', '定期定額', 'TXN202512050004'),
+(5, 5, 5000, '2025-12-07 11:00:00', NULL, '信用卡', '單次捐款', 'TXN202512070005'),
+(6, 1, 1000, '2026-01-01 10:00:00', 101, '信用卡', '定期定額', 'TXN202601010006'),
+(7, 6, 1500, '2026-01-02 20:45:00', NULL, 'LINE_PAY', '單次捐款', 'TXN202601020007'),
+(8, 7, 600, '2026-01-04 13:10:00', 103, '信用卡', '定期定額', 'TXN202601040008'),
+(9, 8, 200, '2026-01-05 15:55:00', NULL, 'LINE_PAY', '單次捐款', 'TXN202601050009'),
+(10, 9, 1200, '2026-01-06 17:30:00', NULL, '信用卡', '單次捐款', 'TXN202601060010'),
+(11, 10, 800, '2026-01-08 12:00:00', 104, 'LINE_PAY', '定期定額', 'TXN202601080011'),
+(12, 4, 300, '2026-01-05 18:20:00', 102, 'LINE_PAY', '定期定額', 'TXN202601050012'),
+(13, 2, 100, '2026-01-10 22:15:00', NULL, 'LINE_PAY', '單次捐款', 'TXN202601100013'),
+(14, 3, 2500, '2026-01-12 08:40:00', NULL, '信用卡', '單次捐款', 'TXN202601120014'),
+(15, 5, 500, '2026-01-15 14:00:00', NULL, 'LINE_PAY', '單次捐款', 'TXN202601150015'),
+(19, 10, 555, '2026-01-28 13:23:08', NULL, '信用卡', '單次捐款', '2601281322465864');
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `financial_reports`
+--
+
+CREATE TABLE `financial_reports` (
+  `FINANCIAL_REPORT_ID` int(11) NOT NULL COMMENT '徵信資料編號',
+  `DATA_YEAR` year(4) NOT NULL COMMENT '資料年份',
+  `UPLOAD_DATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '上傳時間',
+  `FILE_PATH` varchar(255) NOT NULL COMMENT '檔案路徑'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `financial_reports`
+--
+
+INSERT INTO `financial_reports` (`FINANCIAL_REPORT_ID`, `DATA_YEAR`, `UPLOAD_DATE`, `FILE_PATH`) VALUES
+(1, 2025, '2026-01-26 16:34:03', 'reports/financial_report_2025.png'),
+(2, 2024, '2025-01-15 10:30:00', 'reports/financial_report_2024.png'),
+(3, 2023, '2024-02-10 14:20:00', 'reports/financial_report_2023.png'),
+(4, 2022, '2023-01-20 09:00:00', 'reports/financial_report_2022.png'),
+(5, 2021, '2022-03-05 16:45:00', 'reports/financial_report_2021.png');
+
+-- 
+--------------------------------------------------------
+
+--
+-- 資料表結構 `subscription`
+--
+
+CREATE TABLE `subscription` (
+  `SUBSCRIPTION_ID` int(11) NOT NULL COMMENT '定期定額捐款編號',
+  `MEMBER_ID` int(11) NOT NULL COMMENT '會員識別編號',
+  `AMOUNT` int(11) NOT NULL COMMENT '每期捐款金額',
+  `START_DATE` date NOT NULL COMMENT '開始日期',
+  `STATUS` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否正常扣款(1為正常，0為停止)',
+  `END_DATE` date DEFAULT NULL COMMENT '結束日期'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `subscription`
+--
+
+INSERT INTO `subscription` (`SUBSCRIPTION_ID`, `MEMBER_ID`, `AMOUNT`, `START_DATE`, `STATUS`, `END_DATE`) VALUES
+(101, 1, 1000, '2025-01-01', 1, NULL),
+(102, 4, 300, '2025-03-15', 1, NULL),
+(103, 7, 600, '2024-06-01', 1, NULL),
+(104, 10, 800, '2024-11-20', 1, NULL),
+(105, 2, 500, '2023-01-01', 0, '2024-01-01'),
+(106, 3, 2000, '2025-05-10', 1, NULL),
+(107, 5, 1500, '2024-02-28', 1, NULL),
+(108, 6, 200, '2024-08-15', 1, NULL),
+(109, 8, 100, '2023-05-05', 0, '2023-11-05'),
+(110, 9, 3000, '2025-09-01', 1, NULL),
+(111, 11, 500, '2025-10-12', 1, NULL),
+(112, 12, 1000, '2024-12-25', 1, NULL),
+(113, 13, 300, '2024-04-01', 1, NULL),
+(114, 14, 1200, '2023-07-20', 0, '2025-07-20'),
+(115, 15, 2500, '2025-01-20', 1, NULL);
+
+--
+-- 已傾印資料表的索引
+--
+
+--
+-- 資料表索引 `donations`
+--
+ALTER TABLE `donations`
+  ADD PRIMARY KEY (`DONATION_ID`),
+  ADD KEY `fk_donation_subscription` (`SUBSCRIPTION_ID`);
+
+--
+-- 資料表索引 `financial_reports`
+--
+ALTER TABLE `financial_reports`
+  ADD PRIMARY KEY (`FINANCIAL_REPORT_ID`);
+
+
+--
+-- 資料表索引 `subscription`
+--
+ALTER TABLE `subscription`
+  ADD PRIMARY KEY (`SUBSCRIPTION_ID`);
+
+--
+-- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
+--
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `donations`
+--
+ALTER TABLE `donations`
+  MODIFY `DONATION_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '捐款編號', AUTO_INCREMENT=20;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `financial_reports`
+--
+ALTER TABLE `financial_reports`
+  MODIFY `FINANCIAL_REPORT_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '徵信資料編號', AUTO_INCREMENT=6;
+
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `subscription`
+--
+ALTER TABLE `subscription`
+  MODIFY `SUBSCRIPTION_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '定期定額捐款編號', AUTO_INCREMENT=116;
+
+--
+-- 已傾印資料表的限制式
+--
+
+--
+-- 資料表的限制式 `donations`
+--
+ALTER TABLE `donations`
+  ADD CONSTRAINT `fk_donation_subscription` FOREIGN KEY (`SUBSCRIPTION_ID`) REFERENCES `subscription` (`SUBSCRIPTION_ID`) ON DELETE SET NULL ON UPDATE CASCADE;
+COMMIT;
