@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- 資料表結構 `impact_metrics`
 --
 
-CREATE TABLE `impact_metrics` (
+CREATE TABLE IF NOT EXISTS `impact_metrics` (
   `IMPACT_METRICS_ID` int(11) NOT NULL COMMENT '我們的影響力編號',
   `DATA_YEAR` year(4) NOT NULL COMMENT '資料年份',
   `UPLOAD_DATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '上傳時間',
@@ -171,6 +171,158 @@ ALTER TABLE `impact_metrics`
 ALTER TABLE `impact_metrics`
   MODIFY `IMPACT_METRICS_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '我們的影響力編號', AUTO_INCREMENT=13;
 COMMIT;
+
+
+-- ==========================================
+--  志工活動模組 (Volunteer Activities Module)
+--  包含：種類、活動主表、收藏、留言、留言按讚、留言檢舉
+-- ==========================================
+
+-- 為了避免匯入時因順序問題報錯，先暫時忽略外來鍵檢查
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- --------------------------------------------------------
+-- 1. 活動種類 (ACTIVITY_CATEGORIES)
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ACTIVITY_CATEGORIES` (
+  `CATEGORY_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '活動種類編號 (PK)',
+  `CATEGORY_VALUE` varchar(50) NOT NULL COMMENT '活動種類名稱',
+  PRIMARY KEY (`CATEGORY_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+-- 2. 志工活動主表 (ACTIVITIES)
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ACTIVITIES` (
+  `ACTIVITY_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '活動編號 (PK)',
+  `ACTIVITY_TITLE` varchar(100) NOT NULL COMMENT '活動標題',
+  `ACTIVITY_CATEGORY_ID` int(11) NOT NULL COMMENT '活動類別編號 (FK)',
+  `ACTIVITY_DESCRIPTION` text NOT NULL COMMENT '活動簡介',
+  `ACTIVITY_NOTES` text COMMENT '注意事項',
+  `ACTIVITY_LOCATION` varchar(100) NOT NULL COMMENT '活動地點',
+  `ACTIVITY_LOCATION_AREA` varchar(20) NOT NULL COMMENT '活動區域(北部/中部/南部/離島)',
+  `ACTIVITY_COVER_IMAGE` varchar(255) NOT NULL COMMENT '封面圖片路徑',
+  `ACTIVITY_START_DATETIME` datetime NOT NULL COMMENT '活動開始時間',
+  `ACTIVITY_END_DATETIME` datetime NOT NULL COMMENT '活動結束時間',
+  `ACTIVITY_MAX_PEOPLE` int(11) NOT NULL COMMENT '人數上限',
+  `ACTIVITY_SIGNUP_PEOPLE` int(11) NOT NULL DEFAULT '0' COMMENT '已報名人數',
+  `ACTIVITY_SIGNUP_START_DATETIME` datetime NOT NULL COMMENT '報名開始時間',
+  `ACTIVITY_SIGNUP_END_DATETIME` datetime NOT NULL COMMENT '報名截止時間',
+  `ACTIVITY_STATUS` tinyint(4) NOT NULL DEFAULT '0' COMMENT '狀態 (0:草稿, 1:發布, 2:取消)',
+  `ADMIN_ID` varchar(20) NOT NULL COMMENT '發布管理者ID', 
+  `ACTIVITY_CREATED_AT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '建立時間',
+  PRIMARY KEY (`ACTIVITY_ID`),
+  FOREIGN KEY (`ACTIVITY_CATEGORY_ID`) REFERENCES `ACTIVITY_CATEGORIES` (`CATEGORY_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+-- 3. 活動收藏 (FAVORITES)
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `FAVORITES` (
+    `MEMBER_ID` INT NOT NULL COMMENT '會員ID',
+    `ACTIVITY_ID` INT NOT NULL COMMENT '活動ID',
+    `CREATED_AT` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`MEMBER_ID`, `ACTIVITY_ID`),
+    FOREIGN KEY (`ACTIVITY_ID`) REFERENCES `ACTIVITIES`(`ACTIVITY_ID`) ON DELETE CASCADE
+    -- 注意：這裡暫時不設 MEMBER_ID 的外來鍵，以免因缺少會員表而報錯
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+-- 4. 心得留言 (REVIEWS)
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `REVIEWS` (
+  `REVIEW_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '心得編號',
+  `USER_ID` int(11) NOT NULL COMMENT '會員編號',
+  `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動編號',
+  `RATING` tinyint(4) NOT NULL DEFAULT 5 COMMENT '評分(1-5)',
+  `CONTENT` text NOT NULL COMMENT '心得內容',
+  `IS_VISIBLE` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否顯示(1:顯示, 0:隱藏)',
+  `LIKE` int(11) NOT NULL DEFAULT 0 COMMENT '按讚數',
+  `CREATED_AT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`REVIEW_ID`),
+  FOREIGN KEY (`ACTIVITY_ID`) REFERENCES `ACTIVITIES` (`ACTIVITY_ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+-- 5. 留言按讚紀錄 (REVIEW_LIKES)
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `REVIEW_LIKES` (
+    `REVIEW_ID` INT NOT NULL,
+    `USER_ID` INT NOT NULL,
+    `CREATED_AT` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`REVIEW_ID`, `USER_ID`),
+    FOREIGN KEY (`REVIEW_ID`) REFERENCES `REVIEWS`(`REVIEW_ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+-- 6. 留言檢舉 (REVIEW_REPORTS)
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `REVIEW_REPORTS` (
+    `REPORT_ID` INT NOT NULL AUTO_INCREMENT,
+    `REVIEW_ID` INT NOT NULL,
+    `USER_ID` INT NOT NULL COMMENT '檢舉人ID',
+    `REPORT_REASON` VARCHAR(255) NOT NULL COMMENT '檢舉原因',
+    `CREATED_AT` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`REPORT_ID`),
+    FOREIGN KEY (`REVIEW_ID`) REFERENCES `REVIEWS`(`REVIEW_ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- ==========================================
+--  寫入預設測試資料 (Seeding)
+-- ==========================================
+
+-- 1. 活動種類
+INSERT INTO `ACTIVITY_CATEGORIES` (`CATEGORY_ID`, `CATEGORY_VALUE`) VALUES
+(1, '淨灘'),
+(2, '照護'),
+(3, '巡守'),
+
+-- 2. 活動主表 (模擬資料：一筆報名中、一筆已結束)
+INSERT INTO `ACTIVITIES` 
+(`ACTIVITY_TITLE`, `ACTIVITY_CATEGORY_ID`, `ACTIVITY_DESCRIPTION`, `ACTIVITY_NOTES`, `ACTIVITY_LOCATION`, `ACTIVITY_LOCATION_AREA`, `ACTIVITY_COVER_IMAGE`, `ACTIVITY_START_DATETIME`, `ACTIVITY_END_DATETIME`, `ACTIVITY_MAX_PEOPLE`, `ACTIVITY_SIGNUP_PEOPLE`, `ACTIVITY_SIGNUP_START_DATETIME`, `ACTIVITY_SIGNUP_END_DATETIME`, `ACTIVITY_STATUS`, `ADMIN_ID`) 
+VALUES
+(
+    '小琉球夏季淨灘大作戰', 
+    1, 
+    '夏天到了，讓我們一起捲起袖子，還給海龜一個乾淨的產卵沙灘！活動當天提供免費午餐與保險。', 
+    '1. 請自備環保杯與防曬用品。\n2. 建議穿著包覆性鞋類，避免受傷。', 
+    '小琉球中澳沙灘', 
+    '離島', 
+    'activity_01.jpg', 
+    '2025-08-20 09:00:00', '2025-08-20 12:00:00', 
+    50, 12, 
+    '2025-07-01 00:00:00', '2025-08-15 23:59:59', 
+    1, 'admin01'
+),
+(
+    '海龜救傷志工培訓營', 
+    2, 
+    '想要深入了解如何救援受傷海龜嗎？本課程邀請專業獸醫進行授課，機會難得！', 
+    '需年滿18歲方可報名。', 
+    '海洋大學', 
+    '北部', 
+    'activity_02.jpg', 
+    '2024-12-10 13:00:00', '2024-12-10 17:00:00', 
+    30, 30, 
+    '2024-11-01 00:00:00', '2024-11-30 23:59:59', 
+    1, 'admin01'
+);
+
+-- 3. 心得留言 (模擬 ID:2 的活動有兩則留言)
+INSERT INTO `REVIEWS` (`USER_ID`, `ACTIVITY_ID`, `RATING`, `CONTENT`, `LIKE`, `CREATED_AT`) VALUES
+(1, 2, 5, '獸醫講得非常詳細，學到很多急救知識！', 3, '2024-12-11 10:00:00'),
+(2, 2, 4, '希望能有更多實作的機會。', 0, '2024-12-11 14:30:00');
+
+-- 4. 收藏 (模擬 Member ID:1 收藏了 Activity ID:1)
+INSERT INTO `FAVORITES` (`MEMBER_ID`, `ACTIVITY_ID`) VALUES (1, 1);
+
+-- 5. 留言按讚 (模擬 Member ID:3 按讚了 Review ID:1)
+INSERT INTO `REVIEW_LIKES` (`REVIEW_ID`, `USER_ID`) VALUES (1, 3);
+
+-- 恢復外來鍵檢查
+SET FOREIGN_KEY_CHECKS = 1;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
