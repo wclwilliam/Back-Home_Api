@@ -21,38 +21,46 @@
 
     // 回應訊息
     if($MacValue == $ecpayMacValue){
-      // 資料庫的資料更新
-      // $sql = "UPDATE orders SET ecpay_data = ? WHERE order_id = ?";
-      // $stmt = $pdo->prepare($sql);
-      // $stmt->execute([json_encode($_POST), $_POST["MerchantTradeNo"]]);
 
-      // 判斷是單次還是定期定額 (檢查是否有定期定額特有欄位 TotalSuccessTimes)
-      $is_period = isset($_POST["TotalSuccessTimes"]);
-      $type = $is_period ? "定期定額" : "單次捐款";
+      try {
+        $is_period = isset($_POST["TotalSuccessTimes"]);
+        $type = $is_period ? "定期定額" : "單次捐款";
 
-      $sql = "INSERT INTO donations( 
-      donation_id
-      member_id, 
-      amount,
-      subscription_id,
-      payment_method,
-      donation_type,
-      transaction_id 
-      ) VALUES (?, ?, ?, ?, ?, ?,?)";
-      $stmt = $pdo->prepare($sql);
-      // $products_str = json_encode($products);
-      $stmt->execute([
-        $_POST["MerchantTradeNo"],
-        10, //暫時寫死
-        $_POST["TradeAmt"],
-        $is_period ? $_POST["MerchantTradeNo"] : NULL,
-        "信用卡",
-        $type,$_POST["TradeNo"]
+        // 1. 移除 DONATION_ID (讓 AUTO_INCREMENT 處理)
+        // 2. 增加 DONATION_DATE 欄位 (補上 NOW())
+        // 3. 確保欄位數量為 7 個
+        $sql = "INSERT INTO donations ( 
+                    MEMBER_ID, 
+                    AMOUNT,
+                    DONATION_DATE,
+                    SUBSCRIPTION_ID,
+                    PAYMENT_METHOD,
+                    DONATION_TYPE,
+                    TRANSACTION_ID 
+                ) VALUES (?, ?, NOW(), ?, ?, ?, ?)";
+                
+        $stmt = $pdo->prepare($sql);
+        
+        // 這裡要注意：如果 SUBSCRIPTION_ID 在 DB 是 int，傳字串進去會變 0 或出錯
+        // 暫時建議先將 SUBSCRIPTION_ID 設為 NULL 或確保資料表已改為 varchar
+        $subscription_val = $is_period ? 12345 : null; // 測試用，之後建議改 DB 類型
+
+        $stmt->execute([
+            10,                         // MEMBER_ID
+            $_POST["TradeAmt"],        // AMOUNT
+            $subscription_val,          // SUBSCRIPTION_ID (注意 DB 類型!)
+            "信用卡",                   // PAYMENT_METHOD
+            $type,                      // DONATION_TYPE
+            $_POST["TradeNo"]           // TRANSACTION_ID (綠界交易序號)
         ]);
-      
-      echo "1|OK"; // 傳 1|OK 給綠界
-    }else{
-      echo "0|NOTOK"; // 隨意傳錯誤的資料給綠界
+
+        echo "1|OK";
+
+    } catch (PDOException $e) {
+        // 這一行非常重要！如果還是失敗，請打開 ecpay_data.txt 看最底下的錯誤訊息
+        file_put_contents($filename, "SQL Error: " . $e->getMessage() . "\n", FILE_APPEND);
+        echo "0|Error";
+    }
     }
     
   } else {

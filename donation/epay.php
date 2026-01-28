@@ -16,7 +16,7 @@
       "TotalAmount" => $_POST["TotalAmount"],
       "TradeDesc" => $_POST["TradeDesc"],
       "ItemName" => $_POST["ItemName"],
-      "ReturnURL" => "https://undelighted-unadhesively-elenor.ngrok-free.dev/API/donation/handle_return_url.php",
+      "ReturnURL" => "https://undelighted-unadhesively-elenor.ngrok-free.dev/api/donation/handle_return_url.php",
       "ChoosePayment" => "Credit",
       "EncryptType" => 1,
       "IgnorePayment" => "WeiXin#TWQR#BNPL#CVS#BARCODE#ATM#WebATM",
