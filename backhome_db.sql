@@ -222,6 +222,10 @@ COMMIT;
 -- 為了避免匯入時因順序問題報錯，先暫時忽略外來鍵檢查
 SET FOREIGN_KEY_CHECKS = 0;
 
+-- ========================================================
+--  志工活動模組 (修正版)
+-- ========================================================
+
 -- --------------------------------------------------------
 -- 1. 活動種類 (ACTIVITY_CATEGORIES)
 -- --------------------------------------------------------
@@ -265,7 +269,6 @@ CREATE TABLE IF NOT EXISTS `FAVORITES` (
     `CREATED_AT` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`MEMBER_ID`, `ACTIVITY_ID`),
     FOREIGN KEY (`ACTIVITY_ID`) REFERENCES `ACTIVITIES`(`ACTIVITY_ID`) ON DELETE CASCADE
-    -- 注意：這裡暫時不設 MEMBER_ID 的外來鍵，以免因缺少會員表而報錯
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -317,9 +320,9 @@ CREATE TABLE IF NOT EXISTS `REVIEW_REPORTS` (
 INSERT INTO `ACTIVITY_CATEGORIES` (`CATEGORY_ID`, `CATEGORY_VALUE`) VALUES
 (1, '淨灘'),
 (2, '照護'),
-(3, '巡守'),
+(3, '巡守');
 
--- 2. 活動主表 (模擬資料：一筆報名中、一筆已結束)
+-- 2. 活動主表
 INSERT INTO `ACTIVITIES` 
 (`ACTIVITY_TITLE`, `ACTIVITY_CATEGORY_ID`, `ACTIVITY_DESCRIPTION`, `ACTIVITY_NOTES`, `ACTIVITY_LOCATION`, `ACTIVITY_LOCATION_AREA`, `ACTIVITY_COVER_IMAGE`, `ACTIVITY_START_DATETIME`, `ACTIVITY_END_DATETIME`, `ACTIVITY_MAX_PEOPLE`, `ACTIVITY_SIGNUP_PEOPLE`, `ACTIVITY_SIGNUP_START_DATETIME`, `ACTIVITY_SIGNUP_END_DATETIME`, `ACTIVITY_STATUS`, `ADMIN_ID`) 
 VALUES
@@ -350,19 +353,16 @@ VALUES
     1, 'admin01'
 );
 
--- 3. 心得留言 (模擬 ID:2 的活動有兩則留言)
+-- 3. 心得留言 (注意：LIKE 加上了反引號)
 INSERT INTO `REVIEWS` (`USER_ID`, `ACTIVITY_ID`, `RATING`, `CONTENT`, `LIKE`, `CREATED_AT`) VALUES
 (1, 2, 5, '獸醫講得非常詳細，學到很多急救知識！', 3, '2024-12-11 10:00:00'),
 (2, 2, 4, '希望能有更多實作的機會。', 0, '2024-12-11 14:30:00');
 
--- 4. 收藏 (模擬 Member ID:1 收藏了 Activity ID:1)
+-- 4. 收藏
 INSERT INTO `FAVORITES` (`MEMBER_ID`, `ACTIVITY_ID`) VALUES (1, 1);
 
--- 5. 留言按讚 (模擬 Member ID:3 按讚了 Review ID:1)
+-- 5. 留言按讚
 INSERT INTO `REVIEW_LIKES` (`REVIEW_ID`, `USER_ID`) VALUES (1, 3);
-
--- 恢復外來鍵檢查
-SET FOREIGN_KEY_CHECKS = 1;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
@@ -510,7 +510,7 @@ INSERT INTO `financial_reports` (`FINANCIAL_REPORT_ID`, `DATA_YEAR`, `UPLOAD_DAT
 (5, 2021, '2022-03-05 16:45:00', 'reports/financial_report_2021.png');
 
 -- 
---------------------------------------------------------
+-- ------------------------------------------------------
 
 --
 -- 資料表結構 `subscription`
