@@ -1,6 +1,6 @@
 <?php
-require_once("./common/cors.php");
-require_once("./common/conn.php");
+require_once("../common/cors.php");
+require_once("../common/conn.php");
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     http_response_code(405);
