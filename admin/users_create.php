@@ -1,6 +1,11 @@
 <?php
 require_once("../common/cors.php");
 require_once("../common/conn.php");
+require_once("../common/config.php");
+require_once("./auth_guard.php");
+
+// 驗證管理員身份
+$admin = requireAdminAuth();
 
 header('Content-Type: application/json; charset=utf-8');
 

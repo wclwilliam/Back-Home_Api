@@ -12,7 +12,7 @@
         $id = (int)$_GET['id']; // 強制轉為整數確保安全
         
         // 準備 SQL 語法，根據 NEWS_ID 抓取單筆
-        $sql = "SELECT * FROM `news` WHERE `NEWS_ID` = :id";
+        $sql = "SELECT * FROM `NEWS` WHERE `NEWS_ID` = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -45,7 +45,7 @@
 
         // 3. 準備 SQL 語法，根據照片一的欄位名稱，依發布時間降序排列
         // 注意：這裡假設資料表名稱為 `news`，請根據你資料庫的實際名稱修改
-        $sql = "SELECT * FROM `news` ORDER BY `NEWS_PUBLISHED_AT` DESC";
+        $sql = "SELECT * FROM `NEWS` ORDER BY `NEWS_PUBLISHED_AT` DESC";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
