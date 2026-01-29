@@ -48,6 +48,46 @@ CREATE TABLE IF NOT EXISTS `impact_metrics` (
   `UNSORTED_WASTE` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '無法分類廢棄物重量'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+--
+-- 傾印資料表的資料 `impact_metrics`
+--
+
+INSERT INTO `impact_metrics` (`IMPACT_METRICS_ID`, `DATA_YEAR`, `UPLOAD_DATE`, `TURTLES_IN_REHAB`, `TURTLES_RELEASED`, `HATCHLINGS_GUIDED`, `COASTLINE_PATROLLED`, `MEDICAL_SURGERIES`, `TOTAL_WASTE`, `PET_BOTTLES`, `IRON_CANS`, `ALUMINUM_CANS`, `WASTE_PAPER`, `GLASS_BOTTLES`, `STYROFOAM`, `BAMBOO_WOOD`, `FISHING_GEAR`, `UNSORTED_WASTE`) VALUES
+(1, 2025, '2026-01-24 11:06:29', 988, 0, 624, 24816, 142, '42500.00', '8500.00', '1200.00', '950.00', '2100.00', '3400.00', '4200.00', '5800.00', '12500.00', '3850.00'),
+(2, 2024, '2026-01-24 11:06:29', 856, 0, 551, 21500, 128, '34800.00', '6800.00', '1100.00', '850.00', '1800.00', '2900.00', '3500.00', '4600.00', '10200.00', '3050.00'),
+(3, 2023, '2026-01-24 11:06:29', 720, 0, 492, 18200, 95, '28500.00', '5400.00', '950.00', '720.00', '1400.00', '2200.00', '2800.00', '3900.00', '8500.00', '2630.00'),
+(4, 2022, '2026-01-24 11:06:29', 642, 0, 438, 16500, 87, '25280.00', '4800.00', '850.00', '650.00', '1250.00', '1950.00', '2400.00', '3500.00', '7600.00', '2280.00'),
+(5, 2021, '2026-01-24 11:06:29', 578, 0, 395, 14800, 76, '22290.00', '4200.00', '760.00', '580.00', '1100.00', '1700.00', '2100.00', '3100.00', '6800.00', '1950.00'),
+(6, 2020, '2026-01-24 11:06:29', 485, 0, 342, 12600, 64, '19530.00', '3650.00', '680.00', '520.00', '980.00', '1480.00', '1850.00', '2750.00', '5900.00', '1720.00'),
+(7, 2019, '2026-01-24 11:06:29', 412, 0, 298, 10900, 55, '16960.00', '3100.00', '590.00', '460.00', '850.00', '1280.00', '1600.00', '2400.00', '5200.00', '1480.00'),
+(8, 2018, '2026-01-24 11:06:29', 356, 0, 264, 9500, 47, '14810.00', '2650.00', '520.00', '410.00', '740.00', '1120.00', '1380.00', '2100.00', '4600.00', '1290.00'),
+(9, 2017, '2026-01-24 11:06:29', 298, 0, 225, 8200, 38, '12530.00', '2180.00', '450.00', '360.00', '630.00', '950.00', '1180.00', '1800.00', '3900.00', '1080.00'),
+(10, 2016, '2026-01-24 11:06:29', 242, 0, 186, 7100, 31, '10800.00', '1850.00', '390.00', '310.00', '540.00', '820.00', '1020.00', '1550.00', '3400.00', '920.00'),
+(11, 2015, '2026-01-24 11:06:29', 198, 0, 152, 6200, 26, '9350.00', '1580.00', '340.00', '270.00', '470.00', '710.00', '890.00', '1350.00', '2950.00', '790.00'),
+(12, 2014, '2026-01-24 11:06:29', 162, 0, 124, 5400, 21, '8130.00', '1350.00', '295.00', '235.00', '410.00', '620.00', '780.00', '1180.00', '2580.00', '680.00');
+
+--
+-- 已傾印資料表的索引
+--
+
+--
+-- 資料表索引 `impact_metrics`
+--
+ALTER TABLE `impact_metrics`
+  ADD PRIMARY KEY (`IMPACT_METRICS_ID`);
+
+--
+-- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
+--
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `impact_metrics`
+--
+ALTER TABLE `impact_metrics`
+  MODIFY `IMPACT_METRICS_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '我們的影響力編號', AUTO_INCREMENT=13;
+COMMIT;
+
 --
 -- 資料表結構 `admin_user`
 --
@@ -62,6 +102,15 @@ CREATE TABLE `admin_user` (
   `admin_last_login_time` DATETIME NULL COMMENT '管理者最後登入時間',
   PRIMARY KEY (`admin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='後台管理者';
+
+--
+-- 傾印資料表的資料 `admin_user`
+--
+
+INSERT INTO `admin_user`
+(`admin_id`, `admin_name`, `admin_pwd`, `admin_role`)
+VALUES
+('admin001', '系統管理員', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'super');
 
 --
 -- 資料表結構 `members`
@@ -85,6 +134,23 @@ CREATE TABLE `members` (
 ) ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COMMENT='前台會員資料';
+
+--
+-- 傾印資料表的資料 `members`
+--
+
+INSERT INTO `members`
+(
+  `member_realname`,
+  `member_email`,
+  `member_password`
+)
+VALUES
+(
+  '王小明',
+  'test01@example.com',
+  '$2b$10$abcdefghijklmnopqrstuv1234567890abcdefghijklmn'
+);
 
 --
 -- 資料表結構 `member_email_verification`
@@ -146,74 +212,6 @@ INSERT INTO `RESCUES` (`RESCUE_ID`, `UPLOAD_DATE`, `TURTLE_NAME`, `SPECIES`, `LO
 (9, NOW(), '大丸子', '綠蠵龜', '屏東後壁湖', '大丸子誤入定置網，雖被漁民即時救起，但因長時間無法浮出水面換氣而有輕微嗆水現象，導致肺部感染。目前正在接受霧化治療，呼吸雜音已逐漸減少。每次做完治療後，牠都會舒服地瞇起眼睛休息。', '醫療照護', 'savedcases/ball.png'),
 (10, NOW(), '金金', '玳瑁', '花蓮七星潭', '金金因背甲疑似遭受撞擊而有裂痕，所幸未傷及內臟。經過修補手術後，背甲裂縫已用醫療級樹脂固定。目前傷口乾燥無感染，正在淺水池中練習負重游泳，以防背甲癒合不正。雖然游得還不快，但牠非常努力練習平衡。', '休養觀察', 'savedcases/gold.png');
 
-
-
---
--- 傾印資料表的資料 `members`
---
-
-INSERT INTO `members`
-(
-  `member_realname`,
-  `member_email`,
-  `member_password`
-)
-VALUES
-(
-  '王小明',
-  'test01@example.com',
-  '$2b$10$abcdefghijklmnopqrstuv1234567890abcdefghijklmn'
-);
-
---
--- 傾印資料表的資料 `admin_user`
---
-
-INSERT INTO `admin_user`
-(`admin_id`, `admin_name`, `admin_pwd`, `admin_role`)
-VALUES
-('admin001', '系統管理員', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'super');
-
---
--- 傾印資料表的資料 `impact_metrics`
---
-
-INSERT INTO `impact_metrics` (`IMPACT_METRICS_ID`, `DATA_YEAR`, `UPLOAD_DATE`, `TURTLES_IN_REHAB`, `TURTLES_RELEASED`, `HATCHLINGS_GUIDED`, `COASTLINE_PATROLLED`, `MEDICAL_SURGERIES`, `TOTAL_WASTE`, `PET_BOTTLES`, `IRON_CANS`, `ALUMINUM_CANS`, `WASTE_PAPER`, `GLASS_BOTTLES`, `STYROFOAM`, `BAMBOO_WOOD`, `FISHING_GEAR`, `UNSORTED_WASTE`) VALUES
-(1, 2025, '2026-01-24 11:06:29', 988, 0, 624, 24816, 142, '42500.00', '8500.00', '1200.00', '950.00', '2100.00', '3400.00', '4200.00', '5800.00', '12500.00', '3850.00'),
-(2, 2024, '2026-01-24 11:06:29', 856, 0, 551, 21500, 128, '34800.00', '6800.00', '1100.00', '850.00', '1800.00', '2900.00', '3500.00', '4600.00', '10200.00', '3050.00'),
-(3, 2023, '2026-01-24 11:06:29', 720, 0, 492, 18200, 95, '28500.00', '5400.00', '950.00', '720.00', '1400.00', '2200.00', '2800.00', '3900.00', '8500.00', '2630.00'),
-(4, 2022, '2026-01-24 11:06:29', 642, 0, 438, 16500, 87, '25280.00', '4800.00', '850.00', '650.00', '1250.00', '1950.00', '2400.00', '3500.00', '7600.00', '2280.00'),
-(5, 2021, '2026-01-24 11:06:29', 578, 0, 395, 14800, 76, '22290.00', '4200.00', '760.00', '580.00', '1100.00', '1700.00', '2100.00', '3100.00', '6800.00', '1950.00'),
-(6, 2020, '2026-01-24 11:06:29', 485, 0, 342, 12600, 64, '19530.00', '3650.00', '680.00', '520.00', '980.00', '1480.00', '1850.00', '2750.00', '5900.00', '1720.00'),
-(7, 2019, '2026-01-24 11:06:29', 412, 0, 298, 10900, 55, '16960.00', '3100.00', '590.00', '460.00', '850.00', '1280.00', '1600.00', '2400.00', '5200.00', '1480.00'),
-(8, 2018, '2026-01-24 11:06:29', 356, 0, 264, 9500, 47, '14810.00', '2650.00', '520.00', '410.00', '740.00', '1120.00', '1380.00', '2100.00', '4600.00', '1290.00'),
-(9, 2017, '2026-01-24 11:06:29', 298, 0, 225, 8200, 38, '12530.00', '2180.00', '450.00', '360.00', '630.00', '950.00', '1180.00', '1800.00', '3900.00', '1080.00'),
-(10, 2016, '2026-01-24 11:06:29', 242, 0, 186, 7100, 31, '10800.00', '1850.00', '390.00', '310.00', '540.00', '820.00', '1020.00', '1550.00', '3400.00', '920.00'),
-(11, 2015, '2026-01-24 11:06:29', 198, 0, 152, 6200, 26, '9350.00', '1580.00', '340.00', '270.00', '470.00', '710.00', '890.00', '1350.00', '2950.00', '790.00'),
-(12, 2014, '2026-01-24 11:06:29', 162, 0, 124, 5400, 21, '8130.00', '1350.00', '295.00', '235.00', '410.00', '620.00', '780.00', '1180.00', '2580.00', '680.00');
-
---
--- 已傾印資料表的索引
---
-
---
--- 資料表索引 `impact_metrics`
---
-ALTER TABLE `impact_metrics`
-  ADD PRIMARY KEY (`IMPACT_METRICS_ID`);
-
---
--- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
---
-
---
--- 使用資料表自動遞增(AUTO_INCREMENT) `impact_metrics`
---
-ALTER TABLE `impact_metrics`
-  MODIFY `IMPACT_METRICS_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '我們的影響力編號', AUTO_INCREMENT=13;
-COMMIT;
-
-
 -- ==========================================
 --  志工活動模組 (Volunteer Activities Module)
 --  包含：種類、活動主表、收藏、留言、留言按讚、留言檢舉
@@ -221,6 +219,10 @@ COMMIT;
 
 -- 為了避免匯入時因順序問題報錯，先暫時忽略外來鍵檢查
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ========================================================
+--  志工活動模組 (修正版)
+-- ========================================================
 
 -- --------------------------------------------------------
 -- 1. 活動種類 (ACTIVITY_CATEGORIES)
@@ -265,7 +267,6 @@ CREATE TABLE IF NOT EXISTS `FAVORITES` (
     `CREATED_AT` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`MEMBER_ID`, `ACTIVITY_ID`),
     FOREIGN KEY (`ACTIVITY_ID`) REFERENCES `ACTIVITIES`(`ACTIVITY_ID`) ON DELETE CASCADE
-    -- 注意：這裡暫時不設 MEMBER_ID 的外來鍵，以免因缺少會員表而報錯
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -317,9 +318,9 @@ CREATE TABLE IF NOT EXISTS `REVIEW_REPORTS` (
 INSERT INTO `ACTIVITY_CATEGORIES` (`CATEGORY_ID`, `CATEGORY_VALUE`) VALUES
 (1, '淨灘'),
 (2, '照護'),
-(3, '巡守'),
+(3, '巡守');
 
--- 2. 活動主表 (模擬資料：一筆報名中、一筆已結束)
+-- 2. 活動主表
 INSERT INTO `ACTIVITIES` 
 (`ACTIVITY_TITLE`, `ACTIVITY_CATEGORY_ID`, `ACTIVITY_DESCRIPTION`, `ACTIVITY_NOTES`, `ACTIVITY_LOCATION`, `ACTIVITY_LOCATION_AREA`, `ACTIVITY_COVER_IMAGE`, `ACTIVITY_START_DATETIME`, `ACTIVITY_END_DATETIME`, `ACTIVITY_MAX_PEOPLE`, `ACTIVITY_SIGNUP_PEOPLE`, `ACTIVITY_SIGNUP_START_DATETIME`, `ACTIVITY_SIGNUP_END_DATETIME`, `ACTIVITY_STATUS`, `ADMIN_ID`) 
 VALUES
@@ -350,19 +351,16 @@ VALUES
     1, 'admin01'
 );
 
--- 3. 心得留言 (模擬 ID:2 的活動有兩則留言)
+-- 3. 心得留言 (注意：LIKE 加上了反引號)
 INSERT INTO `REVIEWS` (`USER_ID`, `ACTIVITY_ID`, `RATING`, `CONTENT`, `LIKE`, `CREATED_AT`) VALUES
 (1, 2, 5, '獸醫講得非常詳細，學到很多急救知識！', 3, '2024-12-11 10:00:00'),
 (2, 2, 4, '希望能有更多實作的機會。', 0, '2024-12-11 14:30:00');
 
--- 4. 收藏 (模擬 Member ID:1 收藏了 Activity ID:1)
+-- 4. 收藏
 INSERT INTO `FAVORITES` (`MEMBER_ID`, `ACTIVITY_ID`) VALUES (1, 1);
 
--- 5. 留言按讚 (模擬 Member ID:3 按讚了 Review ID:1)
+-- 5. 留言按讚
 INSERT INTO `REVIEW_LIKES` (`REVIEW_ID`, `USER_ID`) VALUES (1, 3);
-
--- 恢復外來鍵檢查
-SET FOREIGN_KEY_CHECKS = 1;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
@@ -510,7 +508,7 @@ INSERT INTO `financial_reports` (`FINANCIAL_REPORT_ID`, `DATA_YEAR`, `UPLOAD_DAT
 (5, 2021, '2022-03-05 16:45:00', 'reports/financial_report_2021.png');
 
 -- 
---------------------------------------------------------
+-- ------------------------------------------------------
 
 --
 -- 資料表結構 `subscription`

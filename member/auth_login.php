@@ -1,182 +1,150 @@
 <?php
+declare(strict_types=1);
+
 require_once("../common/cors.php");
 require_once("../common/conn.php");
+require_once("../common/config.php");
 
 header('Content-Type: application/json; charset=utf-8');
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(["error" => "Method Not Allowed"]);
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
     exit;
 }
 
-// 1️⃣ 讀取 JSON body
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(["error" => "Method Not Allowed"], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+/**
+ * 統一輸出 JSON 並結束
+ */
+function json_out(int $code, array $payload): void
+{
+    http_response_code($code);
+    echo json_encode($payload, JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+/**
+ * JWT（HS256）工具：不使用第三方套件
+ */
+function base64url_encode(string $data): string
+{
+    return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+}
+
+function jwt_sign_hs256(array $payload, string $secret): string
+{
+    $header = ['alg' => 'HS256', 'typ' => 'JWT'];
+
+    $h = base64url_encode(json_encode($header, JSON_UNESCAPED_UNICODE));
+    $p = base64url_encode(json_encode($payload, JSON_UNESCAPED_UNICODE));
+
+    $sig = hash_hmac('sha256', $h . '.' . $p, $secret, true);
+    $s = base64url_encode($sig);
+
+    return $h . '.' . $p . '.' . $s;
+}
+
+/**
+ * 1️⃣ 讀取 JSON body
+ */
 $raw = file_get_contents('php://input');
 $body = json_decode($raw, true);
 
 if (!is_array($body)) {
-    http_response_code(400);
-    echo json_encode(["error" => "Invalid JSON body"]);
-    exit;
+    json_out(400, ["error" => "Invalid JSON body"]);
 }
 
-$email    = isset($body['email']) ? trim($body['email']) : '';
-$code     = isset($body['code']) ? trim($body['code']) : '';
+$email = isset($body['email']) ? trim((string)$body['email']) : '';
 $password = isset($body['password']) ? (string)$body['password'] : '';
-$name     = isset($body['name']) ? trim($body['name']) : '';
 
-// 2️⃣ 基本驗證
-if ($email === '' || $code === '' || $password === '' || $name === '') {
-    http_response_code(400);
-    echo json_encode(["error" => "email, code, password, name are required"]);
-    exit;
+/**
+ * 2️⃣ 基本驗證
+ */
+if ($email === '' || $password === '') {
+    json_out(400, ["error" => "email, password are required"]);
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    http_response_code(400);
-    echo json_encode(["error" => "invalid email format"]);
-    exit;
+    json_out(400, ["error" => "invalid email format"]);
 }
 
+// 你想更嚴格可以打開（看你需求）
 if (strlen($password) < 8) {
-    http_response_code(400);
-    echo json_encode(["error" => "password must be at least 8 characters"]);
-    exit;
+    json_out(400, ["error" => "password must be at least 8 characters"]);
 }
 
-if (!preg_match('/[A-Z]/', $password)) {
-    http_response_code(400);
-    echo json_encode(["error" => "password must contain at least one uppercase letter"]);
-    exit;
-}
-if (!preg_match('/[a-z]/', $password)) {
-    http_response_code(400);
-    echo json_encode(["error" => "password must contain at least one lowercase letter"]);
-    exit;
-}
-if (!preg_match('/[0-9]/', $password)) {
-    http_response_code(400);
-    echo json_encode(["error" => "password must contain at least one number"]);
-    exit;
+/**
+ * 3️⃣ 檢查 JWT_SECRET 是否有設定（來自 common/config.php）
+ */
+if (!defined('JWT_SECRET') || trim((string)JWT_SECRET) === '') {
+    // 這是伺服器設定錯誤，不是使用者錯
+    json_out(500, ["error" => "server_misconfigured"]);
 }
 
 try {
-    // Transaction：避免 members 更新成功但 verification 沒標記 used（或相反）
-    $pdo->beginTransaction();
-
-    // 3️⃣ 查詢會員（建議鎖住這筆會員，避免同時啟用兩次）
-    $memberSql = "SELECT member_id, member_active FROM members WHERE member_email = :email LIMIT 1 FOR UPDATE";
-    $memberStmt = $pdo->prepare($memberSql);
-    $memberStmt->execute([":email" => $email]);
-    $member = $memberStmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$member) {
-        $pdo->rollBack();
-        http_response_code(404);
-        echo json_encode(["error" => "email not found, please request code first"]);
-        exit;
-    }
-
-    if ((int)$member['member_active'] === 1) {
-        $pdo->rollBack();
-        http_response_code(409);
-        echo json_encode(["error" => "email already registered and active"]);
-        exit;
-    }
-
-    $memberId = (int)$member['member_id'];
-
-    // 4️⃣ 查詢驗證碼記錄（未使用且未過期）並鎖住最新那筆避免重複使用
-    $verifySql = "
-        SELECT verification_id, code_hash, expires_at, attempts
-        FROM member_email_verification
-        WHERE member_id = :member_id
-          AND used_at IS NULL
-          AND verified_at IS NULL
-          AND expires_at > NOW()
-        ORDER BY created_at DESC
+    /**
+     * 4️⃣ 查會員
+     * ⚠️ 依你的 register API：members / member_email / member_password / member_active / member_realname
+     */
+    $sql = "
+        SELECT member_id, member_realname, member_password, member_active
+        FROM members
+        WHERE member_email = :email
         LIMIT 1
-        FOR UPDATE
     ";
-    $verifyStmt = $pdo->prepare($verifySql);
-    $verifyStmt->execute([':member_id' => $memberId]);
-    $verify = $verifyStmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":email" => $email]);
+    $member = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$verify) {
-        $pdo->rollBack();
-        http_response_code(400);
-        echo json_encode(["error" => "no valid verification code found or expired"]);
-        exit;
+    // 安全：避免探測 email 是否存在（查不到 & 密碼錯一律回同一句）
+    if (!$member) {
+        json_out(401, ["error" => "invalid credentials"]);
     }
 
-    // 5️⃣ 檢查錯誤次數(超過 3 次就鎖定)
-    if ((int)$verify['attempts'] >= 3) {
-        $pdo->rollBack();
-        http_response_code(429);
-        echo json_encode(["error" => "too many attempts, please request a new code"]);
-        exit;
+    // 5️⃣ 檢查啟用狀態
+    if ((int)$member['member_active'] !== 1) {
+        json_out(403, ["error" => "account is inactive"]);
     }
 
-    // 6️⃣ 驗證驗證碼（錯誤就 attempts +1）
-    if (!password_verify($code, $verify['code_hash'])) {
-        $updateAttempts = $pdo->prepare("
-            UPDATE member_email_verification
-            SET attempts = attempts + 1
-            WHERE verification_id = :id
-        ");
-        $updateAttempts->execute([':id' => (int)$verify['verification_id']]);
-
-        $pdo->commit(); // 讓 attempts 的更新生效（也可 rollBack 但會吃掉 attempts）
-        http_response_code(401);
-        echo json_encode(["error" => "invalid verification code"]);
-        exit;
+    // 6️⃣ 密碼比對（雜湊）
+    if (!password_verify($password, (string)$member['member_password'])) {
+        json_out(401, ["error" => "invalid credentials"]);
     }
 
-    // 7️⃣ 密碼雜湊（bcrypt）
-    $hash = password_hash($password, PASSWORD_BCRYPT);
-    if ($hash === false) {
-        $pdo->rollBack();
-        http_response_code(500);
-        echo json_encode(["error" => "failed to hash password"]);
-        exit;
-    }
+    /**
+     * 7️⃣ 產生 JWT
+     * - iat: 簽發時間
+     * - exp: 過期時間
+     */
+    $now = time();
+    $payload = [
+        'member_id' => (int)$member['member_id'],
+        'iat' => $now,
+        'exp' => $now + JWT_EXP_SECONDS_MEMBER,
+    ];
 
-    // 8️⃣ 更新會員資料並啟用
-    $updateSql = "
-        UPDATE members
-        SET member_realname = :name,
-            member_password = :password,
-            member_active = 1,
-            email_verified_at = NOW()
-        WHERE member_id = :member_id
-    ";
-    $updateStmt = $pdo->prepare($updateSql);
-    $updateStmt->execute([
-        ':name' => $name,
-        ':password' => $hash,
-        ':member_id' => $memberId
+    $token = jwt_sign_hs256($payload, (string)JWT_SECRET);
+
+    /**
+     * 8️⃣ 回傳：token + member 基本資料
+     */
+    json_out(200, [
+        "status" => "success",
+        "token" => $token,
+        "member" => [
+            "member_id" => (int)$member['member_id'],
+            "member_name" => (string)$member['member_realname'],
+        ],
     ]);
-
-    // 9️⃣ 標記驗證碼為已使用
-    $markUsed = $pdo->prepare("
-        UPDATE member_email_verification
-        SET verified_at = NOW(),
-            used_at = NOW()
-        WHERE verification_id = :id
-    ");
-    $markUsed->execute([':id' => (int)$verify['verification_id']]);
-
-    $pdo->commit();
-
-    echo json_encode(["ok" => true]);
-    $pdo = null;
-    exit;
-} catch (PDOException $e) {
-    if ($pdo && $pdo->inTransaction()) $pdo->rollBack();
-    http_response_code(500);
-    echo json_encode([
+} catch (Throwable $e) {
+    // 正式環境建議不要把錯誤訊息吐給前端，這裡保留你 debug 用
+    json_out(500, [
         "error" => "server_error",
-        "message" => $e->getMessage()
+        "message" => $e->getMessage(),
     ]);
-    exit;
 }
