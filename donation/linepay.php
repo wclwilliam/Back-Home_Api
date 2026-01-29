@@ -24,6 +24,15 @@ $orderId = 'ORDER_' . date('YmdHis'); // 產生唯一訂單編號（範例用時
 $amount = $data['amount'] ?? 100;      // 若前端沒傳金額，預設為 100
 $productName = $data['productName'] ?? '測試商品';
 
+// 路徑判斷
+if (str_contains($_SERVER["HTTP_HOST"], "127.0.0.1") || str_contains($_SERVER["HTTP_HOST"], "localhost")) {
+  //本地
+    $myurl = "http://localhost:5173/donation";
+} else {
+  //伺服器上
+    $myurl = "https://tibamef2e.com/cjd102/g3/front/donation";
+};
+
 /**
  * 4. 依照 LINE Pay 官方規格建立請求主體 (Request Body)
  * 金額 (amount) 必須為整數型別 (int)
@@ -44,8 +53,8 @@ $body = [
     ]],
     'redirectUrls' => [
         // 使用者在 LINE Pay 頁面操作完後，要導回前端 Vue 的哪一個頁面
-        'confirmUrl' => "http://localhost:5173/donation?amount=$amount", // 成功導回點
-        'cancelUrl' => 'http://localhost:5173/donation'   // 取消導回點
+        'confirmUrl' => "$myurl?amount=$amount", // 成功導回點
+        'cancelUrl' => $myurl   // 取消導回點
     ]
 ];
 

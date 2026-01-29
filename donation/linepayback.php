@@ -58,7 +58,7 @@ curl_close($ch);
 //             "returnCode: " . $resData['returnCode'] . PHP_EOL;
 
 // 寫入到同目錄下的 confirm_debug.log
-file_put_contents('confirm_debug.log', $debugMsg, FILE_APPEND);
+// file_put_contents('confirm_debug.log', $debugMsg, FILE_APPEND);
 
 // 5. 判斷是否扣款成功並寫入資料庫
 if (isset($resData['returnCode']) && $resData['returnCode'] === '0000') {

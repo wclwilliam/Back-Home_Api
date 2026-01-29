@@ -5,7 +5,18 @@
     require_once("../common/conn.php");
     require_once("./generate_mac_value.php");
 
-    $order_id = "ORDER_" . date("YmdHis");
+    // 路徑判斷
+    if (str_contains($_SERVER["HTTP_HOST"], "127.0.0.1") || str_contains($_SERVER["HTTP_HOST"], "localhost")) {
+      //本地
+        $backurl = "https://undelighted-unadhesively-elenor.ngrok-free.dev/api/donation";
+        $fronturl = "http://localhost:5173/donation";
+    } else {
+      //伺服器上
+        $backurl = "https://tibamef2e.com/cjd102/g3/api/donation";
+        $fronturl = "https://tibamef2e.com/cjd102/g3/front/donation";
+    };
+
+    $order_id = "ORDER" . date("YmdHis");
 
     // 基礎參數
     $ecpayData = [
@@ -18,11 +29,11 @@
       "ItemName" => $_POST["ItemName"],
       "CustomField1" => $_POST["CustomField1"], // 建議這裡帶入 member_id
       "CustomField2" => $_POST["CustomField2"], // once or monthly
-      "ReturnURL" => "https://undelighted-unadhesively-elenor.ngrok-free.dev/api/donation/handle_return_url.php",
+      "ReturnURL" => $backurl . "/handle_return_url.php",
       "ChoosePayment" => "Credit", // 定期定額必須是 Credit
       "EncryptType" => 1,
       "IgnorePayment" => "WeiXin#TWQR#BNPL#CVS#BARCODE#ATM#WebATM",
-      "ClientBackURL" => "https://tibamef2e.com/cjd102/g3/front/donation"
+      "ClientBackURL" => $fronturl
     ];
 
     // --- 定期定額判斷邏輯 ---
@@ -32,7 +43,7 @@
         $ecpayData["Frequency"] = 1;                       // 頻率：1 (每1個月)
         $ecpayData["ExecTimes"] = 99;                      // 執行次數 (99為長期訂閱)
         // 定期定額建議設定此 URL 接收後續每期扣款結果
-        $ecpayData["PeriodReturnURL"] = "https://undelighted-unadhesively-elenor.ngrok-free.dev/api/donation/handle_return_url.php";
+        $ecpayData["PeriodReturnURL"] = $backurl . "/handle_return_url.php";
     }
 
     $CheckMacValue = generateCheckMacValue($ecpayData);
