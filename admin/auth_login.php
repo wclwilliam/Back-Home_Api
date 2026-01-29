@@ -1,6 +1,7 @@
 <?php
 require_once("../common/cors.php");
 require_once("../common/conn.php");
+require_once("../common/config.php");
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -9,14 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(["error" => "Method Not Allowed"]);
     exit;
 }
-
-/**
- * ===== JWT 設定 =====
- * 建議你把 SECRET 放到環境變數或 config 檔，不要硬寫在 repo
- */
-$JWT_SECRET = getenv('JWT_SECRET') ?: 'CHANGE_ME_TO_A_RANDOM_LONG_SECRET';
-$JWT_ISS = 'backhome-admin';
-$JWT_EXP_SECONDS = 60 * 60 * 6; // 6 小時，可自行調整
 
 function base64url_encode($data)
 {
@@ -87,14 +80,14 @@ try {
     // 6) 產生 JWT
     $now = time();
     $payload = [
-        "iss" => $JWT_ISS,
+        "iss" => JWT_ISS_ADMIN,
         "iat" => $now,
-        "exp" => $now + $JWT_EXP_SECONDS,
+        "exp" => $now + JWT_EXP_SECONDS_ADMIN,
         "sub" => $row['admin_id'],
         "role" => $row['admin_role'],
         "name" => $row['admin_name'],
     ];
-    $token = jwt_hs256($payload, $JWT_SECRET);
+    $token = jwt_hs256($payload, JWT_SECRET);
 
     // 7) 回傳（不回 admin_pwd）
     echo json_encode([
