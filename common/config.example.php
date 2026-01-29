@@ -1,11 +1,15 @@
 <?php
 /**
- * config.php
- * 全域設定檔 - 集中管理所有設定參數
+ * config.example.php
+ * 範本設定檔（請複製為 config.php 並填入實際值）
  */
 
 // ===== JWT 設定 =====
-define('JWT_SECRET', getenv('JWT_SECRET') ?: 'Lp42IPnxUf07wiK1XvaQhJyNqbRYmujoSrEg9VCtT5GHOAzc8DZksFMWlBd3e6');
+$jwtSecret = getenv('JWT_SECRET');
+if ($jwtSecret === false || trim((string)$jwtSecret) === '') {
+    $jwtSecret = 'CHANGE_ME';
+}
+define('JWT_SECRET', $jwtSecret);
 define('JWT_ISS_ADMIN', 'backhome-admin');
 define('JWT_ISS_MEMBER', 'backhome-member');
 define('JWT_EXP_SECONDS_ADMIN', 60 * 60 * 6);  // 管理員：6 小時
