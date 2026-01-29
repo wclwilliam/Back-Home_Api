@@ -35,7 +35,7 @@ $body = [
     'packages' => [[
         'id' => 'package_1',
         'amount' => (int)$amount,
-        'name' => 'Shop Name', // 商店名稱
+        'name' => '海龜保育', // 商店名稱
         'products' => [[
             'name' => $productName,
             'quantity' => 1,
@@ -44,8 +44,8 @@ $body = [
     ]],
     'redirectUrls' => [
         // 使用者在 LINE Pay 頁面操作完後，要導回前端 Vue 的哪一個頁面
-        'confirmUrl' => 'http://localhost:5173/donation?isSuccess=1', // 成功導回點(01/26暫時寫死 目前的想法:自己傳query判斷是否成功)
-        'cancelUrl' => 'http://localhost:5173/donation?isSuccess=0'   // 取消導回點
+        'confirmUrl' => "http://localhost:5173/donation?amount=$amount", // 成功導回點
+        'cancelUrl' => 'http://localhost:5173/donation'   // 取消導回點
     ]
 ];
 

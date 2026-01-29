@@ -5,9 +5,9 @@
     require_once("../common/conn.php");
     require_once("./generate_mac_value.php");
 
-    // ======================================================= //
-    $order_id = "test" . date("YmdHis");
+    $order_id = "ORDER_" . date("YmdHis");
 
+    // 基礎參數
     $ecpayData = [
       "MerchantID" => $MerchantID,
       "MerchantTradeNo" => $order_id,
@@ -16,12 +16,24 @@
       "TotalAmount" => $_POST["TotalAmount"],
       "TradeDesc" => $_POST["TradeDesc"],
       "ItemName" => $_POST["ItemName"],
+      "CustomField1" => $_POST["CustomField1"], // 建議這裡帶入 member_id
+      "CustomField2" => $_POST["CustomField2"], // once or monthly
       "ReturnURL" => "https://undelighted-unadhesively-elenor.ngrok-free.dev/api/donation/handle_return_url.php",
-      "ChoosePayment" => "Credit",
+      "ChoosePayment" => "Credit", // 定期定額必須是 Credit
       "EncryptType" => 1,
       "IgnorePayment" => "WeiXin#TWQR#BNPL#CVS#BARCODE#ATM#WebATM",
-      "ClientBackURL" => "https://tibamef2e.com/cjd102/g3/front/donation" // 在綠界平台，付款完成後，會出現「返回商店」按鈕，按下去後，單純頁面做轉向
+      "ClientBackURL" => "https://tibamef2e.com/cjd102/g3/front/donation"
     ];
+
+    // --- 定期定額判斷邏輯 ---
+    if ($_POST["TradeDesc"] === "monthly") {
+        $ecpayData["PeriodAmount"] = $_POST["TotalAmount"]; // 每期扣款金額
+        $ecpayData["PeriodType"] = "M";                    // M: 每月扣款
+        $ecpayData["Frequency"] = 1;                       // 頻率：1 (每1個月)
+        $ecpayData["ExecTimes"] = 99;                      // 執行次數 (99為長期訂閱)
+        // 定期定額建議設定此 URL 接收後續每期扣款結果
+        $ecpayData["PeriodReturnURL"] = "https://undelighted-unadhesively-elenor.ngrok-free.dev/api/donation/handle_return_url.php";
+    }
 
     $CheckMacValue = generateCheckMacValue($ecpayData);
   }
@@ -36,25 +48,14 @@
   <body>
     <?php
       if(isset($_POST["UseEcpay"]) && $_POST["UseEcpay"] == "ecpay"){
-        echo <<< HTML
-          <form id="ecpayForm" method="post" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5">
-            <input type="hidden" name="MerchantID" value="{$ecpayData['MerchantID']}">
-            <input type="hidden" name="MerchantTradeNo" value="{$ecpayData['MerchantTradeNo']}">
-            <input type="hidden" name="MerchantTradeDate" value="{$ecpayData['MerchantTradeDate']}">
-            <input type="hidden" name="PaymentType" value="{$ecpayData['PaymentType']}">
-            <input type="hidden" name="TotalAmount" value="{$ecpayData['TotalAmount']}">
-            <input type="hidden" name="TradeDesc" value="{$ecpayData['TradeDesc']}">
-            <input type="hidden" name="ItemName" value="{$ecpayData['ItemName']}">
-            <input type="hidden" name="ReturnURL" value="{$ecpayData['ReturnURL']}">
-            <input type="hidden" name="ChoosePayment" value="{$ecpayData['ChoosePayment']}">
-            <input type="hidden" name="EncryptType" value="{$ecpayData['EncryptType']}">
-            <input type="hidden" name="IgnorePayment" value="{$ecpayData['IgnorePayment']}">
-            <input type="hidden" name="ClientBackURL" value="{$ecpayData['ClientBackURL']}">
-            <input type="hidden" name="CheckMacValue" value="{$CheckMacValue}">
-          </form>
-        HTML;
+        echo '<form id="ecpayForm" method="post" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5">';
+        foreach ($ecpayData as $key => $value) {
+            echo '<input type="hidden" name="' . $key . '" value="' . $value . '">';
+        }
+        echo '<input type="hidden" name="CheckMacValue" value="' . $CheckMacValue . '">';
+        echo '</form>';
         echo '<script>document.getElementById("ecpayForm").submit();</script>';
-      }else{
+      } else {
         echo "<p>異常</p>";
       }
     ?>
