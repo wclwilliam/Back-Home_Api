@@ -1,7 +1,7 @@
 <?php
 /**
  * config.example.php
- * 範本設定檔（請複製為 config.php 並填入實際值）
+ * 範本設定檔
  */
 
 // ===== JWT 設定 =====
