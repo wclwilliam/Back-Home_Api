@@ -18,6 +18,13 @@ define('JWT_EXP_SECONDS_MEMBER', 60 * 60 * 24 * 7);  // 會員：7 天
 // ===== 驗證碼設定 =====
 define('VERIFICATION_CODE_EXPIRE_MINUTES', 10);  // 驗證碼有效期限（分鐘）
 
+// ===== Brevo 設定 =====
+define('BREVO_API_KEY', getenv('BREVO_API_KEY') ?: 'CHANGE_ME');
+define('BREVO_FROM_EMAIL', getenv('BREVO_FROM_EMAIL') ?: 'no-reply@example.com');
+define('BREVO_FROM_NAME', getenv('BREVO_FROM_NAME') ?: 'BackHome');
+define('BREVO_BASE_URL', getenv('BREVO_BASE_URL') ?: 'https://api.brevo.com');
+define('BREVO_CA_BUNDLE', getenv('BREVO_CA_BUNDLE') ?: __DIR__ . '/cacert.pem'); // SSL CA 憑證路徑
+
 // ===== 其他設定 =====
 // 可以在此處加入更多全域設定，例如：
 // - 上傳檔案大小限制

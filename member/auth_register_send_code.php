@@ -1,6 +1,7 @@
 <?php
 require_once("../common/cors.php");
 require_once("../common/conn.php");
+require_once("../common/config_loader.php");
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -34,10 +35,10 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 // === 設定：驗證碼有效時間 ===
-$EXPIRE_MINUTES = 5;
+$EXPIRE_MINUTES = defined('VERIFICATION_CODE_EXPIRE_MINUTES') ? (int)VERIFICATION_CODE_EXPIRE_MINUTES : 5;
 
-// === 設定：Demo 模式（true 會回傳 code，方便你測試；上線改 false） ===
-$DEMO_RETURN_CODE = true;
+// === 設定：Demo 模式（上線建議 false） ===
+$DEMO_RETURN_CODE = false;
 
 try {
     // 用交易包起來，避免併發情境下 insert 會員/刪驗證碼 出現不一致
@@ -110,6 +111,68 @@ try {
     ]);
 
     $pdo->commit();
+
+    // 7) 使用 Brevo API 寄送驗證碼 Email
+    $apiKey = defined('BREVO_API_KEY') ? (string)BREVO_API_KEY : '';
+    $baseUrl = defined('BREVO_BASE_URL') ? rtrim((string)BREVO_BASE_URL, '/') : 'https://api.brevo.com';
+
+    if ($apiKey === '' || $apiKey === 'CHANGE_ME') {
+        http_response_code(500);
+        echo json_encode(["error" => "server_error", "message" => "brevo_api_key_missing"]);
+        exit;
+    }
+
+    $payload = [
+        'sender' => [
+            'email' => defined('BREVO_FROM_EMAIL') ? BREVO_FROM_EMAIL : 'no-reply@example.com',
+            'name' => defined('BREVO_FROM_NAME') ? BREVO_FROM_NAME : 'BackHome',
+        ],
+        'to' => [
+            [ 'email' => $email ]
+        ],
+        'subject' => '驗證碼',
+        'htmlContent' => "<p>您的驗證碼為：<strong>{$code}</strong></p><p>有效時間 {$EXPIRE_MINUTES} 分鐘。</p>",
+        'textContent' => "您的驗證碼為：{$code}，有效時間 {$EXPIRE_MINUTES} 分鐘。"
+    ];
+
+    if (!function_exists('curl_init')) {
+        http_response_code(500);
+        echo json_encode(["error" => "server_error", "message" => "curl_not_enabled"]);
+        exit;
+    }
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $baseUrl . '/v3/smtp/email');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'accept: application/json',
+        'api-key: ' . $apiKey,
+        'content-type: application/json'
+    ]);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload, JSON_UNESCAPED_UNICODE));
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+    if (defined('BREVO_CA_BUNDLE') && BREVO_CA_BUNDLE !== '') {
+        curl_setopt($ch, CURLOPT_CAINFO, BREVO_CA_BUNDLE);
+    }
+
+    $resp = curl_exec($ch);
+    $curlErr = curl_error($ch);
+    $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($resp === false) {
+        http_response_code(500);
+        echo json_encode(["error" => "server_error", "message" => "curl_failed", "detail" => $curlErr]);
+        exit;
+    }
+
+    if ($httpCode < 200 || $httpCode >= 300) {
+        http_response_code(500);
+        echo json_encode(["error" => "server_error", "message" => "email_send_failed", "detail" => $resp]);
+        exit;
+    }
 
     $res = ["ok" => true];
     if ($DEMO_RETURN_CODE) $res["code"] = $code;
