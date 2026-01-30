@@ -73,7 +73,7 @@ try {
         }
 
         $insertMember = $pdo->prepare("
-            INSERT INTO members (member_email, member_realname, member_password, member_active)
+            INSERT INTO MEMBERS (MEMBER_EMAIL, MEMBER_REALNAME, MEMBER_PASSWORD, MEMBER_ACTIVE)
             VALUES (:email, '', :pwd, 0)
         ");
         $insertMember->execute([
@@ -100,7 +100,7 @@ try {
 
     // 6) 寫入驗證表（未使用、未驗證）
     $sql = "
-        INSERT INTO member_email_verification (member_id, code_hash, expires_at)
+        INSERT INTO MEMBER_EMAIL_VERIFICATION (MEMBER_ID, CODE_HASH, EXPIRES_AT)
         VALUES (:member_id, :code_hash, :expires_at)
     ";
     $stmt = $pdo->prepare($sql);

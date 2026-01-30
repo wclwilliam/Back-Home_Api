@@ -16,7 +16,7 @@ declare(strict_types=1);
  * $memberId = requireAuth($pdo);
  */
 
-require_once(__DIR__ . "/../common/config.php");
+require_once(__DIR__ . "/../common/config_loader.php");
 
 if (!function_exists('auth_json_out')) {
     function auth_json_out(int $code, array $payload): void
@@ -128,9 +128,9 @@ if (!function_exists('requireAuth')) {
         // （建議）額外檢查 member_active：避免停權的人還能用沒過期的 JWT
         if ($checkActive) {
             $stmt = $pdo->prepare("
-                SELECT member_active
-                FROM members
-                WHERE member_id = :id
+                SELECT MEMBER_ACTIVE
+                FROM MEMBERS
+                WHERE MEMBER_ID = :id
                 LIMIT 1
             ");
             $stmt->execute([':id' => $memberId]);
@@ -139,7 +139,7 @@ if (!function_exists('requireAuth')) {
             if (!$row) {
                 auth_json_out(401, ['error' => 'invalid token']);
             }
-            if ((int)$row['member_active'] !== 1) {
+            if ((int)$row['MEMBER_ACTIVE'] !== 1) {
                 auth_json_out(403, ['error' => 'account is inactive']);
             }
         }

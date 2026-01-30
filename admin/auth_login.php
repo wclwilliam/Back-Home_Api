@@ -32,12 +32,22 @@ function jwt_hs256($payload, $secret)
 $raw = file_get_contents('php://input');
 $body = json_decode($raw, true);
 
-$admin_id = isset($body['admin_id']) ? trim($body['admin_id']) : '';
-$password = isset($body['password']) ? (string)$body['password'] : '';
+// Debug: 記錄收到的資料
+error_log("Received body: " . print_r($body, true));
 
-if ($admin_id === '' || $password === '') {
+$ADMIN_ID = isset($body['ADMIN_ID']) ? trim($body['ADMIN_ID']) : '';
+$password = isset($body['ADMIN_PWD']) ? (string)$body['ADMIN_PWD'] : '';
+
+if ($ADMIN_ID === '' || $password === '') {
     http_response_code(400);
-    echo json_encode(["error" => "admin_id and password are required"]);
+    echo json_encode([
+        "error" => "ADMIN_ID and ADMIN_PWD are required",
+        "debug" => [
+            "received_keys" => array_keys($body ?: []),
+            "ADMIN_ID" => $ADMIN_ID,
+            "has_ADMIN_PWD" => isset($body['ADMIN_PWD'])
+        ]
+    ]);
     exit;
 }
 
@@ -45,28 +55,28 @@ try {
     // 2) 查帳號（不要 SELECT *，只取需要的欄位）
     $sql = "
     SELECT
-      admin_id,
-      admin_name,
-      admin_pwd,
-      admin_role,
-      admin_active
-    FROM admin_user
-    WHERE admin_id = :admin_id
+      ADMIN_ID,
+      ADMIN_NAME,
+      ADMIN_PWD,
+      ADMIN_ROLE,
+      ADMIN_ACTIVE
+    FROM ADMIN_USER
+    WHERE ADMIN_ID = :admin_id
     LIMIT 1
   ";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([":admin_id" => $admin_id]);
+    $stmt->execute([":admin_id" => $ADMIN_ID]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // 3) 帳號不存在 or 停用 → 都回 401（避免洩漏資訊）
-    if (!$row || (int)$row['admin_active'] !== 1) {
+    if (!$row || (int)$row['ADMIN_ACTIVE'] !== 1) {
         http_response_code(401);
         echo json_encode(["error" => "invalid_credentials"]);
         exit;
     }
 
     // 4) 驗證密碼（bcrypt）
-    $hash = $row['admin_pwd'];
+    $hash = $row['ADMIN_PWD'];
     if (!password_verify($password, $hash)) {
         http_response_code(401);
         echo json_encode(["error" => "invalid_credentials"]);
@@ -74,8 +84,8 @@ try {
     }
 
     // 5) 更新最後登入時間
-    $upd = $pdo->prepare("UPDATE admin_user SET admin_last_login_time = NOW() WHERE admin_id = :admin_id");
-    $upd->execute([":admin_id" => $admin_id]);
+    $upd = $pdo->prepare("UPDATE ADMIN_USER SET ADMIN_LAST_LOGIN_TIME = NOW() WHERE ADMIN_ID = :admin_id");
+    $upd->execute([":admin_id" => $ADMIN_ID]);
 
     // 6) 產生 JWT
     $now = time();
@@ -83,19 +93,19 @@ try {
         "iss" => JWT_ISS_ADMIN,
         "iat" => $now,
         "exp" => $now + JWT_EXP_SECONDS_ADMIN,
-        "sub" => $row['admin_id'],
-        "role" => $row['admin_role'],
-        "name" => $row['admin_name'],
+        "sub" => $row['ADMIN_ID'],
+        "role" => $row['ADMIN_ROLE'],
+        "name" => $row['ADMIN_NAME'],
     ];
     $token = jwt_hs256($payload, JWT_SECRET);
 
-    // 7) 回傳（不回 admin_pwd）
+    // 7) 回傳（不回 ADMIN_PWD）
     echo json_encode([
         "token" => $token,
         "admin" => [
-            "admin_id" => $row['admin_id'],
-            "admin_name" => $row['admin_name'],
-            "admin_role" => $row['admin_role'],
+            "ADMIN_ID" => $row['ADMIN_ID'],
+            "ADMIN_NAME" => $row['ADMIN_NAME'],
+            "ADMIN_ROLE" => $row['ADMIN_ROLE'],
         ],
     ]);
 

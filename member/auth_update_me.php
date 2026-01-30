@@ -29,15 +29,15 @@ if (!is_array($body)) {
 }
 
 /**
- * 白名單：允許更新欄位（全部小寫）
+ * 白名單：允許更新欄位（大寫）
  */
 $allowed = [
-    'member_realname',
-    'member_phone',
-    'id_number',
-    'birthday',
-    'emergency',
-    'emergency_tel',
+    'MEMBER_REALNAME',
+    'MEMBER_PHONE',
+    'ID_NUMBER',
+    'BIRTHDAY',
+    'EMERGENCY',
+    'EMERGENCY_TEL',
 ];
 
 /**
@@ -86,21 +86,21 @@ try {
         $val = normalize_nullable_string($body[$key]);
 
         // 欄位驗證
-        if ($key === 'birthday' && !is_valid_date_yyyy_mm_dd($val)) {
+        if ($key === 'BIRTHDAY' && !is_valid_date_yyyy_mm_dd($val)) {
             http_response_code(400);
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode(["error" => "invalid birthday format (YYYY-MM-DD)"], JSON_UNESCAPED_UNICODE);
             exit;
         }
 
-        if (($key === 'member_phone' || $key === 'emergency_tel') && !is_valid_phone($val)) {
+        if (($key === 'MEMBER_PHONE' || $key === 'EMERGENCY_TEL') && !is_valid_phone($val)) {
             http_response_code(400);
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode(["error" => "invalid phone format"], JSON_UNESCAPED_UNICODE);
             exit;
         }
 
-        if ($key === 'id_number' && !is_valid_id_number($val)) {
+        if ($key === 'ID_NUMBER' && !is_valid_id_number($val)) {
             http_response_code(400);
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode(["error" => "invalid id_number format"], JSON_UNESCAPED_UNICODE);
@@ -128,9 +128,9 @@ try {
      * 2) 執行 UPDATE
      */
     $sql = "
-        UPDATE members
+        UPDATE MEMBERS
         SET " . implode(", ", $setParts) . "
-        WHERE member_id = :member_id
+        WHERE MEMBER_ID = :member_id
         LIMIT 1
     ";
 
@@ -143,17 +143,17 @@ try {
      */
     $selectSql = "
         SELECT
-            member_id,
-            member_realname,
-            member_email,
-            member_phone,
-            id_number,
-            birthday,
-            emergency,
-            emergency_tel,
-            member_active
-        FROM members
-        WHERE member_id = :member_id
+            MEMBER_ID,
+            MEMBER_REALNAME,
+            MEMBER_EMAIL,
+            MEMBER_PHONE,
+            ID_NUMBER,
+            BIRTHDAY,
+            EMERGENCY,
+            EMERGENCY_TEL,
+            MEMBER_ACTIVE
+        FROM MEMBERS
+        WHERE MEMBER_ID = :member_id
         LIMIT 1
     ";
     $stmt2 = $pdo->prepare($selectSql);
