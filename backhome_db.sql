@@ -143,13 +143,15 @@ INSERT INTO `members`
 (
   `member_realname`,
   `member_email`,
-  `member_password`
+  `member_password`,
+  `member_active`
 )
 VALUES
 (
   '王小明',
   'test01@example.com',
-  '$2b$10$abcdefghijklmnopqrstuv1234567890abcdefghijklmn'
+  '$2y$10$fO7/2axoVC0RDEsK./rBX.fT5hOtTz19z02/dsLWzmy3G7oES.SdG',
+  1
 );
 
 --
