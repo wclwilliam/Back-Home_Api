@@ -92,6 +92,7 @@ try {
         // 抓取交易序號：ReturnURL 是 TradeNo，PeriodReturnURL 可能是 Gwsr (或也是 TradeNo，建議做相容)
         $trade_no = isset($_POST["TradeNo"]) ? $_POST["TradeNo"] : (isset($_POST["Gwsr"]) ? $_POST["Gwsr"] : '');
         $trade_desc = $_POST["CustomField2"]; // 'once' 或 'monthly'
+        $order_id = $_POST["MerchantTradeNo"]; // 'once' 或 'monthly'
         $success_times = isset($_POST["TotalSuccessTimes"]) ? (int)$_POST["TotalSuccessTimes"] : 0;
 
         $subscription_id = null; // 預設為 null 定期定額編號
@@ -101,9 +102,9 @@ try {
           
         // 先建立定期定額主表資料
             // 欄位對照：MEMBER_ID, AMOUNT, START_DATE, STATUS (預設為 1)
-            $sqlSub = "INSERT INTO subscription (MEMBER_ID, AMOUNT, START_DATE, STATUS) VALUES (?, ?, CURDATE(), 1)";
+            $sqlSub = "INSERT INTO subscription (MEMBER_ID, AMOUNT, START_DATE, STATUS, ORDER_ID) VALUES (?, ?, CURDATE(), 1 , ?)";
             $stmtSub = $pdo->prepare($sqlSub);
-            $stmtSub->execute([$member_id, $amount]);
+            $stmtSub->execute([$member_id, $amount, $order_id]);
             
             // 取得剛才自動生成的流水號 ID
             $subscription_id = $pdo->lastInsertId();

@@ -20,6 +20,8 @@
     foreach ($raw_data as $row) {
     $formatted_data[] = [
         "year" => (int)$row['DATA_YEAR'],
+        "id" => (int)$row['IMPACT_METRICS_ID'],
+        "upload_date" => $row['UPLOAD_DATE'],
         "core_metrics" => [
             "total_rescued_turtles" => (int)$row['TURTLES_IN_REHAB'],
             "hatchlings_guided_to_sea" => (int)$row['HATCHLINGS_GUIDED'],
