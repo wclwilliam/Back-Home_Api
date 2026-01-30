@@ -6,13 +6,21 @@
   // 2. 檢查是否為 GET 請求
   if($_SERVER['REQUEST_METHOD'] == "GET"){
     
-    // --- 新增：判斷是否為抓取單篇詳細資料 ---
+    // --- 新增：判斷模式 (若帶有 ?mode=admin 則視為後台管理模式) ---
+    $isAdminMode = isset($_GET['mode']) && $_GET['mode'] === 'admin';
+
+    // --- 原有的：判斷是否為抓取單篇詳細資料 ---
     if(isset($_GET['id']) && !empty($_GET['id'])){
         
         $id = (int)$_GET['id']; // 強制轉為整數確保安全
         
         // 準備 SQL 語法，根據 NEWS_ID 抓取單筆
-       $sql = "SELECT * FROM `NEWS` WHERE `NEWS_ID` = :id ";
+        // 修改：如果是前台呼叫（非管理模式），必須額外檢查狀態是否為 published
+        $sql = "SELECT * FROM `NEWS` WHERE `NEWS_ID` = :id";
+        if (!$isAdminMode) {
+            $sql .= " AND `NEWS_STATUS` = 'published'";
+        }
+        
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -29,7 +37,7 @@
                 "published_at" => $row['NEWS_PUBLISHED_AT'], // 發布時間
                 "content" => $row['NEWS_CONTENT'], // 文章內容
                 "image_path" => $row['NEWS_IMAGE_PATH'], // 文章圖片路徑
-                "status" => $row['NEWS_STATUS'] // 文章狀態 (published)
+                "status" => $row['NEWS_STATUS'] // 文章狀態 (published/draft)
             ];
             
             header('Content-Type: application/json; charset=utf-8');
@@ -43,7 +51,15 @@
     } else {
         //全部清單
 
-        $sql = "SELECT * FROM `NEWS`  ORDER BY `NEWS_PUBLISHED_AT` DESC";
+        // --- 修改：根據是否為管理模式決定 SQL 語法 ---
+        if ($isAdminMode) {
+            // 後台模式：抓取所有狀態的新聞
+            $sql = "SELECT * FROM `NEWS` ORDER BY `NEWS_PUBLISHED_AT` DESC";
+        } else {
+            // 前台模式：只抓取 status 為 published 的新聞
+            $sql = "SELECT * FROM `NEWS` WHERE `NEWS_STATUS` = 'published' ORDER BY `NEWS_PUBLISHED_AT` DESC";
+        }
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
@@ -62,7 +78,7 @@
                 "published_at" => $row['NEWS_PUBLISHED_AT'], // 發布時間
                 "content" => $row['NEWS_CONTENT'], // 文章內容
                 "image_path" => $row['NEWS_IMAGE_PATH'], // 文章圖片路徑
-                "status" => $row['NEWS_STATUS'] // 文章狀態 (published)
+                "status" => $row['NEWS_STATUS'] // 文章狀態 (published/draft)
             ];
         }
         
