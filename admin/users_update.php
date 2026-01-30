@@ -15,12 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'PATCH') {
     exit;
 }
 
-// 1) 取得 admin_id（用 query 傳）
-$admin_id = isset($_GET['admin_id']) ? trim($_GET['admin_id']) : '';
+// 1) 取得 ADMIN_ID（用 query 傳）
+$ADMIN_ID = isset($_GET['ADMIN_ID']) ? trim($_GET['ADMIN_ID']) : '';
 
-if ($admin_id === '') {
+if ($ADMIN_ID === '') {
     http_response_code(400);
-    echo json_encode(["error" => "admin_id is required"]);
+    echo json_encode(["error" => "ADMIN_ID is required"]);
     exit;
 }
 
@@ -34,47 +34,47 @@ if (!is_array($body)) {
     exit;
 }
 
-$admin_name   = isset($body['admin_name']) ? trim($body['admin_name']) : null;
-$admin_role   = isset($body['admin_role']) ? trim($body['admin_role']) : null;
-$admin_active = isset($body['admin_active']) ? (int)$body['admin_active'] : null;
-$password     = isset($body['password']) ? (string)$body['password'] : null;
+$ADMIN_NAME   = isset($body['ADMIN_NAME']) ? trim($body['ADMIN_NAME']) : null;
+$ADMIN_ROLE   = isset($body['ADMIN_ROLE']) ? trim($body['ADMIN_ROLE']) : null;
+$ADMIN_ACTIVE = isset($body['ADMIN_ACTIVE']) ? (int)$body['ADMIN_ACTIVE'] : null;
+$password     = isset($body['PASSWORD']) ? (string)$body['PASSWORD'] : null;
 
 try {
     // 3) 確認帳號存在
     $checkStmt = $pdo->prepare(
-        "SELECT 1 FROM admin_user WHERE admin_id = :admin_id LIMIT 1"
+        "SELECT 1 FROM ADMIN_USER WHERE ADMIN_ID = :admin_id LIMIT 1"
     );
-    $checkStmt->execute([":admin_id" => $admin_id]);
+    $checkStmt->execute([":admin_id" => $ADMIN_ID]);
 
     if (!$checkStmt->fetchColumn()) {
         http_response_code(404);
-        echo json_encode(["error" => "admin_user not found"]);
+        echo json_encode(["error" => "ADMIN_USER not found"]);
         exit;
     }
 
     // 4) 動態組 UPDATE 欄位
     $fields = [];
-    $params = [":admin_id" => $admin_id];
+    $params = [":admin_id" => $ADMIN_ID];
 
-    if ($admin_name !== null && $admin_name !== '') {
-        $fields[] = "admin_name = :admin_name";
-        $params[":admin_name"] = $admin_name;
+    if ($ADMIN_NAME !== null && $ADMIN_NAME !== '') {
+        $fields[] = "ADMIN_NAME = :admin_name";
+        $params[":admin_name"] = $ADMIN_NAME;
     }
 
-    if ($admin_role !== null && $admin_role !== '') {
+    if ($ADMIN_ROLE !== null && $ADMIN_ROLE !== '') {
         $allowedRoles = ['super', 'general'];
-        if (!in_array($admin_role, $allowedRoles, true)) {
+        if (!in_array($ADMIN_ROLE, $allowedRoles, true)) {
             http_response_code(400);
-            echo json_encode(["error" => "invalid admin_role"]);
+            echo json_encode(["error" => "invalid ADMIN_ROLE"]);
             exit;
         }
-        $fields[] = "admin_role = :admin_role";
-        $params[":admin_role"] = $admin_role;
+        $fields[] = "ADMIN_ROLE = :admin_role";
+        $params[":admin_role"] = $ADMIN_ROLE;
     }
 
-    if ($admin_active !== null) {
-        $fields[] = "admin_active = :admin_active";
-        $params[":admin_active"] = ($admin_active === 1) ? 1 : 0;
+    if ($ADMIN_ACTIVE !== null) {
+        $fields[] = "ADMIN_ACTIVE = :admin_active";
+        $params[":admin_active"] = ($ADMIN_ACTIVE === 1) ? 1 : 0;
     }
 
     // 5) 密碼：只有「有值且非空字串」才更新
@@ -92,7 +92,7 @@ try {
             exit;
         }
 
-        $fields[] = "admin_pwd = :admin_pwd";
+        $fields[] = "ADMIN_PWD = :admin_pwd";
         $params[":admin_pwd"] = $hash;
     }
 
@@ -104,9 +104,9 @@ try {
 
     // 6) 執行 UPDATE
     $sql = "
-    UPDATE admin_user
+    UPDATE ADMIN_USER
     SET " . implode(", ", $fields) . "
-    WHERE admin_id = :admin_id
+    WHERE ADMIN_ID = :admin_id
   ";
 
     $stmt = $pdo->prepare($sql);

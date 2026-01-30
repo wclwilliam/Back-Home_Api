@@ -89,12 +89,12 @@ if (!defined('JWT_SECRET') || trim((string)JWT_SECRET) === '') {
 try {
     /**
      * 4️⃣ 查會員
-     * ⚠️ 依你的 register API：members / member_email / member_password / member_active / member_realname
+     * ⚠️ 依你的 register API：MEMBERS / MEMBER_EMAIL / MEMBER_PASSWORD / MEMBER_ACTIVE / MEMBER_REALNAME
      */
     $sql = "
-        SELECT member_id, member_realname, member_password, member_active
-        FROM members
-        WHERE member_email = :email
+        SELECT MEMBER_ID, MEMBER_REALNAME, MEMBER_PASSWORD, MEMBER_ACTIVE
+        FROM MEMBERS
+        WHERE MEMBER_EMAIL = :email
         LIMIT 1
     ";
     $stmt = $pdo->prepare($sql);
@@ -107,12 +107,12 @@ try {
     }
 
     // 5️⃣ 檢查啟用狀態
-    if ((int)$member['member_active'] !== 1) {
+    if ((int)$member['MEMBER_ACTIVE'] !== 1) {
         json_out(403, ["error" => "account is inactive"]);
     }
 
     // 6️⃣ 密碼比對（雜湊）
-    if (!password_verify($password, (string)$member['member_password'])) {
+    if (!password_verify($password, (string)$member['MEMBER_PASSWORD'])) {
         json_out(401, ["error" => "invalid credentials"]);
     }
 
@@ -123,7 +123,7 @@ try {
      */
     $now = time();
     $payload = [
-        'member_id' => (int)$member['member_id'],
+        'member_id' => (int)$member['MEMBER_ID'],
         'iat' => $now,
         'exp' => $now + JWT_EXP_SECONDS_MEMBER,
     ];
@@ -137,8 +137,8 @@ try {
         "status" => "success",
         "token" => $token,
         "member" => [
-            "member_id" => (int)$member['member_id'],
-            "member_name" => (string)$member['member_realname'],
+            "member_id" => (int)$member['MEMBER_ID'],
+            "member_name" => (string)$member['MEMBER_REALNAME'],
         ],
     ]);
 } catch (Throwable $e) {

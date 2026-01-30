@@ -25,59 +25,59 @@ if (!is_array($body)) {
     exit;
 }
 
-$admin_id = isset($body['admin_id']) ? trim($body['admin_id']) : '';
-$admin_name = isset($body['admin_name']) ? trim($body['admin_name']) : '';
-$password = isset($body['password']) ? (string)$body['password'] : '';
-$admin_role = isset($body['admin_role']) ? trim($body['admin_role']) : '';
-$admin_active = isset($body['admin_active']) ? (int)$body['admin_active'] : 1;
+$ADMIN_ID = isset($body['ADMIN_ID']) ? trim($body['ADMIN_ID']) : '';
+$ADMIN_NAME = isset($body['ADMIN_NAME']) ? trim($body['ADMIN_NAME']) : '';
+$ADMIN_PWD = isset($body['ADMIN_PWD']) ? (string)$body['ADMIN_PWD'] : '';
+$ADMIN_ROLE = isset($body['ADMIN_ROLE']) ? trim($body['ADMIN_ROLE']) : '';
+$ADMIN_ACTIVE = isset($body['ADMIN_ACTIVE']) ? (int)$body['ADMIN_ACTIVE'] : 1;
 
 // 2) 基本驗證
-if ($admin_id === '' || $admin_name === '' || $password === '' || $admin_role === '') {
+if ($ADMIN_ID === '' || $ADMIN_NAME === '' || $ADMIN_PWD === '' || $ADMIN_ROLE === '') {
     http_response_code(400);
-    echo json_encode(["error" => "admin_id, admin_name, password, admin_role are required"]);
+    echo json_encode(["error" => "ADMIN_ID, ADMIN_NAME, ADMIN_PWD, ADMIN_ROLE are required"]);
     exit;
 }
 
 // 可依你們規則調整：帳號/姓名長度限制
-if (mb_strlen($admin_id) > 20 || mb_strlen($admin_name) > 50) {
+if (mb_strlen($ADMIN_ID) > 20 || mb_strlen($ADMIN_NAME) > 50) {
     http_response_code(400);
-    echo json_encode(["error" => "admin_id or admin_name is too long"]);
+    echo json_encode(["error" => "ADMIN_ID or ADMIN_NAME is too long"]);
     exit;
 }
 
 // 角色白名單
 $allowedRoles = ['super', 'general'];
-if (!in_array($admin_role, $allowedRoles, true)) {
+if (!in_array($ADMIN_ROLE, $allowedRoles, true)) {
     http_response_code(400);
-    echo json_encode(["error" => "invalid admin_role"]);
+    echo json_encode(["error" => "invalid ADMIN_ROLE"]);
     exit;
 }
 
 // 狀態只允許 0/1
-$admin_active = ($admin_active === 1) ? 1 : 0;
+$ADMIN_ACTIVE = ($ADMIN_ACTIVE === 1) ? 1 : 0;
 
 // 密碼基本規範（可自行調整）
-if (strlen($password) < 6) {
+if (strlen($ADMIN_PWD) < 6) {
     http_response_code(400);
     echo json_encode(["error" => "password must be at least 6 characters"]);
     exit;
 }
 
 try {
-    // 3) 檢查 admin_id 是否重複
-    $checkSql = "SELECT 1 FROM admin_user WHERE admin_id = :admin_id LIMIT 1";
+    // 3) 檢查 ADMIN_ID 是否重複
+    $checkSql = "SELECT 1 FROM ADMIN_USER WHERE ADMIN_ID = :admin_id LIMIT 1";
     $checkStmt = $pdo->prepare($checkSql);
-    $checkStmt->execute([":admin_id" => $admin_id]);
+    $checkStmt->execute([":admin_id" => $ADMIN_ID]);
     $exists = $checkStmt->fetchColumn();
 
     if ($exists) {
         http_response_code(409);
-        echo json_encode(["error" => "admin_id already exists"]);
+        echo json_encode(["error" => "ADMIN_ID already exists"]);
         exit;
     }
 
     // 4) 密碼雜湊（bcrypt）
-    $hash = password_hash($password, PASSWORD_BCRYPT);
+    $hash = password_hash($ADMIN_PWD, PASSWORD_BCRYPT);
     if ($hash === false) {
         http_response_code(500);
         echo json_encode(["error" => "failed to hash password"]);
@@ -86,19 +86,19 @@ try {
 
     // 5) 寫入資料
     $insertSql = "
-    INSERT INTO admin_user
-      (admin_id, admin_name, admin_pwd, admin_role, admin_active)
+    INSERT INTO ADMIN_USER
+      (ADMIN_ID, ADMIN_NAME, ADMIN_PWD, ADMIN_ROLE, ADMIN_ACTIVE)
     VALUES
       (:admin_id, :admin_name, :admin_pwd, :admin_role, :admin_active)
   ";
 
     $insertStmt = $pdo->prepare($insertSql);
     $insertStmt->execute([
-        ":admin_id" => $admin_id,
-        ":admin_name" => $admin_name,
+        ":admin_id" => $ADMIN_ID,
+        ":admin_name" => $ADMIN_NAME,
         ":admin_pwd" => $hash,
-        ":admin_role" => $admin_role,
-        ":admin_active" => $admin_active
+        ":admin_role" => $ADMIN_ROLE,
+        ":admin_active" => $ADMIN_ACTIVE
     ]);
 
     echo json_encode(["ok" => true]);

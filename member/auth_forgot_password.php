@@ -95,12 +95,12 @@ $public_ok = [
 try {
     /**
      * 4️⃣ 查會員
-     * ⚠️ 依你們 login/register：members / member_email / member_id / member_active
+     * ⚠️ 依你們 login/register：MEMBERS / MEMBER_EMAIL / MEMBER_ID / MEMBER_ACTIVE
      */
     $sql = "
-        SELECT member_id, member_email, member_active
-        FROM members
-        WHERE member_email = :email
+        SELECT MEMBER_ID, MEMBER_EMAIL, MEMBER_ACTIVE
+        FROM MEMBERS
+        WHERE MEMBER_EMAIL = :email
         LIMIT 1
     ";
     $stmt = $pdo->prepare($sql);
@@ -113,7 +113,7 @@ try {
     }
 
     // 不啟用：建議也回 success，避免被探測帳號狀態
-    if ((int)$member['member_active'] !== 1) {
+    if ((int)$member['MEMBER_ACTIVE'] !== 1) {
         json_out(200, $public_ok);
     }
 
@@ -126,8 +126,8 @@ try {
 
     $payload = [
         'iss' => defined('JWT_ISS_MEMBER') ? (string)JWT_ISS_MEMBER : 'backhome-member',
-        'sub' => (int)$member['member_id'],
-        'email' => (string)$member['member_email'],
+        'sub' => (int)$member['MEMBER_ID'],
+        'email' => (string)$member['MEMBER_EMAIL'],
         'iat' => $now,
         'exp' => $now + $expSeconds,
         'purpose' => 'reset_password',

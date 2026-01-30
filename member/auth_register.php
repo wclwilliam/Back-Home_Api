@@ -65,7 +65,7 @@ try {
     $pdo->beginTransaction();
 
     // 3️⃣ 查詢會員（建議鎖住這筆會員，避免同時啟用兩次）
-    $memberSql = "SELECT member_id, member_active FROM members WHERE member_email = :email LIMIT 1 FOR UPDATE";
+    $memberSql = "SELECT MEMBER_ID, MEMBER_ACTIVE FROM MEMBERS WHERE MEMBER_EMAIL = :email LIMIT 1 FOR UPDATE";
     $memberStmt = $pdo->prepare($memberSql);
     $memberStmt->execute([":email" => $email]);
     $member = $memberStmt->fetch(PDO::FETCH_ASSOC);
@@ -77,24 +77,24 @@ try {
         exit;
     }
 
-    if ((int)$member['member_active'] === 1) {
+    if ((int)$member['MEMBER_ACTIVE'] === 1) {
         $pdo->rollBack();
         http_response_code(409);
         echo json_encode(["error" => "email already registered and active"]);
         exit;
     }
 
-    $memberId = (int)$member['member_id'];
+    $memberId = (int)$member['MEMBER_ID'];
 
     // 4️⃣ 查詢驗證碼記錄（未使用且未過期）並鎖住最新那筆避免重複使用
     $verifySql = "
-        SELECT verification_id, code_hash, expires_at, attempts
-        FROM member_email_verification
-        WHERE member_id = :member_id
-          AND used_at IS NULL
-          AND verified_at IS NULL
-          AND expires_at > NOW()
-        ORDER BY created_at DESC
+        SELECT VERIFICATION_ID, CODE_HASH, EXPIRES_AT, ATTEMPTS
+        FROM MEMBER_EMAIL_VERIFICATION
+        WHERE MEMBER_ID = :member_id
+          AND USED_AT IS NULL
+          AND VERIFIED_AT IS NULL
+          AND EXPIRES_AT > NOW()
+        ORDER BY CREATED_AT DESC
         LIMIT 1
         FOR UPDATE
     ";
@@ -110,7 +110,7 @@ try {
     }
 
     // 5️⃣ 檢查錯誤次數(超過 3 次就鎖定)
-    if ((int)$verify['attempts'] >= 3) {
+    if ((int)$verify['ATTEMPTS'] >= 3) {
         $pdo->rollBack();
         http_response_code(429);
         echo json_encode(["error" => "too many attempts, please request a new code"]);
@@ -118,13 +118,13 @@ try {
     }
 
     // 6️⃣ 驗證驗證碼（錯誤就 attempts +1）
-    if (!password_verify($code, $verify['code_hash'])) {
+    if (!password_verify($code, $verify['CODE_HASH'])) {
         $updateAttempts = $pdo->prepare("
-            UPDATE member_email_verification
-            SET attempts = attempts + 1
-            WHERE verification_id = :id
+            UPDATE MEMBER_EMAIL_VERIFICATION
+            SET ATTEMPTS = ATTEMPTS + 1
+            WHERE VERIFICATION_ID = :id
         ");
-        $updateAttempts->execute([':id' => (int)$verify['verification_id']]);
+        $updateAttempts->execute([':id' => (int)$verify['VERIFICATION_ID']]);
 
         $pdo->commit(); // 讓 attempts 的更新生效（也可 rollBack 但會吃掉 attempts）
         http_response_code(401);
@@ -143,12 +143,12 @@ try {
 
     // 8️⃣ 更新會員資料並啟用
     $updateSql = "
-        UPDATE members
-        SET member_realname = :name,
-            member_password = :password,
-            member_active = 1,
-            email_verified_at = NOW()
-        WHERE member_id = :member_id
+        UPDATE MEMBERS
+        SET MEMBER_REALNAME = :name,
+            MEMBER_PASSWORD = :password,
+            MEMBER_ACTIVE = 1,
+            EMAIL_VERIFIED_AT = NOW()
+        WHERE MEMBER_ID = :member_id
     ";
     $updateStmt = $pdo->prepare($updateSql);
     $updateStmt->execute([
@@ -159,12 +159,12 @@ try {
 
     // 9️⃣ 標記驗證碼為已使用
     $markUsed = $pdo->prepare("
-        UPDATE member_email_verification
-        SET verified_at = NOW(),
-            used_at = NOW()
-        WHERE verification_id = :id
+        UPDATE MEMBER_EMAIL_VERIFICATION
+        SET VERIFIED_AT = NOW(),
+            USED_AT = NOW()
+        WHERE VERIFICATION_ID = :id
     ");
-    $markUsed->execute([':id' => (int)$verify['verification_id']]);
+    $markUsed->execute([':id' => (int)$verify['VERIFICATION_ID']]);
 
     $pdo->commit();
 

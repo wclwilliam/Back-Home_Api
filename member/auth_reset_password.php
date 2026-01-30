@@ -170,9 +170,9 @@ try {
     $hash = password_hash($newPassword, PASSWORD_BCRYPT);
 
     $updSql = "
-        UPDATE members
-        SET member_password = :pwd
-        WHERE member_id = :id
+        UPDATE MEMBERS
+        SET MEMBER_PASSWORD = :pwd
+        WHERE MEMBER_ID = :id
         LIMIT 1
     ";
     $upd = $pdo->prepare($updSql);
