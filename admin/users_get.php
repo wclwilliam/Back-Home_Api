@@ -14,13 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit;
 }
 
-// 1) 讀取 admin_id
-$admin_id = isset($_GET['admin_id']) ? trim($_GET['admin_id']) : '';
+// 1) 讀取 ADMIN_ID
+$ADMIN_ID = isset($_GET['ADMIN_ID']) ? trim($_GET['ADMIN_ID']) : '';
 
-if ($admin_id === '') {
+if ($ADMIN_ID === '') {
     http_response_code(400);
     header('Content-Type: application/json');
-    echo json_encode(["error" => "admin_id is required"]);
+    echo json_encode(["error" => "ADMIN_ID is required"]);
     exit;
 }
 
@@ -28,19 +28,19 @@ try {
     // 2) 查單筆（注意：不要回傳 admin_pwd）
     $sql = "
     SELECT
-      admin_id,
-      admin_name,
-      admin_role,
-      admin_active,
-      admin_created_at,
-      admin_last_login_time
-    FROM admin_user
-    WHERE admin_id = :admin_id
+      ADMIN_ID,
+      ADMIN_NAME,
+      ADMIN_ROLE,
+      ADMIN_ACTIVE,
+      ADMIN_CREATED_AT,
+      ADMIN_LAST_LOGIN_TIME
+    FROM ADMIN_USER
+    WHERE ADMIN_ID = :admin_id
     LIMIT 1
   ";
 
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([":admin_id" => $admin_id]);
+    $stmt->execute([":admin_id" => $ADMIN_ID]);
 
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 

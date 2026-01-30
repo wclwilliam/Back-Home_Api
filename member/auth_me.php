@@ -18,12 +18,12 @@ try {
     // 查登入者資料（注意：不要回傳 member_password）
     $sql = "
         SELECT
-            member_id,
-            member_realname,
-            member_email,
-            member_active
-        FROM members
-        WHERE member_id = :member_id
+            MEMBER_ID,
+            MEMBER_REALNAME,
+            MEMBER_EMAIL,
+            MEMBER_ACTIVE
+        FROM MEMBERS
+        WHERE MEMBER_ID = :member_id
         LIMIT 1
     ";
 
@@ -41,7 +41,7 @@ try {
 
     // auth_guard.php 已經檢查 member_active 了，這裡理論上不會進來
     // 保留只是更保險、也比較好讀
-    if ((int)$row['member_active'] !== 1) {
+    if ((int)$row['MEMBER_ACTIVE'] !== 1) {
         http_response_code(403);
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(["error" => "account is inactive"], JSON_UNESCAPED_UNICODE);

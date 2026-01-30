@@ -26,39 +26,39 @@ $limit = (int)$pageSize;
 $off   = (int)$offset;
 
 // ---------- 2. sortBy 對應 SQL ----------
-$orderBy = "admin_created_at DESC";
+$orderBy = "ADMIN_CREATED_AT DESC";
 
 switch ($sortBy) {
     case 'created_at_asc':
-        $orderBy = "admin_created_at ASC";
+        $orderBy = "ADMIN_CREATED_AT ASC";
         break;
     case 'created_at_desc':
-        $orderBy = "admin_created_at DESC";
+        $orderBy = "ADMIN_CREATED_AT DESC";
         break;
     case 'last_login_asc':
-        $orderBy = "admin_last_login_time ASC";
+        $orderBy = "ADMIN_LAST_LOGIN_TIME ASC";
         break;
     case 'last_login_desc':
-        $orderBy = "admin_last_login_time DESC";
+        $orderBy = "ADMIN_LAST_LOGIN_TIME DESC";
         break;
     case 'name_asc':
-        $orderBy = "admin_name ASC";
+        $orderBy = "ADMIN_NAME ASC";
         break;
     case 'name_desc':
-        $orderBy = "admin_name DESC";
+        $orderBy = "ADMIN_NAME DESC";
         break;
     case 'status_enabled_first':
-        $orderBy = "admin_active DESC";
+        $orderBy = "ADMIN_ACTIVE DESC";
         break;
     case 'status_disabled_first':
-        $orderBy = "admin_active ASC";
+        $orderBy = "ADMIN_ACTIVE ASC";
         break;
 }
 
 // ---------- 3. WHERE 條件（搜尋） ----------
 $hasKeyword = ($keyword !== '');
 // 修改點：將佔位符分開，避免重複使用同一個名稱
-$whereSQL = $hasKeyword ? "WHERE admin_id LIKE :kw1 OR admin_name LIKE :kw2" : "";
+$whereSQL = $hasKeyword ? "WHERE ADMIN_ID LIKE :kw1 OR ADMIN_NAME LIKE :kw2" : "";
 
 // ---------- 4. & 5. 執行資料庫查詢（加入錯誤捕捉） ----------
 try {
@@ -72,7 +72,7 @@ try {
     }
 
     // 取得總筆數
-    $countSQL = "SELECT COUNT(*) FROM admin_user {$whereSQL}";
+    $countSQL = "SELECT COUNT(*) FROM ADMIN_USER {$whereSQL}";
     $countStmt = $pdo->prepare($countSQL);
     $countStmt->execute($params);
     $total = (int)$countStmt->fetchColumn();
@@ -80,13 +80,13 @@ try {
     // 取得清單資料
     $listSQL = "
       SELECT
-        admin_id,
-        admin_name,
-        admin_role,
-        admin_active,
-        admin_created_at,
-        admin_last_login_time
-      FROM admin_user
+        ADMIN_ID,
+        ADMIN_NAME,
+        ADMIN_ROLE,
+        ADMIN_ACTIVE,
+        ADMIN_CREATED_AT,
+        ADMIN_LAST_LOGIN_TIME
+      FROM ADMIN_USER
       {$whereSQL}
       ORDER BY {$orderBy}
       LIMIT {$limit} OFFSET {$off}
