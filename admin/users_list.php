@@ -1,7 +1,7 @@
 <?php
 require_once("../common/cors.php");
 require_once("../common/conn.php");
-require_once("../common/config.php");
+require_once("../common/config_loader.php");
 require_once("./auth_guard.php");
 
 header('Content-Type: application/json; charset=utf-8');
