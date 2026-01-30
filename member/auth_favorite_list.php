@@ -1,43 +1,47 @@
 <?php
-// 1. 設定 Header
+// 1. 載入 CORS 與 連線設定
+require_once("../common/cors.php");
+require_once("../common/conn.php");
+
+// 確保瀏覽器輸出為 JSON 格式
 header('Content-Type: application/json; charset=utf-8');
 
-// 2. 引入組員寫好的資料庫連線檔案 (請確認檔名與路徑是否正確)
-// 假設 db.php 跟這隻檔案在同一個資料夾，或是上一層
-require_once('../db.php'); 
+if ($_SERVER['REQUEST_METHOD'] == "GET") {
+    try {
+        // 先寫死 MEMBER_ID 為 1 進行測試
+        $member_id = 1; 
 
-try {
-    // 3. 獲取登入會員 ID (目前測試先寫死為 1，之後改用 $_SESSION['member_id'])
-    $member_id = 1; 
+        // 2. 準備 SQL (對應你的 ACTIVITIES 與 FAVORITES 表)
+        $sql = "SELECT 
+                    f.CREATED_AT as favDate,
+                    a.ACTIVITY_ID as activityId,
+                    a.ACTIVITY_TITLE as title,
+                    a.ACTIVITY_LOCATION as location,
+                    a.ACTIVITY_START_DATETIME as startDate,
+                    a.ACTIVITY_COVER_IMAGE as image
+                FROM FAVORITES f
+                JOIN ACTIVITIES a ON f.ACTIVITY_ID = a.ACTIVITY_ID
+                WHERE f.MEMBER_ID = :mid
+                ORDER BY f.CREATED_AT DESC";
 
-    // 4. 準備 SQL 語句：連結收藏夾與活動主表
-    // 這裡使用了你的 SQL 中定義的欄位：FAVORITES(MEMBER_ID, ACTIVITY_ID) 
-    // 以及 ACTIVITIES(ACTIVITY_ID, ACTIVITY_TITLE, ACTIVITY_LOCATION, ACTIVITY_COVER_IMAGE)
-    $sql = "SELECT 
-                f.CREATED_AT AS fav_date,
-                a.ACTIVITY_ID,
-                a.ACTIVITY_TITLE,
-                a.ACTIVITY_LOCATION,
-                a.ACTIVITY_START_DATETIME,
-                a.ACTIVITY_COVER_IMAGE
-            FROM FAVORITES f
-            JOIN ACTIVITIES a ON f.ACTIVITY_ID = a.ACTIVITY_ID
-            WHERE f.MEMBER_ID = :mid
-            ORDER BY f.CREATED_AT DESC";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['mid' => $member_id]);
+        $data = $stmt->fetchAll();
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['mid' => $member_id]);
-    $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // 3. 直接輸出結果 (因為 SQL 中已經用 'as' 處理好欄位名稱了)
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
 
-    // 5. 回傳 JSON 結果給前端
-    echo json_encode([
-        "status" => "success",
-        "data" => $favorites
-    ], JSON_UNESCAPED_UNICODE);
-
-} catch (Exception $e) {
-    echo json_encode([
-        "status" => "error",
-        "message" => "讀取收藏失敗：" . $e->getMessage()
-    ]);
+    } catch (Exception $e) {
+        // 抓取 SQL 或連線相關錯誤
+        http_response_code(500);
+        echo json_encode([
+            "status" => "error",
+            "message" => $e->getMessage()
+        ]);
+    }
+    exit();
 }
+
+// 非 GET 請求的錯誤處理
+http_response_code(403);
+echo json_encode(["error" => "Method Not Allowed"]);
