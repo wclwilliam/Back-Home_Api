@@ -7,6 +7,43 @@ require_once("../common/conn.php");
 
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
 
+  // 檢查是否有 id 參數（單筆查詢）
+  $id = $_GET['id'] ?? null;
+
+  if ($id) {
+    // 單筆查詢
+    $sql = "SELECT * FROM `RESCUES` WHERE `RESCUE_ID` = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$id]);
+    $raw_data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$raw_data) {
+      header('Content-Type: application/json');
+      http_response_code(404);
+      echo json_encode(["error" => "找不到該救援個案"]);
+      $pdo = null;
+      exit();
+    }
+
+    // 格式化單筆資料
+    $formatted_data = [
+      "id" => (int)$raw_data['RESCUE_ID'],
+      "name" => $raw_data['TURTLE_NAME'],
+      "species" => $raw_data['SPECIES'],
+      "location" => $raw_data['LOCATION'],
+      "description" => $raw_data['STORY_CONTENT'],
+      "status" => $raw_data['RECOVERY_STATUS'],
+      "imageSrc" => $raw_data['IMAGE_PATH'],
+      "uploadDate" => $raw_data['UPLOAD_DATE']
+    ];
+
+    header('Content-Type: application/json');
+    echo json_encode($formatted_data);
+    $pdo = null;
+    exit();
+  }
+
+  // 全部查詢（原有功能）
   $sql = "SELECT * FROM `RESCUES` ORDER BY `RESCUE_ID` DESC";
   $stmt = $pdo->prepare($sql);
   $stmt->execute();

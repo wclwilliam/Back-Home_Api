@@ -4,6 +4,7 @@ $allowed_origins = [
   "http://localhost:5500",
   "http://localhost:5173",
   "http://localhost:5174",
+  "http://localhost:5175",
   "https://tibamef2e.com",
 ];
 
