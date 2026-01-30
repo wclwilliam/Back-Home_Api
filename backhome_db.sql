@@ -570,7 +570,7 @@ CREATE TABLE `NEWS` (
 -- 傾印資料表的資料 `NEWS`
 --
 
-INSERT INTO news (NEWS_ID, ADMIN_ID, NEWS_TITLE, NEWS_CATEGORY, NEWS_PUBLISHED_AT, NEWS_CONTENT, NEWS_IMAGE_PATH, NEWS_STATUS) VALUES
+INSERT INTO NEWS (NEWS_ID, ADMIN_ID, NEWS_TITLE, NEWS_CATEGORY, NEWS_PUBLISHED_AT, NEWS_CONTENT, NEWS_IMAGE_PATH, NEWS_STATUS) VALUES
 (1, 'editor_sarah', '海洋污染成隱形殺手,研究顯示 8 成海龜體內含微塑膠', '重要公告', '2025-08-10 14:30:00', '一份最新的跨國研究指出,全球海洋中的海龜皆面臨微塑膠威脅,這將影響牠們的生殖能力與免疫系統。', 'news/news31.jpg', 'published'),
 (2, 'admin_system', '【系統公告】資料庫備份作業通知,系統將暫時停止營運', '重要公告', '2025-08-15 02:00:00', '系統將進行每月例行性資料庫備份,預計耗時 30 分鐘。作業期間網站瀏覽可能會有短暫延遲,不影響資料存取。', 'news/news30.jpg', 'published'),
 (3, 'editor_lisa', '【地點更換】親子環保 DIY 教室改至 B1 會議室舉行', '異動通知', '2025-08-20 10:00:00', '原定於一樓大廳舉辦的親子環保 DIY 活動,因場地設備檢修,將改至地下一樓 B1 會議室舉行,時間維持不變。', 'news/news29.png', 'published'),

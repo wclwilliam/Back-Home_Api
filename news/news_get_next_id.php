@@ -1,4 +1,6 @@
 <?php
+//這支用不到了要刪掉
+
 require_once("../common/cors.php");
 require_once("../common/conn.php");
 
