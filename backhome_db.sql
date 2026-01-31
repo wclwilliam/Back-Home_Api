@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost:8889
--- 產生時間： 2026-01-31 04:30:49
+-- 產生時間： 2026-01-31 05:19:04
 -- 伺服器版本： 5.7.24
 -- PHP 版本： 8.3.1
 
@@ -27,232 +27,9 @@ SET time_zone = "+08:00";
 -- 資料表結構 `activities`
 --
 
-CREATE TABLE IF NOT EXISTS `impact_metrics` (
-  `IMPACT_METRICS_ID` int(11) NOT NULL COMMENT '我們的影響力編號',
-  `DATA_YEAR` year(4) NOT NULL COMMENT '資料年份',
-  `UPLOAD_DATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '上傳時間',
-  `TURTLES_IN_REHAB` int(11) NOT NULL DEFAULT '0' COMMENT '治療中海龜總數',
-  `TURTLES_RELEASED` int(11) NOT NULL DEFAULT '0' COMMENT '治療中已野放海龜總數',
-  `HATCHLINGS_GUIDED` int(11) NOT NULL DEFAULT '0' COMMENT '引導入海幼龜數量',
-  `COASTLINE_PATROLLED` int(11) NOT NULL DEFAULT '0' COMMENT '巡邏海岸線公里數',
-  `MEDICAL_SURGERIES` int(11) NOT NULL DEFAULT '0' COMMENT '專業醫療手術場次',
-  `TOTAL_WASTE` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '廢棄物總計',
-  `PET_BOTTLES` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '寶特瓶重量',
-  `IRON_CANS` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '鐵罐重量',
-  `ALUMINUM_CANS` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '鋁罐重量',
-  `WASTE_PAPER` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '廢紙重量',
-  `GLASS_BOTTLES` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '玻璃瓶重量',
-  `STYROFOAM` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '保麗龍重量',
-  `BAMBOO_WOOD` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '竹木重量',
-  `FISHING_GEAR` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '廢漁具漁網重量',
-  `UNSORTED_WASTE` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '無法分類廢棄物重量'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
---
--- 傾印資料表的資料 `impact_metrics`
---
-
-INSERT INTO `impact_metrics` (`IMPACT_METRICS_ID`, `DATA_YEAR`, `UPLOAD_DATE`, `TURTLES_IN_REHAB`, `TURTLES_RELEASED`, `HATCHLINGS_GUIDED`, `COASTLINE_PATROLLED`, `MEDICAL_SURGERIES`, `TOTAL_WASTE`, `PET_BOTTLES`, `IRON_CANS`, `ALUMINUM_CANS`, `WASTE_PAPER`, `GLASS_BOTTLES`, `STYROFOAM`, `BAMBOO_WOOD`, `FISHING_GEAR`, `UNSORTED_WASTE`) VALUES
-(1, 2025, '2026-01-24 11:06:29', 988, 0, 624, 24816, 142, '42500.00', '8500.00', '1200.00', '950.00', '2100.00', '3400.00', '4200.00', '5800.00', '12500.00', '3850.00'),
-(2, 2024, '2026-01-24 11:06:29', 856, 0, 551, 21500, 128, '34800.00', '6800.00', '1100.00', '850.00', '1800.00', '2900.00', '3500.00', '4600.00', '10200.00', '3050.00'),
-(3, 2023, '2026-01-24 11:06:29', 720, 0, 492, 18200, 95, '28500.00', '5400.00', '950.00', '720.00', '1400.00', '2200.00', '2800.00', '3900.00', '8500.00', '2630.00'),
-(4, 2022, '2026-01-24 11:06:29', 642, 0, 438, 16500, 87, '25280.00', '4800.00', '850.00', '650.00', '1250.00', '1950.00', '2400.00', '3500.00', '7600.00', '2280.00'),
-(5, 2021, '2026-01-24 11:06:29', 578, 0, 395, 14800, 76, '22290.00', '4200.00', '760.00', '580.00', '1100.00', '1700.00', '2100.00', '3100.00', '6800.00', '1950.00'),
-(6, 2020, '2026-01-24 11:06:29', 485, 0, 342, 12600, 64, '19530.00', '3650.00', '680.00', '520.00', '980.00', '1480.00', '1850.00', '2750.00', '5900.00', '1720.00'),
-(7, 2019, '2026-01-24 11:06:29', 412, 0, 298, 10900, 55, '16960.00', '3100.00', '590.00', '460.00', '850.00', '1280.00', '1600.00', '2400.00', '5200.00', '1480.00'),
-(8, 2018, '2026-01-24 11:06:29', 356, 0, 264, 9500, 47, '14810.00', '2650.00', '520.00', '410.00', '740.00', '1120.00', '1380.00', '2100.00', '4600.00', '1290.00'),
-(9, 2017, '2026-01-24 11:06:29', 298, 0, 225, 8200, 38, '12530.00', '2180.00', '450.00', '360.00', '630.00', '950.00', '1180.00', '1800.00', '3900.00', '1080.00'),
-(10, 2016, '2026-01-24 11:06:29', 242, 0, 186, 7100, 31, '10800.00', '1850.00', '390.00', '310.00', '540.00', '820.00', '1020.00', '1550.00', '3400.00', '920.00'),
-(11, 2015, '2026-01-24 11:06:29', 198, 0, 152, 6200, 26, '9350.00', '1580.00', '340.00', '270.00', '470.00', '710.00', '890.00', '1350.00', '2950.00', '790.00'),
-(12, 2014, '2026-01-24 11:06:29', 162, 0, 124, 5400, 21, '8130.00', '1350.00', '295.00', '235.00', '410.00', '620.00', '780.00', '1180.00', '2580.00', '680.00');
-
---
--- 已傾印資料表的索引
---
-
---
--- 資料表索引 `impact_metrics`
---
-ALTER TABLE `impact_metrics`
-  ADD PRIMARY KEY (`IMPACT_METRICS_ID`);
-
---
--- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
---
-
---
--- 使用資料表自動遞增(AUTO_INCREMENT) `impact_metrics`
---
-ALTER TABLE `impact_metrics`
-  MODIFY `IMPACT_METRICS_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '我們的影響力編號', AUTO_INCREMENT=13;
-COMMIT;
-
---
--- 資料表結構 `ADMIN_USER`
---
-
-CREATE TABLE `ADMIN_USER` (
-  `ADMIN_ID` VARCHAR(20) NOT NULL COMMENT '管理者帳號 / ID',
-  `ADMIN_NAME` VARCHAR(50) NOT NULL COMMENT '管理者姓名',
-  `ADMIN_PWD` VARCHAR(100) NOT NULL COMMENT '管理者登入密碼（雜湊）',
-  `ADMIN_ROLE` VARCHAR(10) NOT NULL COMMENT '管理者角色權限',
-  `ADMIN_ACTIVE` BOOLEAN NOT NULL DEFAULT 1 COMMENT '管理者帳號啟用狀態',
-  `ADMIN_CREATED_AT` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '管理者帳號建立時間',
-  `ADMIN_LAST_LOGIN_TIME` DATETIME NULL COMMENT '管理者最後登入時間',
-  PRIMARY KEY (`ADMIN_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='後台管理者';
-
---
--- 傾印資料表的資料 `ADMIN_USER`
---
-
-INSERT INTO `ADMIN_USER`
-(`ADMIN_ID`, `ADMIN_NAME`, `ADMIN_PWD`, `ADMIN_ROLE`)
-VALUES
-('admin001', '管理員一', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'super'),
-('admin002', '管理員二', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'general'),
-('admin003', '管理員三', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'general');
-
---
--- 資料表結構 `MEMBERS`
---
-
-CREATE TABLE `MEMBERS` (
-  `MEMBER_ID` INT NOT NULL AUTO_INCREMENT COMMENT '會員識別編號',
-  `MEMBER_REALNAME` VARCHAR(50) NOT NULL COMMENT '會員姓名',
-  `MEMBER_EMAIL` VARCHAR(100) NOT NULL COMMENT '會員 Email（登入帳號）',
-  `MEMBER_PASSWORD` VARCHAR(255) NOT NULL COMMENT '會員登入密碼（bcrypt 雜湊）',
-  `MEMBER_PHONE` VARCHAR(20) DEFAULT NULL COMMENT '聯絡電話',
-  `ID_NUMBER` VARCHAR(10) DEFAULT NULL COMMENT '身分證字號',
-  `BIRTHDAY` DATE DEFAULT NULL COMMENT '出生年月日',
-  `EMERGENCY` VARCHAR(20) DEFAULT NULL COMMENT '緊急聯絡人',
-  `EMERGENCY_TEL` VARCHAR(20) DEFAULT NULL COMMENT '緊急聯絡電話',
-  `EMAIL_VERIFIED_AT` DATETIME DEFAULT NULL COMMENT 'Email 驗證成功時間',
-  `MEMBER_ACTIVE` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '會員啟用狀態（0未啟用/1啟用）',
-  `MEMBER_CREATED_AT` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '會員建立時間',
-  PRIMARY KEY (`MEMBER_ID`),
-  UNIQUE KEY `UK_MEMBERS_EMAIL` (`MEMBER_EMAIL`)
-) ENGINE=InnoDB
-DEFAULT CHARSET=utf8mb4
-COMMENT='前台會員資料';
-
---
--- 傾印資料表的資料 `MEMBERS`
---
-
-INSERT INTO `MEMBERS`
-(
-  `MEMBER_REALNAME`,
-  `MEMBER_EMAIL`,
-  `MEMBER_PASSWORD`,
-  `MEMBER_ACTIVE`
-)
-VALUES
-(
-  '王小明',
-  'test01@example.com',
-  '$2y$10$fO7/2axoVC0RDEsK./rBX.fT5hOtTz19z02/dsLWzmy3G7oES.SdG',
-  1
-);
-
---
--- 資料表結構 `MEMBER_EMAIL_VERIFICATION`
---
-
-CREATE TABLE `MEMBER_EMAIL_VERIFICATION` (
-  `VERIFICATION_ID` INT NOT NULL AUTO_INCREMENT COMMENT '驗證流水號',
-  `MEMBER_ID` INT NOT NULL COMMENT '對應會員識別編號',
-  `CODE_HASH` VARCHAR(255) NOT NULL COMMENT '驗證碼雜湊（不要存明碼）',
-  `EXPIRES_AT` DATETIME NOT NULL COMMENT '過期時間',
-  `VERIFIED_AT` DATETIME DEFAULT NULL COMMENT '驗證成功時間',
-  `USED_AT` DATETIME DEFAULT NULL COMMENT '註冊使用時間',
-  `ATTEMPTS` INT NOT NULL DEFAULT 0 COMMENT '輸入錯誤次數',
-  `CREATED_AT` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '建立時間',
-  PRIMARY KEY (`VERIFICATION_ID`),
-  CONSTRAINT `FK_VERIFICATION_MEMBER`
-    FOREIGN KEY (`MEMBER_ID`) REFERENCES `MEMBERS`(`MEMBER_ID`)
-    ON DELETE CASCADE
-) ENGINE=InnoDB
-DEFAULT CHARSET=utf8mb4
-COMMENT='會員註冊 Email 驗證碼';
-
---
--- 資料表結構 `RESCUES`
---
-
-CREATE TABLE `RESCUES` (
-  `RESCUE_ID` int(11) NOT NULL COMMENT '海龜救援編號',
-  `UPLOAD_DATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '上傳時間',
-  `TURTLE_NAME` varchar(50) NOT NULL COMMENT '海龜姓名',
-  `SPECIES` varchar(10) NOT NULL COMMENT '品種',
-  `LOCATION` varchar(20) NOT NULL COMMENT '發現地點',
-  `STORY_CONTENT` varchar(200) NOT NULL COMMENT '受傷原因與故事文案',
-  `RECOVERY_STATUS` varchar(10) NOT NULL COMMENT '目前救治階段',
-  `IMAGE_PATH` varchar(255) NOT NULL COMMENT '照片路徑'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='海龜救援';
-
---
--- 已傾印資料表的索引
---
-ALTER TABLE `RESCUES`
-  ADD PRIMARY KEY (`RESCUE_ID`);
-
--- 設定 AUTO_INCREMENT
---
-ALTER TABLE `RESCUES`
-  MODIFY `RESCUE_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '海龜救援編號';
-
---
--- 傾印資料表的資料 `RESCUES`
---
-
-INSERT INTO `RESCUES` (`RESCUE_ID`, `UPLOAD_DATE`, `TURTLE_NAME`, `SPECIES`, `LOCATION`, `STORY_CONTENT`, `RECOVERY_STATUS`, `IMAGE_PATH`) VALUES
-(1, NOW(), '波波', '綠蠵龜', '小琉球美人洞', '波波被發現時漂浮在海面上無法下潛，經X光檢查發現腸道內充滿大量塑膠垃圾，導致氣體堆積。目前正在進行排便治療與點滴輸液，精神狀況稍有起色，但仍需密切觀察排便狀況。志工們每天都期待能看到牠順利排出更多塑膠。', '醫療照護', 'savedcases/bobo.png'),
-(2, NOW(), '琥珀', '玳瑁', '台東三仙台沿岸', '民眾通報發現琥珀擱淺在礁岩區，背甲有明顯的船槳螺旋槳切割傷，傷口深可見骨。剛送抵中心，獸醫團隊正在進行傷口清創與細菌採樣，並評估是否需要進行緊急縫合手術。這兩週將是觀察感染是否擴散的關鍵危險期。', '入院檢查', 'savedcases/amber.png'),
-(3, NOW(), '抹茶', '綠蠵龜', '墾丁白沙灣', '抹茶因誤食魚鉤導致食道受傷，經過內視鏡手術成功取出魚鉤後，食道傷口癒合良好。目前已開始嘗試主動攝食，食慾不錯，喜歡吃新鮮的海藻，體重正在穩定回升中。偶爾牠還會追著水槽裡的蔬菜到處跑呢。', '休養觀察', 'savedcases/matcha.png'),
-(4, NOW(), '海海', '綠蠵龜', '澎湖望安沙灘', '海海是去年底被廢棄漁網纏繞的前肢截肢個體。經過半年的復健，牠已經完全適應了三肢游泳的生活，泳速與潛水能力都達到野放標準。獸醫評估健康無虞，預計下週裝上衛星發報器後野放。大家雖有不捨，但也祝福牠能在大海自在遨遊。', '準備野放', 'savedcases/haihai.png'),
-(5, NOW(), '點點', '玳瑁', '宜蘭外澳沙灘', '點點被發現時體型消瘦，且背甲上附著大量藤壺，顯示已長期活動力低下。血液檢查顯示有嚴重貧血與脫水現象，目前安置在加護水槽中，每日給予高營養針劑治療。今天早上牠終於有力氣稍微抬起頭換氣了。', '醫療照護', 'savedcases/dot.png'),
-(6, NOW(), '勇士', '綠蠵龜', '新北貢寮', '勇士曾經因肺炎導致無法潛水，經過三個月的抗生素治療與隔離照護，肺部陰影完全消失。於昨日在志工與獸醫的見證下，在發現地順利重返大海，瞬間消失在浪花中。看著那堅定的背影，所有努力都值得了。', '重返大海', 'savedcases/warrior.png'),
-(7, NOW(), '可可', '玳瑁', '蘭嶼朗島', '可可是一隻體型嬌小的幼龜，被發現時卡在消波塊縫隙中。外觀無明顯外傷，但有輕微營養不良。經過兩週的調養，現在精神奕奕，看到照顧員會激動地拍水討食。活潑可愛的模樣，成為了中心裡的開心果。', '休養觀察', 'savedcases/coco.png'),
-(8, NOW(), '阿草', '綠蠵龜', '苗栗後龍海灘', '阿草在退潮時被困在淺灘，無法自行回到海中。初步外觀檢查發現右後肢有腫脹情形，懷疑是舊傷感染或骨折。目前暫時安置在觀察池，等待詳細的血液報告與影像檢查結果。牠靜靜趴在池底，似乎知道我們正在幫牠。', '入院檢查', 'savedcases/grass.png'),
-(9, NOW(), '大丸子', '綠蠵龜', '屏東後壁湖', '大丸子誤入定置網，雖被漁民即時救起，但因長時間無法浮出水面換氣而有輕微嗆水現象，導致肺部感染。目前正在接受霧化治療，呼吸雜音已逐漸減少。每次做完治療後，牠都會舒服地瞇起眼睛休息。', '醫療照護', 'savedcases/ball.png'),
-(10, NOW(), '金金', '玳瑁', '花蓮七星潭', '金金因背甲疑似遭受撞擊而有裂痕，所幸未傷及內臟。經過修補手術後，背甲裂縫已用醫療級樹脂固定。目前傷口乾燥無感染，正在淺水池中練習負重游泳，以防背甲癒合不正。雖然游得還不快，但牠非常努力練習平衡。', '休養觀察', 'savedcases/gold.png');
-
--- 設定 AUTO_INCREMENT 起始值
---
-ALTER TABLE `RESCUES`
-  AUTO_INCREMENT = 11;
-
--- ==================================
-
--- ==========================================
---  志工活動模組 (Volunteer Activities Module)
---  包含：種類、活動主表、收藏、留言、留言按讚、留言檢舉
--- ==========================================
-
--- 為了避免匯入時因順序問題報錯，先暫時忽略外來鍵檢查
-SET FOREIGN_KEY_CHECKS = 0;
-
--- ========================================================
---  志工活動模組 (修正版)
--- ========================================================
-
--- --------------------------------------------------------
--- 1. 活動種類 (ACTIVITY_CATEGORIES)
--- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ACTIVITY_CATEGORIES` (
-  `CATEGORY_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '活動種類編號 (PK)',
-  `CATEGORY_VALUE` varchar(50) NOT NULL COMMENT '活動種類名稱',
-  PRIMARY KEY (`CATEGORY_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
--- 2. 志工活動主表 (ACTIVITIES)
--- --------------------------------------------------------
-CREATE TABLE `ACTIVITIES` (
-  `ACTIVITY_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '活動編號',
-  `ACTIVITY_TITLE` varchar(255) NOT NULL COMMENT '活動標題',
+CREATE TABLE `activities` (
+  `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動編號',
+  `ACTIVITY_TITLE` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '活動標題',
   `ACTIVITY_CATEGORY_ID` int(11) NOT NULL COMMENT '類別:1淨灘,2巡守,3照護',
   `ACTIVITY_DESCRIPTION` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '活動簡介',
   `ACTIVITY_NOTES` text COLLATE utf8mb4_unicode_ci COMMENT '注意事項',
@@ -304,8 +81,219 @@ INSERT INTO `activities` (`ACTIVITY_ID`, `ACTIVITY_TITLE`, `ACTIVITY_CATEGORY_ID
 (28, '2026 花蓮石梯坪壺穴地景淨灘', 1, '石梯坪擁有世界級的壺穴地景，是花蓮著名的觀光勝地。然而，壺穴中常卡住遊客丟棄的飲料罐與菸蒂，不僅破壞景觀，更影響生態。本次活動需要志工們像尋寶一樣，仔細檢查每一個壺穴與岩石縫隙，將垃圾清理出來。這項工作需要爬上爬下，對體力有一定要求。活動結束後，我們將在潔淨的單面山欣賞太平洋無敵海景，並享用部落提供的特色點心。這是一次兼具地景欣賞與環境守護的獨特體驗。', '1. 石梯坪為岩岸地形，地勢崎嶇不平，嚴禁穿著拖鞋或高跟鞋，請務必穿著防滑運動鞋。\n2. 行動不便或有懼高症者請勿報名。靠近海崖邊緣時請特別小心，嚴禁嬉戲推擠。\n3. 清理壺穴垃圾時可使用長夾或手套，切勿將手伸入無法目視的深洞中。\n4. 若遇浪況不佳（如瘋狗浪警報），將禁止靠近海岸線，改為清理步道周邊。', '花蓮縣豐濱鄉石梯坪遊憩區', '東部', 'beach_10.png', '2026-05-17 14:00:00', '2026-05-17 17:00:00', 40, 0, '2026-05-10 23:59:59', '1', 101, '2026-01-15 09:50:00'),
 (29, '2026 綠島柴口浮潛區夜間生態與垃圾巡查', 2, '柴口是綠島熱門的浮潛點，夜間潮間帶生態豐富。但遊客遺留的垃圾常在漲潮後流入海洋。本次活動將在退潮時段進行，巡查潮間帶生物狀況，並清理卡在礁岩縫隙中的垃圾。我們會特別關注是否有被釣線纏繞的生物，並進行即時解救。這是在星空與海浪聲中的神聖任務，讓我們用雙手撫平人類對海洋造成的傷痕，還給綠島海底生物一個安全的家。', '1. 柴口步道濕滑，請務必穿著防滑膠鞋。夜間潮間帶坑洞多，請留意腳步。\n2. 清理礁岩垃圾時請戴手套，小心海膽刺傷。\n3. 請自備頭燈（紅光模式佳）。活動中請勿採集任何生物。\n4. 活動包含保險，請確實填寫資料。集合地點為柴口浮潛區涼亭。請自備機車前往。', '台東縣綠島鄉柴口', '離島', 'patrol_09.png', '2026-05-30 20:00:00', '2026-05-30 23:00:00', 15, 0, '2026-05-25 23:59:59', '1', 103, '2026-02-15 14:00:00'),
 (30, '2026 雲林箔子寮漁港夜間廢棄漁網通報', 2, '廢棄漁網是海洋生物的隱形殺手。雲林沿海多牡蠣養殖，夜間常有廢棄蚵架與漁網漂流上岸。本次巡守將沿著箔子寮海岸線，搜尋並標記大型廢棄漁具的位置。我們不直接進行清理（因重量過重），而是利用 GPS 定位與拍照，通報給相關單位進行後續機具移除。同時，我們也會巡視是否有受困於網中的海龜或水鳥。這是一項建立「海洋廢棄物地圖」的重要基礎工作，需要細心與耐心的您來參與。', '1. 沙灘上多廢棄竹竿與鐵絲，請穿著厚底鞋與長褲，以免穿刺受傷。\n2. 夜間視線不佳，請務必攜帶強力手電筒。標記漁網時請勿冒險涉水，僅需記錄岸上部分。\n3. 若發現受困活體動物，請評估安全性後再行解救，或通報 118。\n4. 請自備智慧型手機以利定位。', '雲林縣四湖鄉箔子寮漁港', '中部', 'patrol_10.png', '2026-06-13 19:00:00', '2026-06-13 22:00:00', 20, 0, '2026-06-10 23:59:59', '1', 101, '2026-03-01 09:10:00');
--- 3.活動報名資料表 (ACTIVITY_SIGNUPS)
-INSERT INTO `ACTIVITY_SIGNUPS` (`ACTIVITY_SIGNUP_ID`, `USER_ID`, `ACTIVITY_ID`, `ATTENDED`, `ACTIVITY_SVC_HOURS`, `REAL_NAME`, `ID_NUMBER`, `PHONE`, `EMAIL`, `BIRTHDAY`, `EMERGENCY`, `EMERGENCY_TEL`, `CANCEL`, `CREATED_AT`) VALUES
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `activity_categories`
+--
+
+CREATE TABLE `activity_categories` (
+  `CATEGORY_ID` int(11) NOT NULL COMMENT '活動種類編號 (PK)',
+  `CATEGORY_VALUE` varchar(50) NOT NULL COMMENT '活動種類名稱'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `activity_categories`
+--
+
+INSERT INTO `activity_categories` (`CATEGORY_ID`, `CATEGORY_VALUE`) VALUES
+(1, '淨灘'),
+(2, '照護'),
+(3, '巡守');
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `activity_photos`
+--
+
+CREATE TABLE `activity_photos` (
+  `PHOTO_ID` int(11) NOT NULL COMMENT '照片編號',
+  `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動編號',
+  `PHOTO_URL` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '照片路徑 (檔名)',
+  `DESCRIPTION` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '照片描述 (可選)',
+  `IS_COVER` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否為封面圖 (1:是, 0:否)',
+  `CREATED_AT` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '上傳時間'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='活動成果照片表';
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `activity_results`
+--
+
+CREATE TABLE `activity_results` (
+  `RESULT_ID` int(11) NOT NULL COMMENT '成果編號',
+  `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動編號',
+  `METRIC_ID` int(11) NOT NULL COMMENT '成果定義編號 (1-4:淨灘, 5-8:巡守, 9-12:照護)',
+  `VALUE` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '成果數值 (重量/數量/品種等)',
+  `CREATED_AT` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '建立時間'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='活動成果數據表';
+
+--
+-- 傾印資料表的資料 `activity_results`
+--
+
+INSERT INTO `activity_results` (`RESULT_ID`, `ACTIVITY_ID`, `METRIC_ID`, `VALUE`, `CREATED_AT`) VALUES
+(1, 1, 9, '5', '2024-03-10 17:00:00'),
+(2, 1, 10, '12.5', '2024-03-10 17:00:00'),
+(3, 1, 11, '3', '2024-03-10 17:00:00'),
+(4, 1, 12, '6', '2024-03-10 17:00:00'),
+(5, 2, 9, '0', '2024-04-14 18:00:00'),
+(6, 2, 12, '3', '2024-04-14 18:00:00'),
+(7, 3, 1, '285.5', '2024-04-15 13:00:00'),
+(8, 3, 2, '32', '2024-04-15 13:00:00'),
+(9, 3, 3, '15', '2024-04-15 13:00:00'),
+(10, 3, 4, '420', '2024-04-15 13:00:00'),
+(11, 4, 9, '0', '2024-05-05 17:00:00'),
+(12, 4, 12, '3', '2024-05-05 17:00:00'),
+(13, 5, 5, '3', '2024-05-16 03:00:00'),
+(14, 5, 6, '1', '2024-05-16 03:00:00'),
+(15, 5, 7, '1', '2024-05-16 03:00:00'),
+(16, 5, 8, '綠蠵龜', '2024-05-16 03:00:00'),
+(17, 6, 1, '150.2', '2024-05-20 18:00:00'),
+(18, 6, 2, '20', '2024-05-20 18:00:00'),
+(19, 6, 3, '8', '2024-05-20 18:00:00'),
+(20, 6, 4, '150', '2024-05-20 18:00:00'),
+(21, 7, 1, '420.0', '2024-06-08 14:00:00'),
+(22, 7, 2, '55', '2024-06-08 14:00:00'),
+(23, 7, 3, '25', '2024-06-08 14:00:00'),
+(24, 7, 4, '600', '2024-06-08 14:00:00'),
+(25, 8, 5, '0', '2024-06-10 23:30:00'),
+(26, 8, 6, '0', '2024-06-10 23:30:00'),
+(27, 8, 7, '0', '2024-06-10 23:30:00'),
+(28, 8, 8, '無', '2024-06-10 23:30:00'),
+(29, 9, 9, '10', '2024-06-15 13:00:00'),
+(30, 9, 10, '0', '2024-06-15 13:00:00'),
+(31, 9, 11, '4', '2024-06-15 13:00:00'),
+(32, 9, 12, '3', '2024-06-15 13:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `activity_reviews`
+--
+
+CREATE TABLE `activity_reviews` (
+  `REVIEW_ID` int(11) NOT NULL COMMENT '心得編號',
+  `USER_ID` int(11) NOT NULL COMMENT '會員編號',
+  `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動編號',
+  `RATING` int(1) NOT NULL DEFAULT '5' COMMENT '評分 (1-5)',
+  `CONTENT` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '心得內容',
+  `IS_VISIBLE` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否顯示 (1:顯示, 0:隱藏)',
+  `LIKE_COUNT` int(11) NOT NULL DEFAULT '0' COMMENT '按讚數',
+  `CREATED_AT` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '留言時間'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='活動心得留言表';
+
+--
+-- 傾印資料表的資料 `activity_reviews`
+--
+
+INSERT INTO `activity_reviews` (`REVIEW_ID`, `USER_ID`, `ACTIVITY_ID`, `RATING`, `CONTENT`, `IS_VISIBLE`, `LIKE_COUNT`, `CREATED_AT`) VALUES
+(1, 201, 1, 5, '終於摸到海龜背甲了！原來刷背這麼費力，但看到海龜乾淨的樣子很有成就感。', 1, 12, '2024-03-11 10:30:00'),
+(2, 205, 1, 5, '切魚切到手軟，照護員真的太偉大了。學到很多關於海龜救傷的知識。', 1, 8, '2024-03-11 14:20:00'),
+(3, 210, 1, 4, '雖然全身弄得濕答答，且後場味道有點重，但這是很真實的體驗，推薦！', 1, 3, '2024-03-12 09:15:00'),
+(4, 202, 2, 5, '模擬搬運很有趣，道具海龜也很逼真。講師講得很幽默，複雜的救援步驟變好記了。', 1, 20, '2024-04-15 11:00:00'),
+(5, 215, 2, 5, '學到了正確的保濕觀念，原來以前都做錯了！拿到證書很有成就感。', 1, 15, '2024-04-15 16:45:00'),
+(6, 220, 2, 3, '會議室冷氣有點強，記得帶外套。內容很實用，但希望實作時間再多一點。', 1, 2, '2024-04-16 10:20:00'),
+(7, 203, 3, 5, '第一次看到這麼多漁網卡在石槽裡，清出來很有成就感！生態解說也很精彩。', 1, 25, '2024-04-16 09:00:00'),
+(8, 208, 3, 4, '地形真的不好走，還好有穿防滑鞋，主辦單位提醒得很周到。', 1, 6, '2024-04-16 13:30:00'),
+(9, 212, 3, 5, '雖然天氣很熱，但看到海岸變乾淨真的很感動。希望能喚起更多人重視。', 1, 18, '2024-04-17 10:10:00'),
+(10, 225, 4, 5, '沒想到垃圾也能變成藝術品，很有創意！小朋友畫得很開心。', 1, 10, '2024-05-06 14:00:00'),
+(11, 230, 4, 4, '浮球有點難畫，但老師教得很有耐心。顏料真的洗不掉，還好有穿舊衣服。', 1, 4, '2024-05-06 20:15:00'),
+(12, 235, 4, 5, '把垃圾變黃金，超讚的概念。義賣捐款很有意義，希望能幫到海龜。', 1, 14, '2024-05-07 11:30:00'),
+(13, 204, 5, 5, '真的看到母龜上岸產卵了！感動到想哭！一定要用紅光手電筒，大家都很遵守規定。', 1, 50, '2024-05-16 02:30:00'),
+(14, 218, 5, 4, '雖然走得很累，蚊子也多，但看到海龜媽媽努力挖洞的樣子，充滿敬意。', 1, 9, '2024-05-16 10:00:00'),
+(15, 240, 5, 5, '研究員解說非常專業。蛤板灣的星空超級美，海浪聲很療癒。', 1, 22, '2024-05-17 15:20:00'),
+(16, 206, 6, 5, '藻礁真的很壯觀，希望能永遠保存下來。清理細小保麗龍真的好累，需要很大的耐心。', 1, 30, '2024-05-21 09:45:00'),
+(17, 222, 6, 4, '風真的很大，帽子差點飛走。雖然腰很痠，但心靈很滿足。', 1, 7, '2024-05-21 13:10:00'),
+(18, 238, 6, 5, '看到螃蟹在乾淨的藻礁上爬行，一切都值得了。學校社團一起來的，學到很多。', 1, 16, '2024-05-22 08:30:00'),
+(19, 209, 7, 5, '我是參加水下組的，海底垃圾真的很多，潛水還能做公益很棒。', 1, 35, '2024-06-09 10:00:00'),
+(20, 228, 7, 5, '岸邊的垃圾也撿不完，大家真的要減塑。活動很有組織，垃圾分類做得很徹底。', 1, 12, '2024-06-09 16:20:00'),
+(21, 245, 7, 4, '人很多很熱鬧，但動線有點擠。天氣很好，流汗流得很爽。', 1, 5, '2024-06-10 09:00:00'),
+(22, 211, 8, 5, '深刻感受到達悟族對海洋的敬畏。雖然沒看到海龜，但看到了很多椰子蟹！', 1, 19, '2024-06-11 08:45:00'),
+(23, 226, 8, 4, '行前教育很嚴肅，但也學到很多。礁岩真的很刺，還好有穿膠鞋。', 1, 8, '2024-06-11 19:30:00'),
+(24, 242, 8, 5, '晚上的拼板舟有一種神祕的美感。聽著海浪聲巡邏，心靈很平靜。', 1, 11, '2024-06-12 10:15:00'),
+(25, 216, 9, 5, '小海龜超可愛！高壓水槍很好玩，池子變乾淨很有成就感。', 1, 28, '2024-06-16 11:00:00'),
+(26, 232, 9, 4, '腰有點痠，年紀大的要斟酌。地板真的很滑要小心。', 1, 4, '2024-06-16 15:40:00'),
+(27, 248, 9, 5, '看到海龜在乾淨的水裡游，覺得很值得。研究員講解很詳細。', 1, 13, '2024-06-17 09:20:00'),
+(28, 213, 10, 5, '望安是海龜的故鄉，一定要好好守護。雖然沒看到海龜，但看到爬痕也很興奮。', 1, 21, '2024-07-06 10:00:00'),
+(29, 229, 10, 4, '海風真的很大，吹得頭有點痛。半夜肚子很餓，記得帶點乾糧。', 1, 6, '2024-07-06 14:10:00');
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `activity_reviews_likes`
+--
+
+CREATE TABLE `activity_reviews_likes` (
+  `REVIEW_ID` int(11) NOT NULL,
+  `USER_ID` int(11) NOT NULL,
+  `CREATED_AT` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `activity_reviews_likes`
+--
+
+INSERT INTO `activity_reviews_likes` (`REVIEW_ID`, `USER_ID`, `CREATED_AT`) VALUES
+(1, 3, '2026-01-31 13:17:01');
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `activity_review_reports`
+--
+
+CREATE TABLE `activity_review_reports` (
+  `REPORT_ID` int(11) NOT NULL,
+  `REVIEW_ID` int(11) NOT NULL,
+  `USER_ID` int(11) NOT NULL COMMENT '檢舉人ID',
+  `REASON` varchar(255) NOT NULL COMMENT '檢舉原因',
+  `REPORT_STATUS` varchar(10) NOT NULL COMMENT '處理狀態',
+  `CREATED_AT` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `activity_review_reports`
+--
+
+INSERT INTO `activity_review_reports` (`REPORT_ID`, `REVIEW_ID`, `USER_ID`, `REASON`, `REPORT_STATUS`, `CREATED_AT`) VALUES
+(1, 3, 301, '3', '待處理', '2024-04-17 09:00:00'),
+(2, 19, 302, '1', '已駁回', '2024-06-09 14:30:00'),
+(3, 29, 303, '4', '已處理', '2024-07-07 08:20:00'),
+(4, 35, 304, '2', '待處理', '2024-07-22 10:15:00'),
+(5, 44, 305, '3', '已駁回', '2024-08-22 11:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `activity_signups`
+--
+
+CREATE TABLE `activity_signups` (
+  `ACTIVITY_SIGNUP_ID` int(11) NOT NULL COMMENT '報名編號',
+  `USER_ID` int(11) NOT NULL COMMENT '會員編號',
+  `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動編號',
+  `ATTENDED` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否出席 (1:是, 0:否)',
+  `ACTIVITY_SVC_HOURS` int(11) NOT NULL DEFAULT '0' COMMENT '核發時數',
+  `REAL_NAME` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '真實姓名',
+  `ID_NUMBER` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '身分證字號',
+  `PHONE` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '聯絡電話',
+  `EMAIL` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '電子郵件',
+  `BIRTHDAY` date NOT NULL COMMENT '出生年月日',
+  `EMERGENCY` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '緊急聯絡人',
+  `EMERGENCY_TEL` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '緊急聯絡電話',
+  `CANCEL` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否取消 (1:是, 0:否)',
+  `CREATED_AT` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '報名時間'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='活動報名資料表';
+
+--
+-- 傾印資料表的資料 `activity_signups`
+--
+
+INSERT INTO `activity_signups` (`ACTIVITY_SIGNUP_ID`, `USER_ID`, `ACTIVITY_ID`, `ATTENDED`, `ACTIVITY_SVC_HOURS`, `REAL_NAME`, `ID_NUMBER`, `PHONE`, `EMAIL`, `BIRTHDAY`, `EMERGENCY`, `EMERGENCY_TEL`, `CANCEL`, `CREATED_AT`) VALUES
 (1, 201, 1, 1, 7, '陳建豪', 'A123456789', '0912-345-678', 'chen.jh@example.com', '1990-05-15', '陳爸爸', '0911-222-333', 0, '2024-02-12 10:30:00'),
 (2, 202, 1, 1, 7, '林雅婷', 'F223456789', '0920-123-456', 'yating.lin@example.com', '1995-08-20', '林媽媽', '0922-333-444', 0, '2024-02-15 14:20:00'),
 (3, 203, 1, 0, 0, '張志明', 'C123987654', '0933-555-666', 'cm.chang@example.com', '1988-11-02', '張太太', '0933-777-888', 1, '2024-02-18 09:15:00'),
@@ -338,74 +326,6 @@ INSERT INTO `ACTIVITY_SIGNUPS` (`ACTIVITY_SIGNUP_ID`, `USER_ID`, `ACTIVITY_ID`, 
 
 -- --------------------------------------------------------
 
--- 7. 活動心得檢舉
-INSERT INTO `ACTIVITY_REVIEW_REPORTS` (`REPORT_ID`, `REVIEW_ID`, `USER_ID`, `REASON`, `REPORT_STATUS`, `CREATED_AT`) VALUES
-(1, 3, 301, 3, '待處理', '2024-04-17 09:00:00'),
-(2, 19, 302, 1, '已駁回', '2024-06-09 14:30:00'),
-(3, 29, 303, 4, '已處理', '2024-07-07 08:20:00'),
-(4, 35, 304, 2, '待處理', '2024-07-22 10:15:00'),
-(5, 44, 305, 3, '已駁回', '2024-08-22 11:00:00');
-
--- 8. 成果定義表 (RESULT_METRICS)
-INSERT INTO `RESULT_METRICS` (`METRIC_ID`, `METRIC_NAME`, `METRIC_UNIT`, `ACTIVITY_CATEGORY_ID`) VALUES
-(1, '垃圾總重量', 'kg', 1),
-(2, '垃圾袋數', '袋', 1),
-(3, '漁業廢棄物', '件', 1),
-(4, '塑膠瓶/蓋', '個', 1),
-(5, '發現痕跡數', '道', 2),
-(6, '確認卵窩數', '窩', 2),
-(7, '目擊母龜數', '隻', 2),
-(8, '海龜品種', NULL, 2),
-(9, '照護海龜數', '隻', 3),
-(10, '備餐重量', 'kg', 3),
-(11, '清洗水池數', '池', 3),
-(12, '環境整理時數', '小時', 3),
-(13, '參與活動志工人數', '人', 0);
--- 9.活動成果
-INSERT INTO `ACTIVITY_RESULTS` (`ACTIVITY_ID`, `METRIC_ID`, `VALUE`, `CREATED_AT`) VALUES
-(1, 9, '5', '2024-03-10 17:00:00'),
-(1, 10, '12.5', '2024-03-10 17:00:00'),
-(1, 11, '3', '2024-03-10 17:00:00'),
-(1, 12, '6', '2024-03-10 17:00:00'),
-(2, 9, '0', '2024-04-14 18:00:00'),
-(2, 12, '3', '2024-04-14 18:00:00'),
-(3, 1, '285.5', '2024-04-15 13:00:00'),
-(3, 2, '32', '2024-04-15 13:00:00'),
-(3, 3, '15', '2024-04-15 13:00:00'),
-(3, 4, '420', '2024-04-15 13:00:00'),
-(4, 9, '0', '2024-05-05 17:00:00'),
-(4, 12, '3', '2024-05-05 17:00:00'),
-(5, 5, '3', '2024-05-16 03:00:00'),
-(5, 6, '1', '2024-05-16 03:00:00'),
-(5, 7, '1', '2024-05-16 03:00:00'),
-(5, 8, '綠蠵龜', '2024-05-16 03:00:00'),
-(6, 1, '150.2', '2024-05-20 18:00:00'),
-(6, 2, '20', '2024-05-20 18:00:00'),
-(6, 3, '8', '2024-05-20 18:00:00'),
-(6, 4, '150', '2024-05-20 18:00:00'),
-(7, 1, '420.0', '2024-06-08 14:00:00'),
-(7, 2, '55', '2024-06-08 14:00:00'),
-(7, 3, '25', '2024-06-08 14:00:00'),
-(7, 4, '600', '2024-06-08 14:00:00'),
-(8, 5, '0', '2024-06-10 23:30:00'),
-(8, 6, '0', '2024-06-10 23:30:00'),
-(8, 7, '0', '2024-06-10 23:30:00'),
-(8, 8, '無', '2024-06-10 23:30:00'),
-(9, 9, '10', '2024-06-15 13:00:00'),
-(9, 10, '0', '2024-06-15 13:00:00'),
-(9, 11, '4', '2024-06-15 13:00:00'),
-(9, 12, '3', '2024-06-15 13:00:00');
-
-
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
 --
 -- 資料表結構 `admin_user`
 --
@@ -425,9 +345,9 @@ CREATE TABLE `admin_user` (
 --
 
 INSERT INTO `admin_user` (`ADMIN_ID`, `ADMIN_NAME`, `ADMIN_PWD`, `ADMIN_ROLE`, `ADMIN_ACTIVE`, `ADMIN_CREATED_AT`, `ADMIN_LAST_LOGIN_TIME`) VALUES
-('admin001', '管理員一', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'super', 1, '2026-01-31 04:14:43', NULL),
-('admin002', '管理員二', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'general', 1, '2026-01-31 04:14:43', NULL),
-('admin003', '管理員三', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'general', 1, '2026-01-31 04:14:43', NULL);
+('admin001', '管理員一', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'super', 1, '2026-01-31 13:17:00', NULL),
+('admin002', '管理員二', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'general', 1, '2026-01-31 13:17:00', NULL),
+('admin003', '管理員三', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'general', 1, '2026-01-31 13:17:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -455,9 +375,7 @@ INSERT INTO `donations` (`DONATION_ID`, `MEMBER_ID`, `AMOUNT`, `DONATION_DATE`, 
 (60, 1, 5000, '2026-01-29 19:40:46', NULL, 'LINE_PAY', '單次捐款', '2026012902335025210'),
 (62, 1, 8787, '2026-01-30 11:12:40', 134, '信用卡', '定期定額', '2601301112169265'),
 (63, 1, 9898, '2026-01-30 11:16:31', NULL, 'LINE_PAY', '單次捐款', '2026013002335076510'),
-(64, 1, 5151, '2026-01-30 11:17:33', NULL, '信用卡', '單次捐款', '2601301117109271'),
-(65, 1, 5566, '2026-01-31 12:23:13', 135, '信用卡', '定期定額', '2601311222390725'),
-(66, 1, 8964, '2026-01-31 12:27:15', NULL, 'LINE_PAY', '單次捐款', '2026013102335213810');
+(64, 1, 5151, '2026-01-30 11:17:33', NULL, '信用卡', '單次捐款', '2601301117109271');
 
 -- --------------------------------------------------------
 
@@ -476,7 +394,7 @@ CREATE TABLE `favorites` (
 --
 
 INSERT INTO `favorites` (`MEMBER_ID`, `ACTIVITY_ID`, `CREATED_AT`) VALUES
-(1, 1, '2026-01-31 04:14:44');
+(1, 1, '2026-01-31 13:17:01');
 
 -- --------------------------------------------------------
 
@@ -569,7 +487,7 @@ CREATE TABLE `members` (
 --
 
 INSERT INTO `members` (`MEMBER_ID`, `MEMBER_REALNAME`, `MEMBER_EMAIL`, `MEMBER_PASSWORD`, `MEMBER_PHONE`, `ID_NUMBER`, `BIRTHDAY`, `EMERGENCY`, `EMERGENCY_TEL`, `EMAIL_VERIFIED_AT`, `MEMBER_ACTIVE`, `MEMBER_CREATED_AT`) VALUES
-(1, '王小明', 'test01@example.com', '$2y$10$fO7/2axoVC0RDEsK./rBX.fT5hOtTz19z02/dsLWzmy3G7oES.SdG', NULL, NULL, NULL, NULL, NULL, NULL, 1, '2026-01-31 04:14:44');
+(1, '王小明', 'test01@example.com', '$2y$10$fO7/2axoVC0RDEsK./rBX.fT5hOtTz19z02/dsLWzmy3G7oES.SdG', NULL, NULL, NULL, NULL, NULL, NULL, 1, '2026-01-31 13:17:00');
 
 -- --------------------------------------------------------
 
@@ -609,7 +527,7 @@ CREATE TABLE `news` (
 -- 傾印資料表的資料 `news`
 --
 
-INSERT INTO NEWS (NEWS_ID, ADMIN_ID, NEWS_TITLE, NEWS_CATEGORY, NEWS_PUBLISHED_AT, NEWS_CONTENT, NEWS_IMAGE_PATH, NEWS_STATUS) VALUES
+INSERT INTO `news` (`NEWS_ID`, `ADMIN_ID`, `NEWS_TITLE`, `NEWS_CATEGORY`, `NEWS_PUBLISHED_AT`, `NEWS_CONTENT`, `NEWS_IMAGE_PATH`, `NEWS_STATUS`) VALUES
 (1, 'editor_sarah', '海洋污染成隱形殺手,研究顯示 8 成海龜體內含微塑膠', '重要公告', '2025-08-10 14:30:00', '一份最新的跨國研究指出,全球海洋中的海龜皆面臨微塑膠威脅,這將影響牠們的生殖能力與免疫系統。', 'news/news31.jpg', 'published'),
 (2, 'admin_system', '【系統公告】資料庫備份作業通知,系統將暫時停止營運', '重要公告', '2025-08-15 02:00:00', '系統將進行每月例行性資料庫備份,預計耗時 30 分鐘。作業期間網站瀏覽可能會有短暫延遲,不影響資料存取。', 'news/news30.jpg', 'published'),
 (3, 'editor_lisa', '【地點更換】親子環保 DIY 教室改至 B1 會議室舉行', '異動通知', '2025-08-20 10:00:00', '原定於一樓大廳舉辦的親子環保 DIY 活動,因場地設備檢修,將改至地下一樓 B1 會議室舉行,時間維持不變。', 'news/news29.png', 'published'),
@@ -664,16 +582,16 @@ CREATE TABLE `rescues` (
 --
 
 INSERT INTO `rescues` (`RESCUE_ID`, `UPLOAD_DATE`, `TURTLE_NAME`, `SPECIES`, `LOCATION`, `STORY_CONTENT`, `RECOVERY_STATUS`, `IMAGE_PATH`) VALUES
-(1, '2026-01-31 04:14:44', '波波', '綠蠵龜', '小琉球美人洞', '波波被發現時漂浮在海面上無法下潛，經X光檢查發現腸道內充滿大量塑膠垃圾，導致氣體堆積。目前正在進行排便治療與點滴輸液，精神狀況稍有起色，但仍需密切觀察排便狀況。志工們每天都期待能看到牠順利排出更多塑膠。', '醫療照護', 'savedcases/bobo.png'),
-(2, '2026-01-31 04:14:44', '琥珀', '玳瑁', '台東三仙台沿岸', '民眾通報發現琥珀擱淺在礁岩區，背甲有明顯的船槳螺旋槳切割傷，傷口深可見骨。剛送抵中心，獸醫團隊正在進行傷口清創與細菌採樣，並評估是否需要進行緊急縫合手術。這兩週將是觀察感染是否擴散的關鍵危險期。', '入院檢查', 'savedcases/amber.png'),
-(3, '2026-01-31 04:14:44', '抹茶', '綠蠵龜', '墾丁白沙灣', '抹茶因誤食魚鉤導致食道受傷，經過內視鏡手術成功取出魚鉤後，食道傷口癒合良好。目前已開始嘗試主動攝食，食慾不錯，喜歡吃新鮮的海藻，體重正在穩定回升中。偶爾牠還會追著水槽裡的蔬菜到處跑呢。', '休養觀察', 'savedcases/matcha.png'),
-(4, '2026-01-31 04:14:44', '海海', '綠蠵龜', '澎湖望安沙灘', '海海是去年底被廢棄漁網纏繞的前肢截肢個體。經過半年的復健，牠已經完全適應了三肢游泳的生活，泳速與潛水能力都達到野放標準。獸醫評估健康無虞，預計下週裝上衛星發報器後野放。大家雖有不捨，但也祝福牠能在大海自在遨遊。', '準備野放', 'savedcases/haihai.png'),
-(5, '2026-01-31 04:14:44', '點點', '玳瑁', '宜蘭外澳沙灘', '點點被發現時體型消瘦，且背甲上附著大量藤壺，顯示已長期活動力低下。血液檢查顯示有嚴重貧血與脫水現象，目前安置在加護水槽中，每日給予高營養針劑治療。今天早上牠終於有力氣稍微抬起頭換氣了。', '醫療照護', 'savedcases/dot.png'),
-(6, '2026-01-31 04:14:44', '勇士', '綠蠵龜', '新北貢寮', '勇士曾經因肺炎導致無法潛水，經過三個月的抗生素治療與隔離照護，肺部陰影完全消失。於昨日在志工與獸醫的見證下，在發現地順利重返大海，瞬間消失在浪花中。看著那堅定的背影，所有努力都值得了。', '重返大海', 'savedcases/warrior.png'),
-(7, '2026-01-31 04:14:44', '可可', '玳瑁', '蘭嶼朗島', '可可是一隻體型嬌小的幼龜，被發現時卡在消波塊縫隙中。外觀無明顯外傷，但有輕微營養不良。經過兩週的調養，現在精神奕奕，看到照顧員會激動地拍水討食。活潑可愛的模樣，成為了中心裡的開心果。', '休養觀察', 'savedcases/coco.png'),
-(8, '2026-01-31 04:14:44', '阿草', '綠蠵龜', '苗栗後龍海灘', '阿草在退潮時被困在淺灘，無法自行回到海中。初步外觀檢查發現右後肢有腫脹情形，懷疑是舊傷感染或骨折。目前暫時安置在觀察池，等待詳細的血液報告與影像檢查結果。牠靜靜趴在池底，似乎知道我們正在幫牠。', '入院檢查', 'savedcases/grass.png'),
-(9, '2026-01-31 04:14:44', '大丸子', '綠蠵龜', '屏東後壁湖', '大丸子誤入定置網，雖被漁民即時救起，但因長時間無法浮出水面換氣而有輕微嗆水現象，導致肺部感染。目前正在接受霧化治療，呼吸雜音已逐漸減少。每次做完治療後，牠都會舒服地瞇起眼睛休息。', '醫療照護', 'savedcases/ball.png'),
-(10, '2026-01-31 04:14:44', '金金', '玳瑁', '花蓮七星潭', '金金因背甲疑似遭受撞擊而有裂痕，所幸未傷及內臟。經過修補手術後，背甲裂縫已用醫療級樹脂固定。目前傷口乾燥無感染，正在淺水池中練習負重游泳，以防背甲癒合不正。雖然游得還不快，但牠非常努力練習平衡。', '休養觀察', 'savedcases/gold.png');
+(1, '2026-01-31 13:17:01', '波波', '綠蠵龜', '小琉球美人洞', '波波被發現時漂浮在海面上無法下潛，經X光檢查發現腸道內充滿大量塑膠垃圾，導致氣體堆積。目前正在進行排便治療與點滴輸液，精神狀況稍有起色，但仍需密切觀察排便狀況。志工們每天都期待能看到牠順利排出更多塑膠。', '醫療照護', 'savedcases/bobo.png'),
+(2, '2026-01-31 13:17:01', '琥珀', '玳瑁', '台東三仙台沿岸', '民眾通報發現琥珀擱淺在礁岩區，背甲有明顯的船槳螺旋槳切割傷，傷口深可見骨。剛送抵中心，獸醫團隊正在進行傷口清創與細菌採樣，並評估是否需要進行緊急縫合手術。這兩週將是觀察感染是否擴散的關鍵危險期。', '入院檢查', 'savedcases/amber.png'),
+(3, '2026-01-31 13:17:01', '抹茶', '綠蠵龜', '墾丁白沙灣', '抹茶因誤食魚鉤導致食道受傷，經過內視鏡手術成功取出魚鉤後，食道傷口癒合良好。目前已開始嘗試主動攝食，食慾不錯，喜歡吃新鮮的海藻，體重正在穩定回升中。偶爾牠還會追著水槽裡的蔬菜到處跑呢。', '休養觀察', 'savedcases/matcha.png'),
+(4, '2026-01-31 13:17:01', '海海', '綠蠵龜', '澎湖望安沙灘', '海海是去年底被廢棄漁網纏繞的前肢截肢個體。經過半年的復健，牠已經完全適應了三肢游泳的生活，泳速與潛水能力都達到野放標準。獸醫評估健康無虞，預計下週裝上衛星發報器後野放。大家雖有不捨，但也祝福牠能在大海自在遨遊。', '準備野放', 'savedcases/haihai.png'),
+(5, '2026-01-31 13:17:01', '點點', '玳瑁', '宜蘭外澳沙灘', '點點被發現時體型消瘦，且背甲上附著大量藤壺，顯示已長期活動力低下。血液檢查顯示有嚴重貧血與脫水現象，目前安置在加護水槽中，每日給予高營養針劑治療。今天早上牠終於有力氣稍微抬起頭換氣了。', '醫療照護', 'savedcases/dot.png'),
+(6, '2026-01-31 13:17:01', '勇士', '綠蠵龜', '新北貢寮', '勇士曾經因肺炎導致無法潛水，經過三個月的抗生素治療與隔離照護，肺部陰影完全消失。於昨日在志工與獸醫的見證下，在發現地順利重返大海，瞬間消失在浪花中。看著那堅定的背影，所有努力都值得了。', '重返大海', 'savedcases/warrior.png'),
+(7, '2026-01-31 13:17:01', '可可', '玳瑁', '蘭嶼朗島', '可可是一隻體型嬌小的幼龜，被發現時卡在消波塊縫隙中。外觀無明顯外傷，但有輕微營養不良。經過兩週的調養，現在精神奕奕，看到照顧員會激動地拍水討食。活潑可愛的模樣，成為了中心裡的開心果。', '休養觀察', 'savedcases/coco.png'),
+(8, '2026-01-31 13:17:01', '阿草', '綠蠵龜', '苗栗後龍海灘', '阿草在退潮時被困在淺灘，無法自行回到海中。初步外觀檢查發現右後肢有腫脹情形，懷疑是舊傷感染或骨折。目前暫時安置在觀察池，等待詳細的血液報告與影像檢查結果。牠靜靜趴在池底，似乎知道我們正在幫牠。', '入院檢查', 'savedcases/grass.png'),
+(9, '2026-01-31 13:17:01', '大丸子', '綠蠵龜', '屏東後壁湖', '大丸子誤入定置網，雖被漁民即時救起，但因長時間無法浮出水面換氣而有輕微嗆水現象，導致肺部感染。目前正在接受霧化治療，呼吸雜音已逐漸減少。每次做完治療後，牠都會舒服地瞇起眼睛休息。', '醫療照護', 'savedcases/ball.png'),
+(10, '2026-01-31 13:17:01', '金金', '玳瑁', '花蓮七星潭', '金金因背甲疑似遭受撞擊而有裂痕，所幸未傷及內臟。經過修補手術後，背甲裂縫已用醫療級樹脂固定。目前傷口乾燥無感染，正在淺水池中練習負重游泳，以防背甲癒合不正。雖然游得還不快，但牠非常努力練習平衡。', '休養觀察', 'savedcases/gold.png');
 
 -- --------------------------------------------------------
 
@@ -694,18 +612,19 @@ CREATE TABLE `result_metrics` (
 --
 
 INSERT INTO `result_metrics` (`METRIC_ID`, `METRIC_NAME`, `METRIC_UNIT`, `ACTIVITY_CATEGORY_ID`, `CREATED_AT`) VALUES
-(1, '垃圾總重量', 'kg', 1, '2026-01-31 04:14:44'),
-(2, '垃圾袋數', '袋', 1, '2026-01-31 04:14:44'),
-(3, '漁業廢棄物', '件', 1, '2026-01-31 04:14:44'),
-(4, '塑膠瓶/蓋', '個', 1, '2026-01-31 04:14:44'),
-(5, '發現痕跡數', '道', 2, '2026-01-31 04:14:44'),
-(6, '確認卵窩數', '窩', 2, '2026-01-31 04:14:44'),
-(7, '目擊母龜數', '隻', 2, '2026-01-31 04:14:44'),
-(8, '海龜品種', NULL, 2, '2026-01-31 04:14:44'),
-(9, '照護海龜數', '隻', 3, '2026-01-31 04:14:44'),
-(10, '備餐重量', 'kg', 3, '2026-01-31 04:14:44'),
-(11, '清洗水池數', '池', 3, '2026-01-31 04:14:44'),
-(12, '環境整理時數', '小時', 3, '2026-01-31 04:14:44');
+(1, '垃圾總重量', 'kg', 1, '2026-01-31 13:17:01'),
+(2, '垃圾袋數', '袋', 1, '2026-01-31 13:17:01'),
+(3, '漁業廢棄物', '件', 1, '2026-01-31 13:17:01'),
+(4, '塑膠瓶/蓋', '個', 1, '2026-01-31 13:17:01'),
+(5, '發現痕跡數', '道', 2, '2026-01-31 13:17:01'),
+(6, '確認卵窩數', '窩', 2, '2026-01-31 13:17:01'),
+(7, '目擊母龜數', '隻', 2, '2026-01-31 13:17:01'),
+(8, '海龜品種', NULL, 2, '2026-01-31 13:17:01'),
+(9, '照護海龜數', '隻', 3, '2026-01-31 13:17:01'),
+(10, '備餐重量', 'kg', 3, '2026-01-31 13:17:01'),
+(11, '清洗水池數', '池', 3, '2026-01-31 13:17:01'),
+(12, '環境整理時數', '小時', 3, '2026-01-31 13:17:01'),
+(13, '參與活動志工人數', '人', 0, '2026-01-31 13:17:01');
 
 -- --------------------------------------------------------
 
@@ -728,8 +647,7 @@ CREATE TABLE `subscription` (
 --
 
 INSERT INTO `subscription` (`SUBSCRIPTION_ID`, `MEMBER_ID`, `AMOUNT`, `START_DATE`, `STATUS`, `END_DATE`, `ORDER_ID`) VALUES
-(134, 1, 8787, '2026-01-30', 1, NULL, 'ORDER20260130111217'),
-(135, 1, 5566, '2026-01-31', 1, NULL, 'ORDER20260131122239');
+(134, 1, 8787, '2026-01-30', 1, NULL, 'ORDER20260130111217');
 
 --
 -- 已傾印資料表的索引
@@ -914,7 +832,7 @@ ALTER TABLE `activity_signups`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `donations`
 --
 ALTER TABLE `donations`
-  MODIFY `DONATION_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '捐款編號', AUTO_INCREMENT=67;
+  MODIFY `DONATION_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '捐款編號', AUTO_INCREMENT=65;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `financial_reports`
@@ -947,16 +865,22 @@ ALTER TABLE `news`
   MODIFY `NEWS_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章編號', AUTO_INCREMENT=32;
 
 --
+-- 使用資料表自動遞增(AUTO_INCREMENT) `rescues`
+--
+ALTER TABLE `rescues`
+  MODIFY `RESCUE_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '海龜救援編號', AUTO_INCREMENT=11;
+
+--
 -- 使用資料表自動遞增(AUTO_INCREMENT) `result_metrics`
 --
 ALTER TABLE `result_metrics`
-  MODIFY `METRIC_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '成果定義編號', AUTO_INCREMENT=13;
+  MODIFY `METRIC_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '成果定義編號', AUTO_INCREMENT=14;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `subscription`
 --
 ALTER TABLE `subscription`
-  MODIFY `SUBSCRIPTION_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '定期定額捐款編號', AUTO_INCREMENT=136;
+  MODIFY `SUBSCRIPTION_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '定期定額捐款編號', AUTO_INCREMENT=135;
 
 --
 -- 已傾印資料表的限制式
