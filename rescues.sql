@@ -1,3 +1,5 @@
+
+
 --
 -- 資料表結構 `RESCUES`
 --
@@ -19,9 +21,13 @@ CREATE TABLE `RESCUES` (
 ALTER TABLE `RESCUES`
   ADD PRIMARY KEY (`RESCUE_ID`);
 
+-- 設定 AUTO_INCREMENT
+--
+ALTER TABLE `RESCUES`
+  MODIFY `RESCUE_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '海龜救援編號';
+
 --
 -- 傾印資料表的資料 `RESCUES`
--- 更新說明：RECOVERY_STATUS 已從數字改為對應的中文狀態
 --
 
 INSERT INTO `RESCUES` (`RESCUE_ID`, `UPLOAD_DATE`, `TURTLE_NAME`, `SPECIES`, `LOCATION`, `STORY_CONTENT`, `RECOVERY_STATUS`, `IMAGE_PATH`) VALUES
@@ -35,3 +41,10 @@ INSERT INTO `RESCUES` (`RESCUE_ID`, `UPLOAD_DATE`, `TURTLE_NAME`, `SPECIES`, `LO
 (8, NOW(), '阿草', '綠蠵龜', '苗栗後龍海灘', '阿草在退潮時被困在淺灘，無法自行回到海中。初步外觀檢查發現右後肢有腫脹情形，懷疑是舊傷感染或骨折。目前暫時安置在觀察池，等待詳細的血液報告與影像檢查結果。牠靜靜趴在池底，似乎知道我們正在幫牠。', '入院檢查', 'savedcases/grass.png'),
 (9, NOW(), '大丸子', '綠蠵龜', '屏東後壁湖', '大丸子誤入定置網，雖被漁民即時救起，但因長時間無法浮出水面換氣而有輕微嗆水現象，導致肺部感染。目前正在接受霧化治療，呼吸雜音已逐漸減少。每次做完治療後，牠都會舒服地瞇起眼睛休息。', '醫療照護', 'savedcases/ball.png'),
 (10, NOW(), '金金', '玳瑁', '花蓮七星潭', '金金因背甲疑似遭受撞擊而有裂痕，所幸未傷及內臟。經過修補手術後，背甲裂縫已用醫療級樹脂固定。目前傷口乾燥無感染，正在淺水池中練習負重游泳，以防背甲癒合不正。雖然游得還不快，但牠非常努力練習平衡。', '休養觀察', 'savedcases/gold.png');
+
+-- 設定 AUTO_INCREMENT 起始值
+--
+ALTER TABLE `RESCUES`
+  AUTO_INCREMENT = 11;
+
+-- ==================================
