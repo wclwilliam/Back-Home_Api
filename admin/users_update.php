@@ -37,7 +37,7 @@ if (!is_array($body)) {
 $ADMIN_NAME   = isset($body['ADMIN_NAME']) ? trim($body['ADMIN_NAME']) : null;
 $ADMIN_ROLE   = isset($body['ADMIN_ROLE']) ? trim($body['ADMIN_ROLE']) : null;
 $ADMIN_ACTIVE = isset($body['ADMIN_ACTIVE']) ? (int)$body['ADMIN_ACTIVE'] : null;
-$password     = isset($body['PASSWORD']) ? (string)$body['PASSWORD'] : null;
+$ADMIN_PWD    = isset($body['ADMIN_PWD']) ? (string)$body['ADMIN_PWD'] : null;
 
 try {
     // 3) 確認帳號存在
@@ -78,14 +78,14 @@ try {
     }
 
     // 5) 密碼：只有「有值且非空字串」才更新
-    if ($password !== null && $password !== '') {
-        if (strlen($password) < 6) {
+    if ($ADMIN_PWD !== null && $ADMIN_PWD !== '') {
+        if (strlen($ADMIN_PWD) < 6) {
             http_response_code(400);
             echo json_encode(["error" => "password must be at least 6 characters"]);
             exit;
         }
 
-        $hash = password_hash($password, PASSWORD_BCRYPT);
+        $hash = password_hash($ADMIN_PWD, PASSWORD_BCRYPT);
         if ($hash === false) {
             http_response_code(500);
             echo json_encode(["error" => "failed to hash password"]);
