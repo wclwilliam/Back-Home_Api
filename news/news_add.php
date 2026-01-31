@@ -21,33 +21,45 @@ if (empty($title) || empty($category) || empty($content)) {
     exit();
 }
 
-// 圖片處理邏輯保持不變...
-$image_path = null;
-if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-    // ... 原有的圖片驗證與上傳邏輯 ...
-    $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-    $filename = time() . "_" . bin2hex(random_bytes(8)) . "." . $ext;
-    $upload_dir = __DIR__ . "/../uploads/news/";
+// 1. 強制檢查圖片是否上傳 (必填)
+if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+    http_response_code(400);
+    echo json_encode(["error" => "請務必上傳封面圖片"]);
+    exit();
+}
 
-    // 2. 檢查資料夾是否存在，不存在則建立 (權限設為 0755)
-    if (!is_dir($upload_dir)) {
-        // mkdir 的第三個參數 true 代表允許建立多層級目錄
-        if (!mkdir($upload_dir, 0755, true)) {
-            http_response_code(500);
-            echo json_encode(["error" => "無法建立上傳目錄"]);
-            exit();
-        }
-    }
+// 2. 替代 finfo 的格式檢查：使用 getimagesize
+$check = getimagesize($_FILES['image']['tmp_name']);
+if ($check === false) {
+    http_response_code(400);
+    echo json_encode(["error" => "檔案不是有效的圖片"]);
+    exit();
+}
 
-    // 3. 執行檔案移動
-    if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $filename)) {
-        // 存入資料庫的路徑建議只存檔名
-        $image_path = $filename;
-    } else {
-        http_response_code(500);
-        echo json_encode(["error" => "檔案移動失敗，請檢查資料夾寫入權限"]);
-        exit();
-    }
+// 限制只允許 JPG 和 PNG (MIME type 判斷)
+$allowed_mimes = ['image/jpeg', 'image/png'];
+if (!in_array($check['mime'], $allowed_mimes)) {
+    http_response_code(400);
+    echo json_encode(["error" => "檔案格式錯誤，僅限 JPG, PNG"]);
+    exit();
+}
+
+// 3. 準備資料夾與檔名 (維持原樣)
+$ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+$filename = time() . "_" . bin2hex(random_bytes(8)) . "." . $ext;
+$upload_dir = __DIR__ . "/../uploads/news/";
+
+if (!is_dir($upload_dir)) {
+    mkdir($upload_dir, 0755, true);
+}
+
+// 4. 執行移動
+if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $filename)) {
+    $image_path = $filename;
+} else {
+    http_response_code(500);
+    echo json_encode(["error" => "檔案移動失敗"]);
+    exit();
 }
 
 try {
@@ -79,5 +91,5 @@ try {
     ]);
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(["error" => "資料庫寫入失敗: " . $e->getMessage()]);
+    echo json_encode(["error" => "資料儲存失敗，請確保圖片已正確上傳"]);
 }
