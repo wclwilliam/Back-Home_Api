@@ -7,18 +7,56 @@
 
   if($_SERVER['REQUEST_METHOD'] == "GET"){
     
-    $sql = "SELECT * FROM `impact_metrics` ORDER BY 'data_year' DESC";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
+    // 1. 取得 Query 參數中的 id
+    $id = $_GET['id'] ?? null;
 
-    // 1. 先抓取原始扁平資料
-    $raw_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    try {
+        if ($id) {
+            // --- 情況 A：取得特定 ID 的單筆資料 ---
+            $sql = "SELECT * FROM `impact_metrics` WHERE `IMPACT_METRICS_ID` = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$result) {
+                http_response_code(404);
+                echo json_encode(["status" => "error", "message" => "找不到該筆資料"]);
+                exit();
+            }
+            // 轉化為與列表一致的格式
+            $formatted_output = formatImpactRow($result);
+        } else {
+            // --- 情況 B：取得所有資料 (原本的邏輯) ---
+            $sql = "SELECT * FROM `impact_metrics` ORDER BY `DATA_YEAR` DESC";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+            $raw_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $formatted_output = [];
+            foreach ($raw_data as $row) {
+                $formatted_output[] = formatImpactRow($row);
+            }
+        }
+
+        // 輸出 JSON
+        header('Content-Type: application/json');
+        echo json_encode($formatted_output);
+
+    } catch (PDOException $e) {
+        http_response_code(500);
+        echo json_encode(["status" => "error", "message" => "資料庫錯誤：" . $e->getMessage()]);
+    }
     
-    // 2. 準備一個新陣列來存放轉換後的格式
-    $formatted_data = [];
+    $pdo = null;
+    exit();
+}
 
-    foreach ($raw_data as $row) {
-    $formatted_data[] = [
+/**
+ * 封裝格式轉換邏輯，確保單筆與多筆輸出結構相同
+ */
+function formatImpactRow($row) {
+    return [
         "year" => (int)$row['DATA_YEAR'],
         "id" => (int)$row['IMPACT_METRICS_ID'],
         "upload_date" => $row['UPLOAD_DATE'],
@@ -26,7 +64,8 @@
             "total_rescued_turtles" => (int)$row['TURTLES_IN_REHAB'],
             "hatchlings_guided_to_sea" => (int)$row['HATCHLINGS_GUIDED'],
             "patrolled_coastline_km" => (int)$row['COASTLINE_PATROLLED'],
-            "professional_medical_surgeries" => (int)$row['MEDICAL_SURGERIES']
+            "professional_medical_surgeries" => (int)$row['MEDICAL_SURGERIES'],
+            "turtles_released" => (int)$row['TURTLES_RELEASED'],
         ],
         "ocean_debris_removed_kg" => [
             "plastic_bottles" => (float)$row['PET_BOTTLES'],
@@ -41,16 +80,8 @@
         ]
     ];
 }
-    
-    // 3. 輸出轉換後的資料
-    header('Content-Type: application/json'); // 確保瀏覽器知道這是 JSON
-    echo json_encode($formatted_data);
-    
-    $pdo = null;
-    exit();
-  }
 
-  // --- 錯誤處理 ---
-  http_response_code(403);
-  echo json_encode(["error" => "denied"]);
+// --- 錯誤處理 ---
+http_response_code(403);
+echo json_encode(["error" => "denied"]);
 ?>

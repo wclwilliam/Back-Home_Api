@@ -7,16 +7,41 @@
 
   if($_SERVER['REQUEST_METHOD'] == "GET"){
     
-    $sql = "SELECT * FROM `financial_reports` ORDER BY 'data_year' DESC";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
+    // 1. 檢查是否有傳入 id 參數 (例如：api.php?id=5)
+    $id = $_GET['id'] ?? null;
 
-    // 1. 先抓取原始扁平資料
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // 3. 輸出轉換後的資料
-    header('Content-Type: application/json'); // 確保瀏覽器知道這是 JSON
-    echo json_encode($data);
+    try {
+        if ($id) {
+            // --- 情況 A：取得單一筆資料 ---
+            $sql = "SELECT * FROM `financial_reports` WHERE `FINANCIAL_REPORT_ID` = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            // 使用 fetch 抓取單筆物件，若找不到則回傳 false
+            $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$data) {
+                http_response_code(404);
+                echo json_encode(["status" => "error", "message" => "找不到該筆資料"]);
+                exit();
+            }
+        } else {
+            // --- 情況 B：取得所有資料 ---
+            $sql = "SELECT * FROM `financial_reports` ORDER BY `DATA_YEAR` DESC";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        // 輸出 JSON
+        header('Content-Type: application/json');
+        echo json_encode($data);
+
+    } catch (PDOException $e) {
+        http_response_code(500);
+        echo json_encode(["status" => "error", "message" => "資料庫錯誤：" . $e->getMessage()]);
+    }
     
     $pdo = null;
     exit();
