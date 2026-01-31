@@ -27,6 +27,7 @@ $off   = (int)$offset;
 
 // ---------- 2. sortBy 對應 SQL ----------
 $orderBy = "ADMIN_CREATED_AT DESC";
+$usePhpSort = false;
 
 switch ($sortBy) {
     case 'created_at_asc':
@@ -42,10 +43,10 @@ switch ($sortBy) {
         $orderBy = "ADMIN_LAST_LOGIN_TIME DESC";
         break;
     case 'name_asc':
-        $orderBy = "ADMIN_NAME ASC";
-        break;
     case 'name_desc':
-        $orderBy = "ADMIN_NAME DESC";
+        // 姓名排序改用 PHP，先用預設排序取資料
+        $orderBy = "ADMIN_ID ASC";
+        $usePhpSort = true;
         break;
     case 'status_enabled_first':
         $orderBy = "ADMIN_ACTIVE DESC";
@@ -95,6 +96,15 @@ try {
     $listStmt = $pdo->prepare($listSQL);
     $listStmt->execute($params);
     $rows = $listStmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // ---------- 5.5 若需要用 PHP 排序姓名 ----------
+    if ($usePhpSort && class_exists('Collator')) {
+        $collator = new Collator('zh_TW');
+        usort($rows, function($a, $b) use ($collator, $sortBy) {
+            $result = $collator->compare($a['ADMIN_NAME'], $b['ADMIN_NAME']);
+            return ($sortBy === 'name_desc') ? -$result : $result;
+        });
+    }
 
     // ---------- 6. 成功回傳 ----------
     echo json_encode([

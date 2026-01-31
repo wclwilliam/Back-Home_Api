@@ -21,6 +21,11 @@ try {
             MEMBER_ID,
             MEMBER_REALNAME,
             MEMBER_EMAIL,
+            MEMBER_PHONE,
+            ID_NUMBER,
+            BIRTHDAY,
+            EMERGENCY,
+            EMERGENCY_TEL,
             MEMBER_ACTIVE
         FROM MEMBERS
         WHERE MEMBER_ID = :member_id

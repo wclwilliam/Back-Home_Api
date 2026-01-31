@@ -1,0 +1,79 @@
+<?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Content-Type: application/json; charset=utf-8');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit; }
+
+// 引入資料庫連線 (請確認路徑正確)
+  require_once("../common/cors.php");
+  require_once("../common/conn.php");
+
+try {
+    // 1. 接收前端傳來的資料
+    $id       = $_POST['id'] ?? '';
+    $title    = $_POST['title'] ?? '';
+    $category = $_POST['category'] ?? '';
+    $content  = $_POST['content'] ?? '';
+    $status   = $_POST['status'] ?? 'draft';
+
+    // 2. 驗證必填
+    if (empty($id) || empty($title)) {
+        echo json_encode(['success' => false, 'error' => '缺少 ID 或標題']);
+        exit;
+    }
+
+    // 3. 處理圖片上傳 (維持你原本的邏輯)
+    $imagePath = null;
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = '../uploads/news/';
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+        
+        $fileExtension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+        $fileName = 'news_' . time() . '.' . $fileExtension;
+        $targetPath = $uploadDir . $fileName;
+
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+            $imagePath = 'news/' . $fileName; // 配合你資料庫的格式
+        }
+    }
+
+    // 4. 正確的 SQL 語句 (欄位名稱必須與截圖中的大寫一致)
+    if ($imagePath) {
+        // 有新圖片時的更新
+        $sql = "UPDATE `NEWS` 
+                SET `NEWS_TITLE` = ?, 
+                    `NEWS_CATEGORY` = ?, 
+                    `NEWS_CONTENT` = ?, 
+                    `NEWS_IMAGE_PATH` = ?, 
+                    `NEWS_STATUS` = ?
+                WHERE `NEWS_ID` = ?";
+        $stmt = $pdo->prepare($sql);
+        $params = [$title, $category, $content, $imagePath, $status, $id];
+    } else {
+        // 沒有新圖片時，不要去動 NEWS_IMAGE_PATH
+        $sql = "UPDATE `NEWS` 
+                SET `NEWS_TITLE` = ?, 
+                    `NEWS_CATEGORY` = ?, 
+                    `NEWS_CONTENT` = ?, 
+                    `NEWS_STATUS` = ?
+                WHERE `NEWS_ID` = ?";
+        $stmt = $pdo->prepare($sql);
+        $params = [$title, $category, $content, $status, $id];
+    }
+
+    if ($stmt->execute($params)) {
+        echo json_encode([
+            'success' => true, 
+            'message' => '更新成功',
+            'debug_id' => $id // 回傳 ID 方便你確認
+        ]);
+    } else {
+        echo json_encode(['success' => false, 'error' => '資料庫更新失敗']);
+    }
+
+} catch (PDOException $e) {
+    echo json_encode(['success' => false, 'error' => 'SQL錯誤: ' . $e->getMessage()]);
+}
+?>

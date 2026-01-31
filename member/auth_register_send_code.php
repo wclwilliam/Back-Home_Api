@@ -45,22 +45,22 @@ try {
     $pdo->beginTransaction();
 
     // 1) 檢查 email 是否已註冊
-    $checkMember = $pdo->prepare("SELECT member_id, member_active FROM members WHERE member_email = :email LIMIT 1");
+    $checkMember = $pdo->prepare("SELECT MEMBER_ID, MEMBER_ACTIVE FROM MEMBERS WHERE MEMBER_EMAIL = :email LIMIT 1");
     $checkMember->execute([":email" => $email]);
     $existingMember = $checkMember->fetch(PDO::FETCH_ASSOC);
 
     if ($existingMember) {
-        if ((int)$existingMember['member_active'] === 1) {
+        if ((int)$existingMember['MEMBER_ACTIVE'] === 1) {
             $pdo->rollBack();
             http_response_code(409);
             echo json_encode(["error" => "email already registered"]);
             exit;
         }
 
-        $memberId = (int)$existingMember['member_id'];
+        $memberId = (int)$existingMember['MEMBER_ID'];
 
         // 未啟用允許重新申請：清除舊驗證記錄（最簡做法）
-        $deleteOld = $pdo->prepare("DELETE FROM member_email_verification WHERE member_id = :member_id");
+        $deleteOld = $pdo->prepare("DELETE FROM MEMBER_EMAIL_VERIFICATION WHERE MEMBER_ID = :member_id");
         $deleteOld->execute([':member_id' => $memberId]);
     } else {
         // 2) 建立臨時會員記錄（未啟用）
