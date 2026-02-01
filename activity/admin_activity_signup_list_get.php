@@ -6,10 +6,10 @@ require_once("../common/conn.php");
 header('Content-Type: application/json; charset=utf-8');
 
 try {
-  if(!isset($_GET['activity_id']) || empty($_GET['activity_id'])){
+    if(!isset($_GET['activity_id']) || empty($_GET['activity_id'])){
     throw new Exception("缺少活動ID參數");
-  }
-  $activityId = (int)$_GET['activity_id'];
+    }
+    $activityId = (int)$_GET['activity_id'];
 
     // 1. 基礎 SQL：撈出「對應」活動的所有資訊
     $sql = "

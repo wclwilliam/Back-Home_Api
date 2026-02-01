@@ -21,7 +21,7 @@ try {
     }
 
     // 依照「建立時間」排序 (新的在上面)
-    $sql .= " ORDER BY A.ACTIVITY_ID DESC"; 
+    $sql .= " ORDER BY A.ACTIVITY_ID ASC"; 
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
