@@ -11,16 +11,16 @@ require_once("../common/cors.php");
 // 載入資料庫連線設定
 require_once("../common/conn.php");
 
-// ========== 驗證 POST 請求 ==========
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+// ========== 驗證 DELETE 請求 ==========
+if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
     header('Content-Type: application/json');
-    http_response_code(403);
-    echo json_encode(["error" => "denied"]);
+    http_response_code(405); // Method Not Allowed
+    echo json_encode(["error" => "只允許 DELETE 請求"]);
     exit();
 }
 
-// ========== 取得 ID 參數 ==========
-$rescueId = $_POST['id'] ?? null;
+// ========== 取得 ID 參數（從 URL query string） ==========
+$rescueId = $_GET['id'] ?? null;
 
 if (!$rescueId) {
     header('Content-Type: application/json');

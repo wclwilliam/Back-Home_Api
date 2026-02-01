@@ -16,6 +16,9 @@ define('UPLOAD_ACTIVITIES_DIR', $_SERVER['DOCUMENT_ROOT'] . '/api/uploads/actCov
 // 最新消息圖片目錄
 define('UPLOAD_NEWS_DIR', $_SERVER['DOCUMENT_ROOT'] . '/api/uploads/news');
 
+// 徵信資料圖片目錄
+define('UPLOAD_REPORTS_DIR', $_SERVER['DOCUMENT_ROOT'] . '/api/uploads/reports');
+
 // ========== 圖片設定 ==========
 
 // 最大檔案大小 (10MB)
