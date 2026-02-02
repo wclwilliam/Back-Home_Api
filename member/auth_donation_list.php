@@ -1,10 +1,11 @@
 <?php
 require_once("../common/cors.php");
 require_once("../common/conn.php");
+require_once("./auth_guard.php");
 
 if($_SERVER['REQUEST_METHOD'] == "GET"){
-    // 測試環境先寫死 MEMBER_ID = 1
-    $member_id = 1; 
+    // 驗證會員身份，取得登入者 member_id
+    $member_id = requireAuth($pdo); 
     
     // 關聯 subscription 表來確認該筆捐款是否屬於某個定期計畫
     $sql = "SELECT d.*, s.STATUS as sub_status 
