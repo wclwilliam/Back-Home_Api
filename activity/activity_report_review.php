@@ -44,7 +44,7 @@ try {
     $insertSql = "
     INSERT INTO ACTIVITY_REVIEW_REPORTS
     ( REVIEW_ID, USER_ID, REASON, REPORT_STATUS, CREATED_AT )
-    VALUES ( ? , ? , ?, 'pending', NOW() )";
+    VALUES ( ? , ? , ?, '待處理', NOW() )";
     $insertStmt = $pdo->prepare($insertSql);
     $insertStmt->execute([$reviewId , $userId, $reason]);
 
