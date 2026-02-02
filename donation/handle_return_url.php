@@ -102,7 +102,7 @@ try {
           
         // 先建立定期定額主表資料
             // 欄位對照：MEMBER_ID, AMOUNT, START_DATE, STATUS (預設為 1)
-            $sqlSub = "INSERT INTO subscription (MEMBER_ID, AMOUNT, START_DATE, STATUS, ORDER_ID) VALUES (?, ?, CURDATE(), 1 , ?)";
+            $sqlSub = "INSERT INTO SUBSCRIPTION (MEMBER_ID, AMOUNT, START_DATE, STATUS, ORDER_ID) VALUES (?, ?, CURDATE(), 1 , ?)";
             $stmtSub = $pdo->prepare($sqlSub);
             $stmtSub->execute([$member_id, $amount, $order_id]);
             

@@ -3,10 +3,11 @@ require_once("../common/cors.php");
 require_once("../common/conn.php");
 
 if($_SERVER['REQUEST_METHOD'] == "GET"){
-    $member_id = 1; 
+    // $member_id = 1; 
+    $member_id = $_GET["member_id"];
 
     // 只抓取 STATUS = 1 (正常扣款中) 的訂閱
-    $sql = "SELECT * FROM subscription 
+    $sql = "SELECT * FROM SUBSCRIPTION 
             WHERE MEMBER_ID = :mid AND STATUS = 1";
             
     $stmt = $pdo->prepare($sql);

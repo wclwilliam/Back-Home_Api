@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 
     try {
         // 4. 準備 SQL 刪除語法
-        $sql = "DELETE FROM `impact_metrics` WHERE `IMPACT_METRICS_ID` = :id";
+        $sql = "DELETE FROM `IMPACT_METRICS` WHERE `IMPACT_METRICS_ID` = :id";
         $stmt = $pdo->prepare($sql);
         
         // 5. 綁定參數並執行

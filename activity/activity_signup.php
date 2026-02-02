@@ -66,15 +66,16 @@ try {
     // 寫入報名資料表 (ACTIVITY_SIGNUPS)
     $insertSql = "
         INSERT INTO ACTIVITY_SIGNUPS 
-        (USER_ID, ACTIVITY_ID, REAL_NAME, ID_NUMBER, PHONE, EMAIL, BIRTHDAY, EMERGENCY, EMERGENCY_TEL, CREATED_AT)
+        (USER_ID, ACTIVITY_ID, ATTENDED, REAL_NAME, ID_NUMBER, PHONE, EMAIL, BIRTHDAY, EMERGENCY, EMERGENCY_TEL, CREATED_AT)
         VALUES 
-        (:uid, :aid, :name, :idnum, :phone, :email, :bday, :emg, :emgTel, NOW())
+        (:uid, :aid,:attend, :name, :idnum, :phone, :email, :bday, :emg, :emgTel, NOW())
     ";
     
     $insertStmt = $pdo->prepare($insertSql);
     $insertStmt->execute([
         ':uid' => $userId,
         ':aid' => $activityId,
+        ':attend' => 1,
         ':name' => $input['name'],
         ':idnum' => $input['idNumber'],
         ':phone' => $input['phone'],

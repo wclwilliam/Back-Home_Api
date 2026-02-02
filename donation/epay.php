@@ -2,7 +2,6 @@
   date_default_timezone_set("Asia/Taipei");
 
   if(isset($_POST["UseEcpay"]) && $_POST["UseEcpay"] == "ecpay"){
-    require_once("../common/conn.php");
     require_once("./generate_mac_value.php");
 
     // 路徑判斷
@@ -27,7 +26,7 @@
       "TotalAmount" => $_POST["TotalAmount"],
       "TradeDesc" => $_POST["TradeDesc"],
       "ItemName" => $_POST["ItemName"],
-      "CustomField1" => $_POST["CustomField1"], // 建議這裡帶入 member_id
+      "CustomField1" => $_POST["CustomField1"], // member_id
       "CustomField2" => $_POST["CustomField2"], // once or monthly
       "ReturnURL" => $backurl . "/handle_return_url.php",
       "ChoosePayment" => "Credit", // 定期定額必須是 Credit
