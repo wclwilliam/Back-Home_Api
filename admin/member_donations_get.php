@@ -5,7 +5,7 @@ require_once '../common/conn.php';
 require_once '../common/cors.php'; 
 
 // 取得前端傳來的會員 ID
-$member_id = $_GET['member_id'] ?? $_GET['id'] ?? 0;
+$member_id = $_GET['member_id'] ?? $_GET['MEMBER_ID'] ?? $_GET['ID'] ?? 0;
 
 if ($member_id <= 0) {
     echo json_encode(["status" => "error", "message" => "ID 錯誤，收到的是: " . json_encode($_GET)]);
