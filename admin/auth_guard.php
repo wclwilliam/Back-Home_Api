@@ -14,7 +14,7 @@
  * $admin = requireAdminAuth();
  */
 
-require_once(__DIR__ . "/../common/config.php");
+require_once(__DIR__ . "/../common/config_loader.php");
 
 if (!function_exists('admin_json_out')) {
     function admin_json_out(int $code, array $payload): void
