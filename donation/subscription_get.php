@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     
         try {
             // 2. 執行查詢
-            $sql = "SELECT * FROM subscription WHERE MEMBER_ID = :mid AND STATUS = 1";
+            $sql = "SELECT * FROM SUBSCRIPTION WHERE MEMBER_ID = :mid AND STATUS = 1";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['mid' => $member_id]);
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);

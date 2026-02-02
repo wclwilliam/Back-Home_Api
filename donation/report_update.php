@@ -116,7 +116,7 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE)
 
 // ========== 更新資料庫 ==========
 try {
-    $updateSql = "UPDATE `financial_reports` 
+    $updateSql = "UPDATE `FINANCIAL_REPORTS` 
                 SET `DATA_YEAR` = ?, 
                     `FILE_PATH` = ? 
                 WHERE `FINANCIAL_REPORT_ID` = ?";

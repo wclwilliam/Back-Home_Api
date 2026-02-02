@@ -2,7 +2,6 @@
   date_default_timezone_set("Asia/Taipei");
 
   if(isset($_POST["UseEcpay"]) && $_POST["UseEcpay"] == "ecpay"){
-    require_once("../common/conn.php");
     require_once("./generate_mac_value.php");
 
     // 路徑判斷

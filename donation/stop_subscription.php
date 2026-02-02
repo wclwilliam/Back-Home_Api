@@ -29,7 +29,7 @@ if (!$member_id) {
 try {
     // 3. 資料庫查詢 (使用 PDO 預處理，防止 SQL 注入)
     // ? 是佔位符，代表之後會補上變數
-    $sql = "SELECT ORDER_ID, AMOUNT FROM subscription WHERE MEMBER_ID = ? AND STATUS = 1 ORDER BY START_DATE DESC LIMIT 1";
+    $sql = "SELECT ORDER_ID, AMOUNT FROM SUBSCRIPTION WHERE MEMBER_ID = ? AND STATUS = 1 ORDER BY START_DATE DESC LIMIT 1";
     $stmt = $pdo->prepare($sql);
     
     // 將變數填入佔位符並執行查詢
@@ -85,7 +85,7 @@ try {
     if (isset($response['RtnCode']) && $response['RtnCode'] == '1') {
         
         // 成功後，同步更新自己資料庫的狀態
-        $update_sql = "UPDATE subscription SET STATUS = 0, END_DATE = NOW() WHERE ORDER_ID = ?";
+        $update_sql = "UPDATE SUBSCRIPTION SET STATUS = 0, END_DATE = NOW() WHERE ORDER_ID = ?";
         $update_stmt = $pdo->prepare($update_sql);
         $update_stmt->execute([$order_id]);
         

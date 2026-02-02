@@ -13,7 +13,7 @@
     try {
         if ($id) {
             // --- 情況 A：取得特定 ID 的單筆資料 ---
-            $sql = "SELECT * FROM `impact_metrics` WHERE `IMPACT_METRICS_ID` = :id";
+            $sql = "SELECT * FROM `IMPACT_METRICS` WHERE `IMPACT_METRICS_ID` = :id";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();

@@ -7,7 +7,7 @@
     // 使用 JOIN 語法：
     // d.* 代表取捐款表所有欄位，m.email 代表取會員表的 email
     $sql = "SELECT d.*, m.member_email 
-            FROM `donations` AS d
+            FROM `DONATIONS` AS d
             LEFT JOIN `members` AS m ON d.member_id = m.member_id
             ORDER BY d.donation_date DESC";
 
