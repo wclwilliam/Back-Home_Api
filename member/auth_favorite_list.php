@@ -2,14 +2,15 @@
 // 1. 載入 CORS 與 連線設定
 require_once("../common/cors.php");
 require_once("../common/conn.php");
+require_once("./auth_guard.php");
 
 // 確保瀏覽器輸出為 JSON 格式
 header('Content-Type: application/json; charset=utf-8');
 
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
     try {
-        // 先寫死 MEMBER_ID 為 1 進行測試
-        $member_id = 1; 
+        // 驗證會員身份，取得登入者 member_id
+        $member_id = requireAuth($pdo); 
 
         // 2. 準備 SQL (對應你的 ACTIVITIES 與 FAVORITES 表)
         $sql = "SELECT 
