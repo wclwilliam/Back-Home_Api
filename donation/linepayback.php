@@ -65,7 +65,7 @@ if (isset($resData['returnCode']) && $resData['returnCode'] === '0000') {
     
     // --- 根據圖片結構寫入資料庫 ---
     try {
-        $sql = "INSERT INTO donations (
+        $sql = "INSERT INTO DONATIONS (
             MEMBER_ID, 
             AMOUNT, 
             DONATION_DATE, 
