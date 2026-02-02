@@ -1,4 +1,4 @@
--- phpMyAdmin SQL Dump
+﻿-- phpMyAdmin SQL Dump
 -- version 5.1.2
 -- https://www.phpmyadmin.net/
 --
@@ -24,10 +24,10 @@ SET time_zone = "+08:00";
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `activities`
+-- 資料表結構 `ACTIVITIES`
 --
 
-CREATE TABLE `activities` (
+CREATE TABLE `ACTIVITIES` (
   `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動編號',
   `ACTIVITY_TITLE` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '活動標題',
   `ACTIVITY_CATEGORY_ID` int(11) NOT NULL COMMENT '類別:1淨灘,2巡守,3照護',
@@ -47,10 +47,10 @@ CREATE TABLE `activities` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- 傾印資料表的資料 `activities`
+-- 傾印資料表的資料 `ACTIVITIES`
 --
 
-INSERT INTO `activities` (`ACTIVITY_ID`, `ACTIVITY_TITLE`, `ACTIVITY_CATEGORY_ID`, `ACTIVITY_DESCRIPTION`, `ACTIVITY_NOTES`, `ACTIVITY_LOCATION`, `ACTIVITY_LOCATION_AREA`, `ACTIVITY_COVER_IMAGE`, `ACTIVITY_START_DATETIME`, `ACTIVITY_END_DATETIME`, `ACTIVITY_MAX_PEOPLE`, `ACTIVITY_SIGNUP_PEOPLE`, `ACTIVITY_SIGNUP_END_DATETIME`, `ACTIVITY_STATUS`, `ADMIN_ID`, `ACTIVITY_CREATED_AT`) VALUES
+INSERT INTO `ACTIVITIES` (`ACTIVITY_ID`, `ACTIVITY_TITLE`, `ACTIVITY_CATEGORY_ID`, `ACTIVITY_DESCRIPTION`, `ACTIVITY_NOTES`, `ACTIVITY_LOCATION`, `ACTIVITY_LOCATION_AREA`, `ACTIVITY_COVER_IMAGE`, `ACTIVITY_START_DATETIME`, `ACTIVITY_END_DATETIME`, `ACTIVITY_MAX_PEOPLE`, `ACTIVITY_SIGNUP_PEOPLE`, `ACTIVITY_SIGNUP_END_DATETIME`, `ACTIVITY_STATUS`, `ADMIN_ID`, `ACTIVITY_CREATED_AT`) VALUES
 (1, '2024 基隆海科館一日海龜照護員體驗', 3, '您想知道受傷海龜在收容中心是如何度過每一天的嗎？本次活動將帶領志工深入基隆海科館的後場，體驗一日照護員的工作。內容包含：協助準備海龜的海鮮大餐（切魚、去殼）、刷洗海龜背甲上的藻類、以及協助獸醫進行例行性的體重測量與傷口換藥。這是一份體力活，也需要極大的耐心，但當看到海龜大口進食的模樣，所有的疲憊都會煙消雲散。透過近距離接觸，您將深刻理解海洋廢棄物對海龜造成的具體傷害。', '1. 本活動需進入後場管制區，請務必攜帶身分證件換證。\n2. 照護工作包含接觸生鮮餌料（魚蝦），若對海鮮嚴重過敏者請勿報名。\n3. 請穿著防水防滑的膠鞋（雨鞋最佳），並自備一套換洗衣物，工作過程中容易弄濕衣褲。\n4. 活動期間嚴禁使用閃光燈拍照，以免驚嚇海龜。\n5. 中午提供員工餐廳餐券。', '基隆市中正區國立海洋科技博物館', '北部', 'care_01.png', '2024-03-10 09:00:00', '2024-03-10 16:00:00', 15, 15, '2024-03-05 23:59:59', '1', 'admin001', '2024-01-15 10:00:00'),
 (2, '2024 桃園 Xpark 海洋生物救援講座', 3, '當我們在海邊發現擱淺的海龜或鯨豚時，第一時間該如何處理？正確的急救步驟可能決定牠們的生死。本次講座與 Xpark 水族館合作，邀請專業獸醫講授海洋生物救援的三要四不原則。課程包含模擬道具操作，讓大家練習保濕、扶正與搬運的正確姿勢。這是一堂含金量極高的實務課程，適合所有熱愛海洋、經常前往海邊活動的朋友。結訓後將頒發「海洋救援種子志工」證書，讓您成為守護海洋的第一線力量。', '1. 本活動為室內講座結合部分實作，請穿著輕便好活動的服裝（褲裝為佳）。\n2. 模擬搬運操作需需兩人一組，請聽從講師指導用力，避免腰部受傷。\n3. 現場禁止錄影，但可拍照記錄投影片重點。\n4. 活動場地位於 Xpark 會議室，不包含水族館參觀門票，若需參觀請自行購票。\n5. 請自備筆記本與環保杯。', '桃園市中壢區置地廣場', '北部', 'care_02.png', '2024-04-14 14:00:00', '2024-04-14 17:00:00', 15, 13, '2024-04-10 23:59:59', '1', 'admin001', '2024-02-20 11:30:00'),
 (3, '2024 新北石門老梅綠石槽淨灘', 1, '春季是老梅綠石槽最美的季節，但也容易堆積海漂垃圾。本次活動旨在清除覆蓋在礁岩上的廢棄漁網與塑膠袋，避免影響藻類生長及海龜覓食。除了撿拾垃圾，我們還會進行簡單的生態解說，讓參與者了解綠石槽生態系的脆弱與重要性。活動結束後將進行垃圾分類與秤重，數據將回報給國際淨灘組織 ICC。希望能透過實際行動，喚起大眾對海洋環境的重視，讓這片美麗的海岸線能永續長存。', '1. 本次淨灘地點位於礁岩地形，行走較為困難，請務必穿著包覆性良好的防滑鞋或膠鞋，切勿穿著拖鞋或涼鞋。\n2. 建議穿著長褲以防被礁石割傷，並做好物理防曬。\n3. 活動當天請自備環保水瓶（現場提供大桶水補充），避免使用對海洋有害的防曬乳。\n4. 因活動區域緊鄰潮間帶，請嚴格遵守領隊指示，切勿單獨脫隊行動。', '新北市石門區老梅沙灘', '北部', 'beach_01.png', '2024-04-15 09:00:00', '2024-04-15 12:00:00', 20, 15, '2024-04-10 23:59:59', '1', 'admin001', '2024-02-15 10:00:00'),
@@ -85,19 +85,19 @@ INSERT INTO `activities` (`ACTIVITY_ID`, `ACTIVITY_TITLE`, `ACTIVITY_CATEGORY_ID
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `activity_categories`
+-- 資料表結構 `ACTIVITY_CATEGORIES`
 --
 
-CREATE TABLE `activity_categories` (
+CREATE TABLE `ACTIVITY_CATEGORIES` (
   `CATEGORY_ID` int(11) NOT NULL COMMENT '活動種類編號 (PK)',
   `CATEGORY_VALUE` varchar(50) NOT NULL COMMENT '活動種類名稱'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 傾印資料表的資料 `activity_categories`
+-- 傾印資料表的資料 `ACTIVITY_CATEGORIES`
 --
 
-INSERT INTO `activity_categories` (`CATEGORY_ID`, `CATEGORY_VALUE`) VALUES
+INSERT INTO `ACTIVITY_CATEGORIES` (`CATEGORY_ID`, `CATEGORY_VALUE`) VALUES
 (1, '淨灘'),
 (2, '照護'),
 (3, '巡守');
@@ -105,10 +105,10 @@ INSERT INTO `activity_categories` (`CATEGORY_ID`, `CATEGORY_VALUE`) VALUES
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `activity_photos`
+-- 資料表結構 `ACTIVITY_PHOTOS`
 --
 
-CREATE TABLE `activity_photos` (
+CREATE TABLE `ACTIVITY_PHOTOS` (
   `PHOTO_ID` int(11) NOT NULL COMMENT '照片編號',
   `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動編號',
   `PHOTO_URL` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '照片路徑 (檔名)',
@@ -120,10 +120,10 @@ CREATE TABLE `activity_photos` (
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `activity_results`
+-- 資料表結構 `ACTIVITY_RESULTS`
 --
 
-CREATE TABLE `activity_results` (
+CREATE TABLE `ACTIVITY_RESULTS` (
   `RESULT_ID` int(11) NOT NULL COMMENT '成果編號',
   `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動編號',
   `METRIC_ID` int(11) NOT NULL COMMENT '成果定義編號 (1-4:淨灘, 5-8:巡守, 9-12:照護)',
@@ -132,10 +132,10 @@ CREATE TABLE `activity_results` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='活動成果數據表';
 
 --
--- 傾印資料表的資料 `activity_results`
+-- 傾印資料表的資料 `ACTIVITY_RESULTS`
 --
 
-INSERT INTO `activity_results` (`RESULT_ID`, `ACTIVITY_ID`, `METRIC_ID`, `VALUE`, `CREATED_AT`) VALUES
+INSERT INTO `ACTIVITY_RESULTS` (`RESULT_ID`, `ACTIVITY_ID`, `METRIC_ID`, `VALUE`, `CREATED_AT`) VALUES
 (1, 1, 9, '5', '2024-03-10 17:00:00'),
 (2, 1, 10, '12.5', '2024-03-10 17:00:00'),
 (3, 1, 11, '3', '2024-03-10 17:00:00'),
@@ -172,10 +172,10 @@ INSERT INTO `activity_results` (`RESULT_ID`, `ACTIVITY_ID`, `METRIC_ID`, `VALUE`
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `activity_reviews`
+-- 資料表結構 `ACTIVITY_REVIEWS`
 --
 
-CREATE TABLE `activity_reviews` (
+CREATE TABLE `ACTIVITY_REVIEWS` (
   `REVIEW_ID` int(11) NOT NULL COMMENT '心得編號',
   `USER_ID` int(11) NOT NULL COMMENT '會員編號',
   `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動編號',
@@ -187,10 +187,10 @@ CREATE TABLE `activity_reviews` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='活動心得留言表';
 
 --
--- 傾印資料表的資料 `activity_reviews`
+-- 傾印資料表的資料 `ACTIVITY_REVIEWS`
 --
 
-INSERT INTO `activity_reviews` (`REVIEW_ID`, `USER_ID`, `ACTIVITY_ID`, `RATING`, `CONTENT`, `IS_VISIBLE`, `LIKE_COUNT`, `CREATED_AT`) VALUES
+INSERT INTO `ACTIVITY_REVIEWS` (`REVIEW_ID`, `USER_ID`, `ACTIVITY_ID`, `RATING`, `CONTENT`, `IS_VISIBLE`, `LIKE_COUNT`, `CREATED_AT`) VALUES
 (1, 1, 1, 5, '終於摸到海龜背甲了！原來刷背這麼費力，但看到海龜乾淨的樣子很有成就感。', 1, 12, '2024-03-11 10:30:00'),
 (2, 2, 1, 5, '切魚切到手軟，照護員真的太偉大了。學到很多關於海龜救傷的知識。', 1, 8, '2024-03-11 14:20:00'),
 (3, 3, 1, 4, '雖然全身弄得濕答答，且後場味道有點重，但這是很真實的體驗，推薦！', 1, 3, '2024-03-12 09:15:00'),
@@ -224,29 +224,29 @@ INSERT INTO `activity_reviews` (`REVIEW_ID`, `USER_ID`, `ACTIVITY_ID`, `RATING`,
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `activity_reviews_likes`
+-- 資料表結構 `ACTIVITY_REVIEWS_LIKES`
 --
 
-CREATE TABLE `activity_reviews_likes` (
+CREATE TABLE `ACTIVITY_REVIEWS_LIKES` (
   `REVIEW_ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
   `CREATED_AT` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 傾印資料表的資料 `activity_reviews_likes`
+-- 傾印資料表的資料 `ACTIVITY_REVIEWS_LIKES`
 --
 
-INSERT INTO `activity_reviews_likes` (`REVIEW_ID`, `USER_ID`, `CREATED_AT`) VALUES
+INSERT INTO `ACTIVITY_REVIEWS_LIKES` (`REVIEW_ID`, `USER_ID`, `CREATED_AT`) VALUES
 (1, 3, '2026-01-31 13:17:01');
 
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `activity_review_reports`
+-- 資料表結構 `ACTIVITY_REVIEW_REPORTS`
 --
 
-CREATE TABLE `activity_review_reports` (
+CREATE TABLE `ACTIVITY_REVIEW_REPORTS` (
   `REPORT_ID` int(11) NOT NULL,
   `REVIEW_ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL COMMENT '檢舉人ID',
@@ -256,19 +256,19 @@ CREATE TABLE `activity_review_reports` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 傾印資料表的資料 `activity_review_reports`
+-- 傾印資料表的資料 `ACTIVITY_REVIEW_REPORTS`
 --
 
-INSERT INTO `activity_review_reports` (`REPORT_ID`, `REVIEW_ID`, `USER_ID`, `REASON`, `REPORT_STATUS`, `CREATED_AT`) VALUES
+INSERT INTO `ACTIVITY_REVIEW_REPORTS` (`REPORT_ID`, `REVIEW_ID`, `USER_ID`, `REASON`, `REPORT_STATUS`, `CREATED_AT`) VALUES
 (1, 3, 1, '3', '待處理', '2024-04-17 09:00:00');
 
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `activity_signups`
+-- 資料表結構 `ACTIVITY_SIGNUPS`
 --
 
-CREATE TABLE `activity_signups` (
+CREATE TABLE `ACTIVITY_SIGNUPS` (
   `ACTIVITY_SIGNUP_ID` int(11) NOT NULL COMMENT '報名編號',
   `USER_ID` int(11) NOT NULL COMMENT '會員編號',
   `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動編號',
@@ -286,19 +286,19 @@ CREATE TABLE `activity_signups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='活動報名資料表';
 
 --
--- 傾印資料表的資料 `activity_signups`
+-- 傾印資料表的資料 `ACTIVITY_SIGNUPS`
 --
 
-INSERT INTO `activity_signups` (`ACTIVITY_SIGNUP_ID`, `USER_ID`, `ACTIVITY_ID`, `ATTENDED`, `ACTIVITY_SVC_HOURS`, `REAL_NAME`, `ID_NUMBER`, `PHONE`, `EMAIL`, `BIRTHDAY`, `EMERGENCY`, `EMERGENCY_TEL`, `CANCEL`, `CREATED_AT`) VALUES
+INSERT INTO `ACTIVITY_SIGNUPS` (`ACTIVITY_SIGNUP_ID`, `USER_ID`, `ACTIVITY_ID`, `ATTENDED`, `ACTIVITY_SVC_HOURS`, `REAL_NAME`, `ID_NUMBER`, `PHONE`, `EMAIL`, `BIRTHDAY`, `EMERGENCY`, `EMERGENCY_TEL`, `CANCEL`, `CREATED_AT`) VALUES
 (1, 2, 1, 1, 7, '陳建豪', 'A123456789', '0912-345-678', 'chen.jh@example.com', '1990-05-15', '陳爸爸', '0911-222-333', 0, '2024-02-12 10:30:00');
 
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `admin_user`
+-- 資料表結構 `ADMIN_USER`
 --
 
-CREATE TABLE `admin_user` (
+CREATE TABLE `ADMIN_USER` (
   `ADMIN_ID` varchar(20) NOT NULL COMMENT '管理者帳號 / ID',
   `ADMIN_NAME` varchar(50) NOT NULL COMMENT '管理者姓名',
   `ADMIN_PWD` varchar(100) NOT NULL COMMENT '管理者登入密碼（雜湊）',
@@ -309,10 +309,10 @@ CREATE TABLE `admin_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='後台管理者';
 
 --
--- 傾印資料表的資料 `admin_user`
+-- 傾印資料表的資料 `ADMIN_USER`
 --
 
-INSERT INTO `admin_user` (`ADMIN_ID`, `ADMIN_NAME`, `ADMIN_PWD`, `ADMIN_ROLE`, `ADMIN_ACTIVE`, `ADMIN_CREATED_AT`, `ADMIN_LAST_LOGIN_TIME`) VALUES
+INSERT INTO `ADMIN_USER` (`ADMIN_ID`, `ADMIN_NAME`, `ADMIN_PWD`, `ADMIN_ROLE`, `ADMIN_ACTIVE`, `ADMIN_CREATED_AT`, `ADMIN_LAST_LOGIN_TIME`) VALUES
 ('admin001', '管理員一', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'super', 1, '2026-01-31 13:17:00', NULL),
 ('admin002', '管理員二', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'general', 1, '2026-01-31 13:17:00', NULL),
 ('admin003', '管理員三', '$2y$10$n.vPvLKvr9cYYQK.T7qHAOvsqi1Z19DPy/pDNSdwkS/qjb5kXqufW', 'general', 1, '2026-01-31 13:17:00', NULL);
@@ -320,10 +320,10 @@ INSERT INTO `admin_user` (`ADMIN_ID`, `ADMIN_NAME`, `ADMIN_PWD`, `ADMIN_ROLE`, `
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `donations`
+-- 資料表結構 `DONATIONS`
 --
 
-CREATE TABLE `donations` (
+CREATE TABLE `DONATIONS` (
   `DONATION_ID` int(11) NOT NULL COMMENT '捐款編號',
   `MEMBER_ID` int(11) NOT NULL COMMENT '會員識別編號',
   `AMOUNT` int(11) NOT NULL COMMENT '捐款金額',
@@ -335,10 +335,10 @@ CREATE TABLE `donations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 傾印資料表的資料 `donations`
+-- 傾印資料表的資料 `DONATIONS`
 --
 
-INSERT INTO `donations` (`DONATION_ID`, `MEMBER_ID`, `AMOUNT`, `DONATION_DATE`, `SUBSCRIPTION_ID`, `PAYMENT_METHOD`, `DONATION_TYPE`, `TRANSACTION_ID`) VALUES
+INSERT INTO `DONATIONS` (`DONATION_ID`, `MEMBER_ID`, `AMOUNT`, `DONATION_DATE`, `SUBSCRIPTION_ID`, `PAYMENT_METHOD`, `DONATION_TYPE`, `TRANSACTION_ID`) VALUES
 (55, 1, 5566, '2026-01-29 18:35:04', NULL, '信用卡', '單次捐款', '2601291834458806'),
 (60, 1, 5000, '2026-01-29 19:40:46', NULL, 'LINE_PAY', '單次捐款', '2026012902335025210'),
 (62, 1, 8787, '2026-01-30 11:12:40', 134, '信用卡', '定期定額', '2601301112169265'),
@@ -348,29 +348,29 @@ INSERT INTO `donations` (`DONATION_ID`, `MEMBER_ID`, `AMOUNT`, `DONATION_DATE`, 
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `favorites`
+-- 資料表結構 `FAVORITES`
 --
 
-CREATE TABLE `favorites` (
+CREATE TABLE `FAVORITES` (
   `MEMBER_ID` int(11) NOT NULL COMMENT '會員ID',
   `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動ID',
   `CREATED_AT` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 傾印資料表的資料 `favorites`
+-- 傾印資料表的資料 `FAVORITES`
 --
 
-INSERT INTO `favorites` (`MEMBER_ID`, `ACTIVITY_ID`, `CREATED_AT`) VALUES
+INSERT INTO `FAVORITES` (`MEMBER_ID`, `ACTIVITY_ID`, `CREATED_AT`) VALUES
 (1, 1, '2026-01-31 13:17:01');
 
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `financial_reports`
+-- 資料表結構 `FINANCIAL_REPORTS`
 --
 
-CREATE TABLE `financial_reports` (
+CREATE TABLE `FINANCIAL_REPORTS` (
   `FINANCIAL_REPORT_ID` int(11) NOT NULL COMMENT '徵信資料編號',
   `DATA_YEAR` year(4) NOT NULL COMMENT '資料年份',
   `UPLOAD_DATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '上傳時間',
@@ -378,10 +378,10 @@ CREATE TABLE `financial_reports` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 傾印資料表的資料 `financial_reports`
+-- 傾印資料表的資料 `FINANCIAL_REPORTS`
 --
 
-INSERT INTO `financial_reports` (`FINANCIAL_REPORT_ID`, `DATA_YEAR`, `UPLOAD_DATE`, `FILE_PATH`) VALUES
+INSERT INTO `FINANCIAL_REPORTS` (`FINANCIAL_REPORT_ID`, `DATA_YEAR`, `UPLOAD_DATE`, `FILE_PATH`) VALUES
 (3, 2023, '2024-02-10 14:20:00', 'reports/financial_report_2023.png'),
 (4, 2022, '2023-01-20 09:00:00', 'reports/financial_report_2022.png'),
 (5, 2021, '2022-03-05 16:45:00', 'reports/financial_report_2021.png');
@@ -389,10 +389,10 @@ INSERT INTO `financial_reports` (`FINANCIAL_REPORT_ID`, `DATA_YEAR`, `UPLOAD_DAT
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `impact_metrics`
+-- 資料表結構 `IMPACT_METRICS`
 --
 
-CREATE TABLE `impact_metrics` (
+CREATE TABLE `IMPACT_METRICS` (
   `IMPACT_METRICS_ID` int(11) NOT NULL COMMENT '我們的影響力編號',
   `DATA_YEAR` year(4) NOT NULL COMMENT '資料年份',
   `UPLOAD_DATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '上傳時間',
@@ -414,10 +414,10 @@ CREATE TABLE `impact_metrics` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 傾印資料表的資料 `impact_metrics`
+-- 傾印資料表的資料 `IMPACT_METRICS`
 --
 
-INSERT INTO `impact_metrics` (`IMPACT_METRICS_ID`, `DATA_YEAR`, `UPLOAD_DATE`, `TURTLES_IN_REHAB`, `TURTLES_RELEASED`, `HATCHLINGS_GUIDED`, `COASTLINE_PATROLLED`, `MEDICAL_SURGERIES`, `TOTAL_WASTE`, `PET_BOTTLES`, `IRON_CANS`, `ALUMINUM_CANS`, `WASTE_PAPER`, `GLASS_BOTTLES`, `STYROFOAM`, `BAMBOO_WOOD`, `FISHING_GEAR`, `UNSORTED_WASTE`) VALUES
+INSERT INTO `IMPACT_METRICS` (`IMPACT_METRICS_ID`, `DATA_YEAR`, `UPLOAD_DATE`, `TURTLES_IN_REHAB`, `TURTLES_RELEASED`, `HATCHLINGS_GUIDED`, `COASTLINE_PATROLLED`, `MEDICAL_SURGERIES`, `TOTAL_WASTE`, `PET_BOTTLES`, `IRON_CANS`, `ALUMINUM_CANS`, `WASTE_PAPER`, `GLASS_BOTTLES`, `STYROFOAM`, `BAMBOO_WOOD`, `FISHING_GEAR`, `UNSORTED_WASTE`) VALUES
 (3, 2023, '2026-01-24 11:06:29', 720, 0, 492, 18200, 95, '28500.00', '5400.00', '950.00', '720.00', '1400.00', '2200.00', '2800.00', '3900.00', '8500.00', '2630.00'),
 (4, 2022, '2026-01-24 11:06:29', 642, 0, 438, 16500, 87, '25280.00', '4800.00', '850.00', '650.00', '1250.00', '1950.00', '2400.00', '3500.00', '7600.00', '2280.00'),
 (5, 2021, '2026-01-24 11:06:29', 578, 0, 395, 14800, 76, '22290.00', '4200.00', '760.00', '580.00', '1100.00', '1700.00', '2100.00', '3100.00', '6800.00', '1950.00'),
@@ -432,10 +432,10 @@ INSERT INTO `impact_metrics` (`IMPACT_METRICS_ID`, `DATA_YEAR`, `UPLOAD_DATE`, `
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `members`
+-- 資料表結構 `MEMBERS`
 --
 
-CREATE TABLE `members` (
+CREATE TABLE `MEMBERS` (
   `MEMBER_ID` int(11) NOT NULL COMMENT '會員識別編號',
   `MEMBER_REALNAME` varchar(50) NOT NULL COMMENT '會員姓名',
   `MEMBER_EMAIL` varchar(100) NOT NULL COMMENT '會員 Email（登入帳號）',
@@ -451,10 +451,10 @@ CREATE TABLE `members` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='前台會員資料';
 
 --
--- 傾印資料表的資料 `members`
+-- 傾印資料表的資料 `MEMBERS`
 --
 
-INSERT INTO `members`
+INSERT INTO `MEMBERS`
 (`MEMBER_ID`, `MEMBER_REALNAME`, `MEMBER_EMAIL`, `MEMBER_PASSWORD`, `MEMBER_PHONE`, `ID_NUMBER`, `BIRTHDAY`, `EMERGENCY`, `EMERGENCY_TEL`, `EMAIL_VERIFIED_AT`, `MEMBER_ACTIVE`, `MEMBER_CREATED_AT`)
 VALUES
 (1, '王小明', 'test01@example.com', '$2y$10$vJ.78xL5xOjHlzz2MygK4OOXN/Ru2wuL60iTVXO0iYMibYK6uPZ02', NULL, NULL, NULL, NULL, NULL, NULL, 1, '2026-01-31 13:17:00'),
@@ -478,10 +478,10 @@ VALUES
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `member_email_verification`
+-- 資料表結構 `MEMBER_EMAIL_VERIFICATION`
 --
 
-CREATE TABLE `member_email_verification` (
+CREATE TABLE `MEMBER_EMAIL_VERIFICATION` (
   `VERIFICATION_ID` int(11) NOT NULL COMMENT '驗證流水號',
   `MEMBER_ID` int(11) NOT NULL COMMENT '對應會員識別編號',
   `CODE_HASH` varchar(255) NOT NULL COMMENT '驗證碼雜湊（不要存明碼）',
@@ -495,10 +495,10 @@ CREATE TABLE `member_email_verification` (
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `news`
+-- 資料表結構 `NEWS`
 --
 
-CREATE TABLE `news` (
+CREATE TABLE `NEWS` (
   `NEWS_ID` int(11) NOT NULL COMMENT '文章編號',
   `ADMIN_ID` varchar(20) NOT NULL COMMENT '發布管理者帳號/ID',
   `NEWS_TITLE` varchar(100) NOT NULL COMMENT '文章標題',
@@ -510,10 +510,10 @@ CREATE TABLE `news` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='最新消息';
 
 --
--- 傾印資料表的資料 `news`
+-- 傾印資料表的資料 `NEWS`
 --
 
-INSERT INTO `news` (`NEWS_ID`, `ADMIN_ID`, `NEWS_TITLE`, `NEWS_CATEGORY`, `NEWS_PUBLISHED_AT`, `NEWS_CONTENT`, `NEWS_IMAGE_PATH`, `NEWS_STATUS`) VALUES
+INSERT INTO `NEWS` (`NEWS_ID`, `ADMIN_ID`, `NEWS_TITLE`, `NEWS_CATEGORY`, `NEWS_PUBLISHED_AT`, `NEWS_CONTENT`, `NEWS_IMAGE_PATH`, `NEWS_STATUS`) VALUES
 (1, 'editor_sarah', '海洋污染成隱形殺手,研究顯示 8 成海龜體內含微塑膠', '重要公告', '2025-08-10 14:30:00', '一份最新的跨國研究指出,全球海洋中的海龜皆面臨微塑膠威脅,這將影響牠們的生殖能力與免疫系統。', 'news/news31.jpg', 'published'),
 (2, 'admin_system', '【系統公告】資料庫備份作業通知,系統將暫時停止營運', '重要公告', '2025-08-15 02:00:00', '系統將進行每月例行性資料庫備份,預計耗時 30 分鐘。作業期間網站瀏覽可能會有短暫延遲,不影響資料存取。', 'news/news30.jpg', 'published'),
 (3, 'editor_lisa', '【地點更換】親子環保 DIY 教室改至 B1 會議室舉行', '異動通知', '2025-08-20 10:00:00', '原定於一樓大廳舉辦的親子環保 DIY 活動,因場地設備檢修,將改至地下一樓 B1 會議室舉行,時間維持不變。', 'news/news29.png', 'published'),
@@ -549,10 +549,10 @@ INSERT INTO `news` (`NEWS_ID`, `ADMIN_ID`, `NEWS_TITLE`, `NEWS_CATEGORY`, `NEWS_
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `rescues`
+-- 資料表結構 `RESCUES`
 --
 
-CREATE TABLE `rescues` (
+CREATE TABLE `RESCUES` (
   `RESCUE_ID` int(11) NOT NULL COMMENT '海龜救援編號',
   `UPLOAD_DATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '上傳時間',
   `TURTLE_NAME` varchar(50) NOT NULL COMMENT '海龜姓名',
@@ -564,10 +564,10 @@ CREATE TABLE `rescues` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='海龜救援';
 
 --
--- 傾印資料表的資料 `rescues`
+-- 傾印資料表的資料 `RESCUES`
 --
 
-INSERT INTO `rescues` (`RESCUE_ID`, `UPLOAD_DATE`, `TURTLE_NAME`, `SPECIES`, `LOCATION`, `STORY_CONTENT`, `RECOVERY_STATUS`, `IMAGE_PATH`) VALUES
+INSERT INTO `RESCUES` (`RESCUE_ID`, `UPLOAD_DATE`, `TURTLE_NAME`, `SPECIES`, `LOCATION`, `STORY_CONTENT`, `RECOVERY_STATUS`, `IMAGE_PATH`) VALUES
 (1, '2026-01-31 13:17:01', '波波', '綠蠵龜', '小琉球美人洞', '波波被發現時漂浮在海面上無法下潛，經X光檢查發現腸道內充滿大量塑膠垃圾，導致氣體堆積。目前正在進行排便治療與點滴輸液，精神狀況稍有起色，但仍需密切觀察排便狀況。志工們每天都期待能看到牠順利排出更多塑膠。', '醫療照護', 'savedcases/bobo.png'),
 (2, '2026-01-31 13:17:01', '琥珀', '玳瑁', '台東三仙台沿岸', '民眾通報發現琥珀擱淺在礁岩區，背甲有明顯的船槳螺旋槳切割傷，傷口深可見骨。剛送抵中心，獸醫團隊正在進行傷口清創與細菌採樣，並評估是否需要進行緊急縫合手術。這兩週將是觀察感染是否擴散的關鍵危險期。', '入院檢查', 'savedcases/amber.png'),
 (3, '2026-01-31 13:17:01', '抹茶', '綠蠵龜', '墾丁白沙灣', '抹茶因誤食魚鉤導致食道受傷，經過內視鏡手術成功取出魚鉤後，食道傷口癒合良好。目前已開始嘗試主動攝食，食慾不錯，喜歡吃新鮮的海藻，體重正在穩定回升中。偶爾牠還會追著水槽裡的蔬菜到處跑呢。', '休養觀察', 'savedcases/matcha.png'),
@@ -582,10 +582,10 @@ INSERT INTO `rescues` (`RESCUE_ID`, `UPLOAD_DATE`, `TURTLE_NAME`, `SPECIES`, `LO
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `result_metrics`
+-- 資料表結構 `RESULT_METRICS`
 --
 
-CREATE TABLE `result_metrics` (
+CREATE TABLE `RESULT_METRICS` (
   `METRIC_ID` int(11) NOT NULL COMMENT '成果定義編號',
   `METRIC_NAME` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '成果名稱 (如：垃圾總重量)',
   `METRIC_UNIT` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '單位 (如：kg, 隻, 窩)',
@@ -594,10 +594,10 @@ CREATE TABLE `result_metrics` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='成果指標定義表';
 
 --
--- 傾印資料表的資料 `result_metrics`
+-- 傾印資料表的資料 `RESULT_METRICS`
 --
 
-INSERT INTO `result_metrics` (`METRIC_ID`, `METRIC_NAME`, `METRIC_UNIT`, `ACTIVITY_CATEGORY_ID`, `CREATED_AT`) VALUES
+INSERT INTO `RESULT_METRICS` (`METRIC_ID`, `METRIC_NAME`, `METRIC_UNIT`, `ACTIVITY_CATEGORY_ID`, `CREATED_AT`) VALUES
 (1, '垃圾總重量', 'kg', 1, '2026-01-31 13:17:01'),
 (2, '垃圾袋數', '袋', 1, '2026-01-31 13:17:01'),
 (3, '漁業廢棄物', '件', 1, '2026-01-31 13:17:01'),
@@ -615,10 +615,10 @@ INSERT INTO `result_metrics` (`METRIC_ID`, `METRIC_NAME`, `METRIC_UNIT`, `ACTIVI
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `subscription`
+-- 資料表結構 `SUBSCRIPTION`
 --
 
-CREATE TABLE `subscription` (
+CREATE TABLE `SUBSCRIPTION` (
   `SUBSCRIPTION_ID` int(11) NOT NULL COMMENT '定期定額捐款編號',
   `MEMBER_ID` int(11) NOT NULL COMMENT '會員識別編號',
   `AMOUNT` int(11) NOT NULL COMMENT '每期捐款金額',
@@ -629,10 +629,10 @@ CREATE TABLE `subscription` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 傾印資料表的資料 `subscription`
+-- 傾印資料表的資料 `SUBSCRIPTION`
 --
 
-INSERT INTO `subscription` (`SUBSCRIPTION_ID`, `MEMBER_ID`, `AMOUNT`, `START_DATE`, `STATUS`, `END_DATE`, `ORDER_ID`) VALUES
+INSERT INTO `SUBSCRIPTION` (`SUBSCRIPTION_ID`, `MEMBER_ID`, `AMOUNT`, `START_DATE`, `STATUS`, `END_DATE`, `ORDER_ID`) VALUES
 (134, 1, 8787, '2026-01-30', 1, NULL, 'ORDER20260130111217');
 
 --
@@ -640,130 +640,130 @@ INSERT INTO `subscription` (`SUBSCRIPTION_ID`, `MEMBER_ID`, `AMOUNT`, `START_DAT
 --
 
 --
--- 資料表索引 `activities`
+-- 資料表索引 `ACTIVITIES`
 --
-ALTER TABLE `activities`
+ALTER TABLE `ACTIVITIES`
   ADD PRIMARY KEY (`ACTIVITY_ID`);
 
 --
--- 資料表索引 `activity_categories`
+-- 資料表索引 `ACTIVITY_CATEGORIES`
 --
-ALTER TABLE `activity_categories`
+ALTER TABLE `ACTIVITY_CATEGORIES`
   ADD PRIMARY KEY (`CATEGORY_ID`);
 
 --
--- 資料表索引 `activity_photos`
+-- 資料表索引 `ACTIVITY_PHOTOS`
 --
-ALTER TABLE `activity_photos`
+ALTER TABLE `ACTIVITY_PHOTOS`
   ADD PRIMARY KEY (`PHOTO_ID`),
-  ADD KEY `idx_activity_id` (`ACTIVITY_ID`);
+  ADD KEY `IDX_ACTIVITY_ID` (`ACTIVITY_ID`);
 
 --
--- 資料表索引 `activity_results`
+-- 資料表索引 `ACTIVITY_RESULTS`
 --
-ALTER TABLE `activity_results`
+ALTER TABLE `ACTIVITY_RESULTS`
   ADD PRIMARY KEY (`RESULT_ID`),
-  ADD KEY `idx_activity_id` (`ACTIVITY_ID`);
+  ADD KEY `IDX_ACTIVITY_ID` (`ACTIVITY_ID`);
 
 --
--- 資料表索引 `activity_reviews`
+-- 資料表索引 `ACTIVITY_REVIEWS`
 --
-ALTER TABLE `activity_reviews`
+ALTER TABLE `ACTIVITY_REVIEWS`
   ADD PRIMARY KEY (`REVIEW_ID`),
-  ADD KEY `idx_activity_id` (`ACTIVITY_ID`),
-  ADD KEY `idx_user_id` (`USER_ID`);
+  ADD KEY `IDX_ACTIVITY_ID` (`ACTIVITY_ID`),
+  ADD KEY `IDX_USER_ID` (`USER_ID`);
 
 --
--- 資料表索引 `activity_reviews_likes`
+-- 資料表索引 `ACTIVITY_REVIEWS_LIKES`
 --
-ALTER TABLE `activity_reviews_likes`
+ALTER TABLE `ACTIVITY_REVIEWS_LIKES`
   ADD PRIMARY KEY (`REVIEW_ID`,`USER_ID`);
 
 --
--- 資料表索引 `activity_review_reports`
+-- 資料表索引 `ACTIVITY_REVIEW_REPORTS`
 --
-ALTER TABLE `activity_review_reports`
+ALTER TABLE `ACTIVITY_REVIEW_REPORTS`
   ADD PRIMARY KEY (`REPORT_ID`),
   ADD KEY `REVIEW_ID` (`REVIEW_ID`);
 
 --
--- 資料表索引 `activity_signups`
+-- 資料表索引 `ACTIVITY_SIGNUPS`
 --
-ALTER TABLE `activity_signups`
+ALTER TABLE `ACTIVITY_SIGNUPS`
   ADD PRIMARY KEY (`ACTIVITY_SIGNUP_ID`),
-  ADD KEY `idx_user_id` (`USER_ID`),
-  ADD KEY `idx_activity_id` (`ACTIVITY_ID`);
+  ADD KEY `IDX_USER_ID` (`USER_ID`),
+  ADD KEY `IDX_ACTIVITY_ID` (`ACTIVITY_ID`);
 
 --
--- 資料表索引 `admin_user`
+-- 資料表索引 `ADMIN_USER`
 --
-ALTER TABLE `admin_user`
+ALTER TABLE `ADMIN_USER`
   ADD PRIMARY KEY (`ADMIN_ID`);
 
 --
--- 資料表索引 `donations`
+-- 資料表索引 `DONATIONS`
 --
-ALTER TABLE `donations`
+ALTER TABLE `DONATIONS`
   ADD PRIMARY KEY (`DONATION_ID`),
-  ADD KEY `fk_donation_subscription` (`SUBSCRIPTION_ID`),
+  ADD KEY `FK_DONATION_SUBSCRIPTION` (`SUBSCRIPTION_ID`),
   ADD KEY `MEMBER_ID` (`MEMBER_ID`);
 
 --
--- 資料表索引 `favorites`
+-- 資料表索引 `FAVORITES`
 --
-ALTER TABLE `favorites`
+ALTER TABLE `FAVORITES`
   ADD PRIMARY KEY (`MEMBER_ID`,`ACTIVITY_ID`),
   ADD KEY `ACTIVITY_ID` (`ACTIVITY_ID`);
 
 --
--- 資料表索引 `financial_reports`
+-- 資料表索引 `FINANCIAL_REPORTS`
 --
-ALTER TABLE `financial_reports`
+ALTER TABLE `FINANCIAL_REPORTS`
   ADD PRIMARY KEY (`FINANCIAL_REPORT_ID`);
 
 --
--- 資料表索引 `impact_metrics`
+-- 資料表索引 `IMPACT_METRICS`
 --
-ALTER TABLE `impact_metrics`
+ALTER TABLE `IMPACT_METRICS`
   ADD PRIMARY KEY (`IMPACT_METRICS_ID`);
 
 --
--- 資料表索引 `members`
+-- 資料表索引 `MEMBERS`
 --
-ALTER TABLE `members`
+ALTER TABLE `MEMBERS`
   ADD PRIMARY KEY (`MEMBER_ID`),
   ADD UNIQUE KEY `UK_MEMBERS_EMAIL` (`MEMBER_EMAIL`);
 
 --
--- 資料表索引 `member_email_verification`
+-- 資料表索引 `MEMBER_EMAIL_VERIFICATION`
 --
-ALTER TABLE `member_email_verification`
+ALTER TABLE `MEMBER_EMAIL_VERIFICATION`
   ADD PRIMARY KEY (`VERIFICATION_ID`),
   ADD KEY `FK_VERIFICATION_MEMBER` (`MEMBER_ID`);
 
 --
--- 資料表索引 `news`
+-- 資料表索引 `NEWS`
 --
-ALTER TABLE `news`
+ALTER TABLE `NEWS`
   ADD PRIMARY KEY (`NEWS_ID`),
   ADD KEY `FK_ADMIN_ID` (`ADMIN_ID`);
 
 --
--- 資料表索引 `rescues`
+-- 資料表索引 `RESCUES`
 --
-ALTER TABLE `rescues`
+ALTER TABLE `RESCUES`
   ADD PRIMARY KEY (`RESCUE_ID`);
 
 --
--- 資料表索引 `result_metrics`
+-- 資料表索引 `RESULT_METRICS`
 --
-ALTER TABLE `result_metrics`
+ALTER TABLE `RESULT_METRICS`
   ADD PRIMARY KEY (`METRIC_ID`);
 
 --
--- 資料表索引 `subscription`
+-- 資料表索引 `SUBSCRIPTION`
 --
-ALTER TABLE `subscription`
+ALTER TABLE `SUBSCRIPTION`
   ADD PRIMARY KEY (`SUBSCRIPTION_ID`),
   ADD UNIQUE KEY `ORDER_ID` (`ORDER_ID`),
   ADD KEY `MEMBER_ID` (`MEMBER_ID`) USING BTREE;
@@ -773,99 +773,99 @@ ALTER TABLE `subscription`
 --
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `activities`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `ACTIVITIES`
 --
-ALTER TABLE `activities`
+ALTER TABLE `ACTIVITIES`
   MODIFY `ACTIVITY_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '活動編號', AUTO_INCREMENT=31;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `activity_categories`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `ACTIVITY_CATEGORIES`
 --
-ALTER TABLE `activity_categories`
+ALTER TABLE `ACTIVITY_CATEGORIES`
   MODIFY `CATEGORY_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '活動種類編號 (PK)', AUTO_INCREMENT=4;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `activity_photos`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `ACTIVITY_PHOTOS`
 --
-ALTER TABLE `activity_photos`
+ALTER TABLE `ACTIVITY_PHOTOS`
   MODIFY `PHOTO_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '照片編號';
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `activity_results`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `ACTIVITY_RESULTS`
 --
-ALTER TABLE `activity_results`
+ALTER TABLE `ACTIVITY_RESULTS`
   MODIFY `RESULT_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '成果編號', AUTO_INCREMENT=33;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `activity_reviews`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `ACTIVITY_REVIEWS`
 --
-ALTER TABLE `activity_reviews`
+ALTER TABLE `ACTIVITY_REVIEWS`
   MODIFY `REVIEW_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '心得編號', AUTO_INCREMENT=30;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `activity_review_reports`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `ACTIVITY_REVIEW_REPORTS`
 --
-ALTER TABLE `activity_review_reports`
+ALTER TABLE `ACTIVITY_REVIEW_REPORTS`
   MODIFY `REPORT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `activity_signups`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `ACTIVITY_SIGNUPS`
 --
-ALTER TABLE `activity_signups`
+ALTER TABLE `ACTIVITY_SIGNUPS`
   MODIFY `ACTIVITY_SIGNUP_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '報名編號', AUTO_INCREMENT=30;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `donations`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `DONATIONS`
 --
-ALTER TABLE `donations`
+ALTER TABLE `DONATIONS`
   MODIFY `DONATION_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '捐款編號', AUTO_INCREMENT=65;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `financial_reports`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `FINANCIAL_REPORTS`
 --
-ALTER TABLE `financial_reports`
+ALTER TABLE `FINANCIAL_REPORTS`
   MODIFY `FINANCIAL_REPORT_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '徵信資料編號', AUTO_INCREMENT=6;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `impact_metrics`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `IMPACT_METRICS`
 --
-ALTER TABLE `impact_metrics`
+ALTER TABLE `IMPACT_METRICS`
   MODIFY `IMPACT_METRICS_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '我們的影響力編號', AUTO_INCREMENT=13;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `members`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `MEMBERS`
 --
-ALTER TABLE `members`
+ALTER TABLE `MEMBERS`
   MODIFY `MEMBER_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '會員識別編號', AUTO_INCREMENT=2;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `member_email_verification`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `MEMBER_EMAIL_VERIFICATION`
 --
-ALTER TABLE `member_email_verification`
+ALTER TABLE `MEMBER_EMAIL_VERIFICATION`
   MODIFY `VERIFICATION_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '驗證流水號';
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `news`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `NEWS`
 --
-ALTER TABLE `news`
+ALTER TABLE `NEWS`
   MODIFY `NEWS_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章編號', AUTO_INCREMENT=32;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `rescues`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `RESCUES`
 --
-ALTER TABLE `rescues`
+ALTER TABLE `RESCUES`
   MODIFY `RESCUE_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '海龜救援編號', AUTO_INCREMENT=11;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `result_metrics`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `RESULT_METRICS`
 --
-ALTER TABLE `result_metrics`
+ALTER TABLE `RESULT_METRICS`
   MODIFY `METRIC_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '成果定義編號', AUTO_INCREMENT=14;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `subscription`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `SUBSCRIPTION`
 --
-ALTER TABLE `subscription`
+ALTER TABLE `SUBSCRIPTION`
   MODIFY `SUBSCRIPTION_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '定期定額捐款編號', AUTO_INCREMENT=135;
 
 --
@@ -873,41 +873,41 @@ ALTER TABLE `subscription`
 --
 
 --
--- 資料表的限制式 `activity_reviews_likes`
+-- 資料表的限制式 `ACTIVITY_REVIEWS_LIKES`
 --
-ALTER TABLE `activity_reviews_likes`
-  ADD CONSTRAINT `activity_reviews_likes_ibfk_1` FOREIGN KEY (`REVIEW_ID`) REFERENCES `activity_reviews` (`REVIEW_ID`) ON DELETE CASCADE;
+ALTER TABLE `ACTIVITY_REVIEWS_LIKES`
+  ADD CONSTRAINT `ACTIVITY_REVIEWS_LIKES_IBFK_1` FOREIGN KEY (`REVIEW_ID`) REFERENCES `ACTIVITY_REVIEWS` (`REVIEW_ID`) ON DELETE CASCADE;
 
 --
--- 資料表的限制式 `activity_review_reports`
+-- 資料表的限制式 `ACTIVITY_REVIEW_REPORTS`
 --
-ALTER TABLE `activity_review_reports`
-  ADD CONSTRAINT `activity_review_reports_ibfk_1` FOREIGN KEY (`REVIEW_ID`) REFERENCES `activity_reviews` (`REVIEW_ID`) ON DELETE CASCADE;
+ALTER TABLE `ACTIVITY_REVIEW_REPORTS`
+  ADD CONSTRAINT `ACTIVITY_REVIEW_REPORTS_IBFK_1` FOREIGN KEY (`REVIEW_ID`) REFERENCES `ACTIVITY_REVIEWS` (`REVIEW_ID`) ON DELETE CASCADE;
 
 --
--- 資料表的限制式 `donations`
+-- 資料表的限制式 `DONATIONS`
 --
-ALTER TABLE `donations`
-  ADD CONSTRAINT `donations_ibfk_1` FOREIGN KEY (`MEMBER_ID`) REFERENCES `members` (`MEMBER_ID`),
-  ADD CONSTRAINT `fk_donation_subscription` FOREIGN KEY (`SUBSCRIPTION_ID`) REFERENCES `subscription` (`SUBSCRIPTION_ID`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `DONATIONS`
+  ADD CONSTRAINT `DONATIONS_IBFK_1` FOREIGN KEY (`MEMBER_ID`) REFERENCES `MEMBERS` (`MEMBER_ID`),
+  ADD CONSTRAINT `FK_DONATION_SUBSCRIPTION` FOREIGN KEY (`SUBSCRIPTION_ID`) REFERENCES `SUBSCRIPTION` (`SUBSCRIPTION_ID`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- 資料表的限制式 `favorites`
+-- 資料表的限制式 `FAVORITES`
 --
-ALTER TABLE `favorites`
-  ADD CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`ACTIVITY_ID`) REFERENCES `activities` (`ACTIVITY_ID`) ON DELETE CASCADE;
+ALTER TABLE `FAVORITES`
+  ADD CONSTRAINT `FAVORITES_IBFK_1` FOREIGN KEY (`ACTIVITY_ID`) REFERENCES `ACTIVITIES` (`ACTIVITY_ID`) ON DELETE CASCADE;
 
 --
--- 資料表的限制式 `member_email_verification`
+-- 資料表的限制式 `MEMBER_EMAIL_VERIFICATION`
 --
-ALTER TABLE `member_email_verification`
-  ADD CONSTRAINT `FK_VERIFICATION_MEMBER` FOREIGN KEY (`MEMBER_ID`) REFERENCES `members` (`MEMBER_ID`) ON DELETE CASCADE;
+ALTER TABLE `MEMBER_EMAIL_VERIFICATION`
+  ADD CONSTRAINT `FK_VERIFICATION_MEMBER` FOREIGN KEY (`MEMBER_ID`) REFERENCES `MEMBERS` (`MEMBER_ID`) ON DELETE CASCADE;
 
 --
--- 資料表的限制式 `subscription`
+-- 資料表的限制式 `SUBSCRIPTION`
 --
-ALTER TABLE `subscription`
-  ADD CONSTRAINT `subscription_ibfk_1` FOREIGN KEY (`MEMBER_ID`) REFERENCES `members` (`MEMBER_ID`);
+ALTER TABLE `SUBSCRIPTION`
+  ADD CONSTRAINT `SUBSCRIPTION_IBFK_1` FOREIGN KEY (`MEMBER_ID`) REFERENCES `MEMBERS` (`MEMBER_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
