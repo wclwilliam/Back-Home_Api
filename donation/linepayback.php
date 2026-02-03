@@ -85,16 +85,27 @@ if (isset($resData['returnCode']) && $resData['returnCode'] === '0000') {
             ':tid'       => $transactionId 
         ]);
 
-        // 回傳成功資訊給前端 Vue
+        // 2. 取得剛剛產生的自動編號 (DONATION_ID)
+        $newDonationId = $pdo->lastInsertId();
+
+        // 3. 從資料庫撈出這筆完整的資料（包含資料庫自動產生的時間）
+        // 也可以透過 JOIN 撈出會員姓名等資訊
+        $fetchSql = "SELECT * FROM DONATIONS WHERE DONATION_ID = :id";
+        $fetchStmt = $pdo->prepare($fetchSql);
+        $fetchStmt->execute([':id' => $newDonationId]);
+        $donationRecord = $fetchStmt->fetch(PDO::FETCH_ASSOC);
+
+        // 4. 回傳給前端 Vue3
         echo json_encode([
             'status' => 'success',
             'message' => '捐款成功並已存檔',
-            'donation_id' => $pdo->lastInsertId()
+            'data' => $donationRecord // 這裡就是整筆資料物件
         ]);
 
     } catch (PDOException $e) {
-        echo json_encode(['status' => 'error', 'message' => '資料庫寫入失敗: ' . $e->getMessage()]);
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => '資料庫處理失敗: ' . $e->getMessage()]);
     }
 } else {
-    echo json_encode(['status' => 'error', 'message' => 'LINE Pay 扣款確認失敗']);
+    echo json_encode(['status' => 'error', 'message' => 'LINE Pay 扣款確認失敗', 'raw' => $resData]);
 }
