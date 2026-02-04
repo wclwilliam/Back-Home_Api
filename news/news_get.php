@@ -6,16 +6,16 @@
   //檢查是否為 GET 請求
   if($_SERVER['REQUEST_METHOD'] == "GET"){
     
-    //判斷模式若帶有 ?mode=admin 則視為後台管理模式 ---
+    //判斷模式若帶有 ?mode=admin 則視為後台管理模式 
     $isAdminMode = isset($_GET['mode']) && $_GET['mode'] === 'admin';
 
-    // --- 原有的：判斷是否為抓取單篇詳細資料 ---
+    //判斷是否為抓取單篇詳細資料 
     if(isset($_GET['id']) && !empty($_GET['id'])){
         
-        $id = (int)$_GET['id']; // 強制轉為整數確保安全
+        $id = (int)$_GET['id']; 
         
-        // 準備 SQL 語法，根據 NEWS_ID 抓取單筆
-        // 修改：如果是前台呼叫（非管理模式），必須額外檢查狀態是否為 published
+       
+        // 如果是前台呼叫（非管理模式），必須額外檢查狀態是否為 published
         $sql = "SELECT * FROM `NEWS` WHERE `NEWS_ID` = :id";
         if (!$isAdminMode) {
             $sql .= " AND `NEWS_STATUS` = 'published'";
@@ -50,8 +50,7 @@
 
     } else {
         //全部清單
-
-        // --- 修改：根據是否為管理模式決定 SQL 語法 ---
+        //根據是否為管理模式決定 SQL 語法 ---
         if ($isAdminMode) {
             // 後台模式：抓取所有狀態的新聞
             $sql = "SELECT * FROM `NEWS` ORDER BY `NEWS_PUBLISHED_AT` DESC";
@@ -63,10 +62,10 @@
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
-        // 4. 抓取原始扁平資料
+        //抓取原始扁平資料
         $raw_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        // 5. 轉換格式以符合你的資料表設計
+        //轉換格式以符合你的資料表設計
         $formatted_data = [];
 
         foreach ($raw_data as $row) {
@@ -82,7 +81,7 @@
             ];
         }
         
-        // 6. 設定 Header 並輸出 JSON
+        //設定 Header 並輸出 JSON
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($formatted_data);
     }

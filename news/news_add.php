@@ -21,7 +21,7 @@ if (empty($title) || empty($category) || empty($content)) {
     exit();
 }
 
-// 1. 強制檢查圖片是否上傳 (必填)
+// 強制檢查圖片是否上傳 (必填)
 if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
     http_response_code(400);
     echo json_encode(["error" => "請務必上傳封面圖片"]);

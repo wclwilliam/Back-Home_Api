@@ -11,9 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-// 驗證會員身份，取得登入者 member_id
-$member_id = 2; // 臨時測試用
-// $member_id = requireAuth($pdo); // 正式環境請取消註解
+// 验证会员身份，取得登入者 member_id
+$member_id = requireAuth($pdo);
 
 $data = json_decode(file_get_contents("php://input"), true);
 $activity_id = $data['activityId'] ?? 0;
