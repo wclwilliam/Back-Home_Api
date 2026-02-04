@@ -1,10 +1,16 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-header('Content-Type: application/json; charset=utf-8');
+// 允許來自 http://localhost:5173 的請求
+header("Access-Control-Allow-Origin: http://localhost:5173");
+// 允許的請求方法
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
+// 允許的請求標頭 (如果你有傳 Token，這裡一定要包含 Authorization)
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit; }
+// 處理 Preflight (OPTIONS) 請求
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    exit; // 預檢請求直接回傳 200 即可
+}
+
 
 // 引入資料庫連線 (請確認路徑正確)
   require_once("../common/cors.php");

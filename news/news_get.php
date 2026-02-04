@@ -1,12 +1,12 @@
 <?php
-  // 1. 載入跨域設定與資料庫連線
   require_once("../common/cors.php");
   require_once("../common/conn.php");
 
-  // 2. 檢查是否為 GET 請求
+  
+  //檢查是否為 GET 請求
   if($_SERVER['REQUEST_METHOD'] == "GET"){
     
-    // --- 新增：判斷模式 (若帶有 ?mode=admin 則視為後台管理模式) ---
+    //判斷模式若帶有 ?mode=admin 則視為後台管理模式 ---
     $isAdminMode = isset($_GET['mode']) && $_GET['mode'] === 'admin';
 
     // --- 原有的：判斷是否為抓取單篇詳細資料 ---
@@ -87,7 +87,6 @@
         echo json_encode($formatted_data);
     }
     
-    $pdo = null;
     exit();
   }
 
