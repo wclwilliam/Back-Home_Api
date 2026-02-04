@@ -9,10 +9,9 @@ header('Content-Type: application/json; charset=utf-8');
 
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
     try {
-        // 驗證會員身份，取得登入者 member_id
-        $member_id = requireAuth($pdo); 
+        $member_id = requireAuth($pdo); // 驗證會員身份，取得登入者 member_id
 
-        // 2. 準備 SQL (對應你的 ACTIVITIES 與 FAVORITES 表)
+        // 準備 SQL (對應你的 ACTIVITIES 與 FAVORITES 表)
         $sql = "SELECT 
                     f.CREATED_AT as favDate,
                     a.ACTIVITY_ID as activityId,
