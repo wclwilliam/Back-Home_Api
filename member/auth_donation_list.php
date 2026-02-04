@@ -1,6 +1,7 @@
 <?php
 require_once("../common/cors.php");
 require_once("../common/conn.php");
+require_once("./auth_guard.php");
 
 if($_SERVER['REQUEST_METHOD'] == "GET"){
     // 測試環境先寫死 MEMBER_ID = 1
