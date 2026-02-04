@@ -25,6 +25,16 @@ define('BREVO_FROM_NAME', getenv('BREVO_FROM_NAME') ?: 'BackHome');
 define('BREVO_BASE_URL', getenv('BREVO_BASE_URL') ?: 'https://api.brevo.com');
 define('BREVO_CA_BUNDLE', getenv('BREVO_CA_BUNDLE') ?: __DIR__ . '/cacert.pem'); // SSL CA 憑證路徑
 
+// ===== LINE Login 設定 =====
+define('LINE_CHANNEL_ID', getenv('LINE_CHANNEL_ID') ?: 'YOUR_LINE_CHANNEL_ID');
+define('LINE_CHANNEL_SECRET', getenv('LINE_CHANNEL_SECRET') ?: 'YOUR_LINE_CHANNEL_SECRET');
+define('LINE_CALLBACK_URL_DEV', 'http://localhost:5173/');  // 本地開發
+define('LINE_CALLBACK_URL_PROD', 'https://yourdomain.com/front/');  // 正式環境
+// 自動偵測環境（根據 HTTP_HOST 判斷）
+$isLocalhost = isset($_SERVER['HTTP_HOST']) && (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false);
+define('LINE_CALLBACK_URL', $isLocalhost ? LINE_CALLBACK_URL_DEV : LINE_CALLBACK_URL_PROD);
+define('LINE_STATE_EXPIRE_MINUTES', 10);  // state 有效期限（分鐘）
+
 // ===== 其他設定 =====
 // 可以在此處加入更多全域設定，例如：
 // - 上傳檔案大小限制
