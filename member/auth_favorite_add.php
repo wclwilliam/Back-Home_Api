@@ -1,6 +1,7 @@
 <?php
 require_once("../common/cors.php");
 require_once("../common/conn.php");
+require_once("./auth_guard.php");
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -11,7 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $json = file_get_contents("php://input");
         $data = json_decode($json, true);
         
-        $member_id = 1; // 測試用，之後改 Session
+        // 驗證會員身份，取得登入者 member_id
+        $member_id = requireAuth($pdo);
         $activity_id = $data['activityId'] ?? null;
 
         if (!$activity_id) {
