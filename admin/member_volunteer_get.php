@@ -5,10 +5,13 @@
  */
 
 // 1. 處理 CORS 與基礎引入
-require_once __DIR__ . '/../common/cors.php'; // 確保已解決 CORS 報錯
-require_once __DIR__ . '/../common/conn.php'; // 引入資料庫連線檔
+require_once __DIR__ . '/../common/cors.php';
+require_once __DIR__ . '/../common/conn.php';
 
-// 2. 接收參數 (支援 member_id 或 id，防止前端傳參名稱變動)
+// 設置正確的 Content-Type
+header('Content-Type: application/json; charset=UTF-8');
+
+// 2. 接收參數
 $member_id = $_GET['member_id'] ?? $_GET['id'] ?? 0;
 
 if ($member_id <= 0) {
@@ -24,18 +27,19 @@ try {
     /**
      * 3. 執行 SQL 查詢 (與組員的活動表連動)
      * 邏輯：
-     * - JOIN activity_registration (報名表) 與 activities (活動表)
+     * - JOIN ACTIVITY_SIGNUPS (報名表) 與 activities (活動表)
      * - 條件：必須是該會員且「已出席」(ATTENDANCE_STATUS = 1)
      */
-    $sql = "SELECT 
-                a.ACTIVITY_NAME, 
-                a.ACTIVITY_DATE, 
-                a.ACTIVITY_HOURS 
-            FROM activity_registration ar
-            JOIN activities a ON ar.ACTIVITY_ID = a.ACTIVITY_ID
-            WHERE ar.MEMBER_ID = :member_id 
-            AND ar.ATTENDANCE_STATUS = 1 
-            ORDER BY a.ACTIVITY_DATE DESC";
+    
+$sql = "SELECT 
+            a.ACTIVITY_TITLE, 
+            a.ACTIVITY_START_DATETIME AS ACTIVITY_DATE, 
+            ar.ACTIVITY_SVC_HOURS AS ACTIVITY_HOURS
+        FROM ACTIVITY_SIGNUPS ar
+        JOIN ACTIVITIES a ON ar.ACTIVITY_ID = a.ACTIVITY_ID
+        WHERE ar.USER_ID = :member_id 
+        AND ar.ATTENDED = 1 
+        ORDER BY a.ACTIVITY_START_DATETIME DESC";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['member_id' => $member_id]);
