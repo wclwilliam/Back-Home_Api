@@ -1,6 +1,8 @@
 <?php
 require_once("../common/cors.php");
 require_once("../common/conn.php");
+require_once("../common/config_upload.php");
+require_once("../common/image_helper.php");
 
 if ($_SERVER['REQUEST_METHOD'] !== "POST") {
     http_response_code(405);
@@ -9,33 +11,29 @@ if ($_SERVER['REQUEST_METHOD'] !== "POST") {
 
 if (isset($_FILES['upload']) && $_FILES['upload']['error'] === UPLOAD_ERR_OK) {
     $ext = strtolower(pathinfo($_FILES['upload']['name'], PATHINFO_EXTENSION));
-    // 使用與 news_add.php 相同的命名規則
-    $filename = time() . "_" . bin2hex(random_bytes(8)) . "." . $ext;
-    $upload_dir = __DIR__ . "/../uploads/news/";
+    $pureFilename = time() . "_" . bin2hex(random_bytes(8));
+    $upload_dir = __DIR__ . "/../uploads/news/"; // 目標資料夾
 
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
     }
+// 3. 呼叫同學的處理函式
+    $result = handleImageUpload($_FILES['upload'], $upload_dir, $pureFilename);
 
-    if (move_uploaded_file($_FILES['upload']['tmp_name'], $upload_dir . $filename)) {
-        // 重要：回傳給 CKEditor 的路徑要對應你的 VITE_FILE_URL
-        // 因為你的 VITE_FILE_URL 結尾是 /uploads/，所以這裡回傳 news/檔名
-        $relativePath = "news/" . $filename;
+    if ($result['success']) {
+        // 4. 直接拼湊對應 Vite VITE_FILE_URL 的路徑
+        $finalFileName = $pureFilename . ".jpg";
         
-        // 為了讓 CKEditor 預覽成功，這裡仍需組合一個暫時的完整網址
-        // 之後存入資料庫的內容就會是這個網址
-        $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
-        $domain = $_SERVER['HTTP_HOST'];
-        
-        // 這裡手動拼湊出符合 VITE_FILE_URL 結構的完整網址
-        $fullUrl = $protocol . $domain . "/cjd102/g3/api/uploads/" . $relativePath;
+        // 根據你的 MAMP 環境與前端設定，路徑應該是：
+        // http://localhost:8888/api/uploads/news/檔名.jpg
+        $fullUrl = "http://localhost:8888/api/uploads/news/" . $finalFileName;
 
         echo json_encode([
             "url" => $fullUrl
         ]);
     } else {
+        // 處理失敗的錯誤訊息
         http_response_code(500);
-        echo json_encode(["error" => ["message" => "檔案移動失敗"]]);
+        echo json_encode(["error" => ["message" => $result['message']]]);
     }
 }
-?>
