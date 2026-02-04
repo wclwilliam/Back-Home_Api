@@ -2,7 +2,6 @@
 require_once("../common/cors.php");
 require_once("../common/conn.php");
 
-// 獲取 API 傳入的 member_id (假設是透過 GET 或 POST)
 $member_id = $_GET['memberId'] ?? null;
 
 if (!$member_id) {
@@ -10,23 +9,24 @@ if (!$member_id) {
     exit;
 }
 
-// 核心 SQL 查詢：判斷最近 3 分鐘內是否有資料
-$sql = "SELECT COUNT(*) as recent_count 
-        FROM DONATIONS 
+// 1. 修改 SQL：選取所有欄位 (*)，並按時間降序排列，只取最新的一筆
+$sql = "SELECT * FROM DONATIONS 
         WHERE MEMBER_ID = :member_id 
-        AND DONATION_DATE >= NOW() - INTERVAL 3 MINUTE";
+        AND DONATION_DATE >= NOW() - INTERVAL 3 MINUTE
+        ORDER BY DONATION_DATE DESC 
+        LIMIT 1";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute(['member_id' => $member_id]);
-$result = $stmt->fetch();
 
-// 回傳結果
-if ($result['recent_count'] > 0) {
-    echo json_encode([
-        'recent_donate' => true
-    ]);
+// 2. 使用 fetch() 取代 fetchAll()，因為我們只需要單一物件
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// 3. 判斷是否有抓到資料
+if ($result) {
+    // 如果有資料，$result 會是該筆資料的關聯陣列
+    echo json_encode($result);
 } else {
-    echo json_encode([
-        'recent_donate' => false
-    ]);
+    // 沒資料回傳 false
+    echo json_encode(false);
 }
