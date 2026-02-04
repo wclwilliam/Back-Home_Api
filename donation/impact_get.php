@@ -28,7 +28,7 @@
             $formatted_output = formatImpactRow($result);
         } else {
             // --- 情況 B：取得所有資料 (原本的邏輯) ---
-            $sql = "SELECT * FROM `impact_metrics` ORDER BY `DATA_YEAR` DESC";
+            $sql = "SELECT * FROM `IMPACT_METRICS` ORDER BY `DATA_YEAR` DESC";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
             $raw_data = $stmt->fetchAll(PDO::FETCH_ASSOC);

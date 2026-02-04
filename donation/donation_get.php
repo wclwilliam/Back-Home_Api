@@ -8,7 +8,7 @@
     // d.* 代表取捐款表所有欄位，m.email 代表取會員表的 email
     $sql = "SELECT d.*, m.member_email 
             FROM `DONATIONS` AS d
-            LEFT JOIN `members` AS m ON d.member_id = m.member_id
+            LEFT JOIN `MEMBERS` AS m ON d.member_id = m.member_id
             ORDER BY d.donation_date DESC";
 
     $stmt = $pdo->prepare($sql);
