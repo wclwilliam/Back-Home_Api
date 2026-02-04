@@ -28,7 +28,7 @@ if (isset($_FILES['upload']) && $_FILES['upload']['error'] === UPLOAD_ERR_OK) {
         $domain = $_SERVER['HTTP_HOST'];
         
         // 這裡手動拼湊出符合 VITE_FILE_URL 結構的完整網址
-        $fullUrl = $protocol . $domain . "/api/uploads/" . $relativePath;
+        $fullUrl = $protocol . $domain . "/cjd102/g3/api/uploads/" . $relativePath;
 
         echo json_encode([
             "url" => $fullUrl
