@@ -21,6 +21,7 @@ try {
 
     $userId = (int)$input['user_id'];
     $activityId = (int)$input['activity_id'];
+    $sync = $input['sync'] ?? false;
 
     // --- 開始資料庫交易 (Transaction) ---
     // 確保接下來的一連串動作 (檢查、寫入、扣名額) 要嘛全部成功，要嘛全部失敗
@@ -38,8 +39,8 @@ try {
 
     // 檢查活動狀態與名額 (使用 FOR UPDATE 鎖定這筆資料，防止多人同時搶名額)
     $actSql = "
-      SELECT ACTIVITY_MAX_PEOPLE, ACTIVITY_SIGNUP_PEOPLE, ACTIVITY_SIGNUP_END_DATETIME, ACTIVITY_STATUS 
-      FROM ACTIVITIES WHERE ACTIVITY_ID = ? FOR UPDATE";
+        SELECT ACTIVITY_MAX_PEOPLE, ACTIVITY_SIGNUP_PEOPLE, ACTIVITY_SIGNUP_END_DATETIME, ACTIVITY_STATUS 
+        FROM ACTIVITIES WHERE ACTIVITY_ID = ? FOR UPDATE";
     $actStmt = $pdo->prepare($actSql);
     $actStmt->execute([$activityId]);
     $activity = $actStmt->fetch(PDO::FETCH_ASSOC);
@@ -84,6 +85,29 @@ try {
         ':emg' => $input['emergencyName'],
         ':emgTel' => $input['emergencyPhone']
     ]);
+
+    //勾選同步到會員資料
+    if($sync) {
+        $updateMemberSql = "
+        UPDATE MEMBERS SET
+            MEMBER_REALNAME = :name,
+            ID_NUMBER = :idnum,
+            MEMBER_PHONE = :phone,
+            BIRTHDAY = :bday,
+            EMERGENCY = :emg,
+            EMERGENCY_TEL = :emgTel
+            WHERE MEMBER_ID = :uid ";
+        $memberSql = $pdo->prepare($updateMemberSql);
+        $memberSql->execute([
+            ':name' => $input['name'],
+            ':idnum' => $input['idNumber'],
+            ':phone' => $input['phone'],
+            ':bday' => $input['birthday'],
+            ':emg' => $input['emergencyName'],
+            ':emgTel' => $input['emergencyPhone'],
+            ':uid' => $userId
+        ]);
+    }
 
     // 更新活動主表的已報名人數 (ACTIVITY_SIGNUP_PEOPLE + 1)
     $updateSql = "UPDATE ACTIVITIES SET ACTIVITY_SIGNUP_PEOPLE = ACTIVITY_SIGNUP_PEOPLE + 1 WHERE ACTIVITY_ID = ?";
