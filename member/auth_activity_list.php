@@ -11,9 +11,8 @@ require_once __DIR__ . '/auth_guard.php'; // 驗證會員登入狀態
 header('Content-Type: application/json; charset=utf-8');
 
 try {
-    // 臨時測試用：直接使用 member_id = 2（正式環境請改回 requireAuth）
-    $member_id = 2;
-    // $member_id = requireAuth($pdo);
+    // 驗證會員身分，取得登入者 member_id
+    $member_id = requireAuth($pdo);
     
     $current_date = date('Y-m-d H:i:s');
 
