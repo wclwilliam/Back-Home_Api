@@ -143,21 +143,9 @@ try {
     $resetUrl = rtrim($frontendBase, '/') . '/reset-password?token=' . urlencode($token);
 
     /**
-     * 7️⃣ 寄信（或先 mock）
-     * - dev: 回傳 resetUrl 方便 Postman 測
-     * - prod: mail()
+     * 7️⃣ 寄信（使用 Brevo API）
      */
     $appEnv = defined('APP_ENV') ? (string)APP_ENV : (getenv('APP_ENV') ?: 'dev');
-
-    if ($appEnv === 'dev') {
-        json_out(200, [
-            ...$public_ok,
-            "debug" => [
-                "reset_url" => $resetUrl,
-                "expires_in_seconds" => $expSeconds,
-            ],
-        ]);
-    }
 
     // 使用 Brevo API 寄送重設密碼連結
     $apiKey = defined('BREVO_API_KEY') ? (string)BREVO_API_KEY : '';
@@ -215,6 +203,17 @@ try {
 
     if ($httpCode < 200 || $httpCode >= 300) {
         json_out(500, ["error" => "server_error", "message" => "email_send_failed", "detail" => $resp]);
+    }
+
+    // 寄信成功，dev 環境額外回傳 debug 資訊
+    if ($appEnv === 'dev') {
+        json_out(200, [
+            ...$public_ok,
+            "debug" => [
+                "reset_url" => $resetUrl,
+                "expires_in_seconds" => $expSeconds,
+            ],
+        ]);
     }
 
     json_out(200, $public_ok);
