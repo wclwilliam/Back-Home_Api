@@ -108,6 +108,18 @@ if (empty(trim($year))) {
 
 // ========== 查詢現有資料 ==========
 try {
+
+
+    if ($count > 0) {
+        // 年份重複的處理邏輯
+        http_response_code(400);
+        echo json_encode(["status" => "error", "message" => "該年份資料已存在"]);
+        exit();
+    }
+
+
+
+
     $checkSql = "SELECT `FILE_PATH` FROM `FINANCIAL_REPORTS` WHERE `FINANCIAL_REPORT_ID` = ?";
     $checkStmt = $pdo->prepare($checkSql);
     $checkStmt->execute([$reportId]);

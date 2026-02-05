@@ -17,19 +17,16 @@ if (isset($_FILES['upload']) && $_FILES['upload']['error'] === UPLOAD_ERR_OK) {
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
     }
-// 3. 呼叫同學的處理函式
+    // 3. 呼叫同學的處理函式
     $result = handleImageUpload($_FILES['upload'], $upload_dir, $pureFilename);
 
     if ($result['success']) {
         // 4. 直接拼湊對應 Vite VITE_FILE_URL 的路徑
         $finalFileName = $pureFilename . ".jpg";
-        
-        // 根據你的 MAMP 環境與前端設定，路徑應該是：
-        // http://localhost:8888/api/uploads/news/檔名.jpg
-        $fullUrl = "http://localhost:8888/api/uploads/news/" . $finalFileName;
 
+        // 只回傳檔名，或者回傳從 uploads 開始的相對路徑
         echo json_encode([
-            "url" => $fullUrl
+            "url" => "news/" . $finalFileName  // 這裡回傳相對路徑
         ]);
     } else {
         // 處理失敗的錯誤訊息
