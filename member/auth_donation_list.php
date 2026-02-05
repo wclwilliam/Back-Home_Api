@@ -7,9 +7,9 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
     // 測試環境先寫死 MEMBER_ID = 1
     $member_id = $_GET["member_id"]; 
     
-    // 關聯 subscription 表來確認該筆捐款是否屬於某個定期計畫
+    // 關聯 subscription 表來確認該筆捐款是否屬於某個定期計畫 
     $sql = "SELECT d.*, s.STATUS as sub_status 
-            FROM donations d 
+            FROM DONATIONS d 
             LEFT JOIN SUBSCRIPTION s ON d.SUBSCRIPTION_ID = s.SUBSCRIPTION_ID 
             WHERE d.MEMBER_ID = :mid 
             ORDER BY d.DONATION_DATE DESC";
