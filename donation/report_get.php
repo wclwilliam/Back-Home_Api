@@ -13,7 +13,7 @@
     try {
         if ($id) {
             // --- 情況 A：取得單一筆資料 ---
-            $sql = "SELECT * FROM `financial_reports` WHERE `FINANCIAL_REPORT_ID` = :id";
+            $sql = "SELECT * FROM `FINANCIAL_REPORTS` WHERE `FINANCIAL_REPORT_ID` = :id";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();

@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require_once '../common/conn.php';
 
 try {
-    // 獲取 GET 傳來的 ID
+    // 獲取 ID
     $id = $_GET['id'] ?? '';
 
     if (empty($id)) {
@@ -23,7 +23,6 @@ try {
     $imagePath = $stmtImg->fetchColumn();
 
     if ($imagePath) {
-        // 假設你的圖檔存在 ../uploads/news/...
         $fullPath = '../' . $imagePath;
         if (file_exists($fullPath)) {
             unlink($fullPath); // 刪除檔案

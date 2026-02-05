@@ -88,12 +88,12 @@ function resizeAndCropImage($sourcePath, $targetPath, $width = 800, $height = 60
         $srcImage,       // 來源圖片
         0,
         0,            // 目標圖片起點 (0,0)
-        $srcX,
-        $srcY,    // 來源圖片裁切起點
+        (int)$srcX,
+        (int)$srcY,    // 來源圖片裁切起點
         $width,
         $height, // 目標尺寸
-        $newWidth,
-        $newHeight // 來源裁切尺寸
+        (int)$newWidth,
+        (int)$newHeight // 來源裁切尺寸
     );
 
     if (!$success) {

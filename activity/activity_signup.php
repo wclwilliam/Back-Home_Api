@@ -39,7 +39,13 @@ try {
 
     // 檢查活動狀態與名額 (使用 FOR UPDATE 鎖定這筆資料，防止多人同時搶名額)
     $actSql = "
-        SELECT ACTIVITY_MAX_PEOPLE, ACTIVITY_SIGNUP_PEOPLE, ACTIVITY_SIGNUP_END_DATETIME, ACTIVITY_STATUS 
+        SELECT 
+            ACTIVITY_MAX_PEOPLE, 
+            ACTIVITY_SIGNUP_PEOPLE, 
+            ACTIVITY_SIGNUP_END_DATETIME, 
+            ACTIVITY_STATUS,
+            ACTIVITY_START_DATETIME,
+            ACTIVITY_END_DATETIME
         FROM ACTIVITIES WHERE ACTIVITY_ID = ? FOR UPDATE";
     $actStmt = $pdo->prepare($actSql);
     $actStmt->execute([$activityId]);
@@ -64,12 +70,20 @@ try {
         throw new Exception("很抱歉，名額已滿");
     }
 
+    //計算核發時數
+    $startTime = new DateTime($activity['ACTIVITY_START_DATETIME']);
+    $endTime = new DateTime($activity['ACTIVITY_END_DATETIME']);
+    $interval = $startTime->diff($endTime);
+
+    $svcHours = ($interval->days * 24) + $interval->h;
+    if ($svcHours < 0) $svcHours = 0;
+
     // 寫入報名資料表 (ACTIVITY_SIGNUPS)
     $insertSql = "
         INSERT INTO ACTIVITY_SIGNUPS 
-        (USER_ID, ACTIVITY_ID, ATTENDED, REAL_NAME, ID_NUMBER, PHONE, EMAIL, BIRTHDAY, EMERGENCY, EMERGENCY_TEL, CREATED_AT)
+        (USER_ID, ACTIVITY_ID, ATTENDED,ACTIVITY_SVC_HOURS, REAL_NAME, ID_NUMBER, PHONE, EMAIL, BIRTHDAY, EMERGENCY, EMERGENCY_TEL, CREATED_AT)
         VALUES 
-        (:uid, :aid,:attend, :name, :idnum, :phone, :email, :bday, :emg, :emgTel, NOW())
+        (:uid, :aid,:attend, :svc_hours, :name, :idnum, :phone, :email, :bday, :emg, :emgTel, NOW())
     ";
     
     $insertStmt = $pdo->prepare($insertSql);
@@ -77,6 +91,7 @@ try {
         ':uid' => $userId,
         ':aid' => $activityId,
         ':attend' => 1,
+        ':svc_hours' => $svcHours,
         ':name' => $input['name'],
         ':idnum' => $input['idNumber'],
         ':phone' => $input['phone'],

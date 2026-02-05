@@ -13,7 +13,62 @@ require_once("../common/conn.php");
 
 // 載入圖片處理工具
 require_once("../common/config_upload.php");
-require_once("../common/image_helper.php");
+// require_once("../common/image_helper.php");
+
+
+/**
+ * 純搬運上傳檔案 (不處理圖片內容)
+ * * @param array $uploadedFile $_FILES['image']
+ * @param string $uploadDir 上傳目錄路徑
+ * @param string $filename 檔案名稱 (不含副檔名)
+ * @return array
+ */
+function handleImageUploadSimple($uploadedFile, $uploadDir, $filename)
+{
+    // 1. 檢查上傳錯誤
+    if ($uploadedFile['error'] !== UPLOAD_ERR_OK) {
+        return ['success' => false, 'message' => '檔案上傳失敗: ' . $uploadedFile['error']];
+    }
+
+    // 2. 取得原始檔案的副檔名 (例如 .jpg, .png, .webp)
+    $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
+    $extension = strtolower($extension);
+
+    // 3. 驗證檔案類型 (安全性檢查，防止上傳 .php 等危險檔案)
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+    if (!in_array($extension, $allowedExtensions)) {
+        return ['success' => false, 'message' => '不支援的檔案格式'];
+    }
+
+    // 4. 建立上傳目錄
+    if (!file_exists($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    // 5. 組合完整的目標路徑 (保留原副檔名)
+    $fullFilename = $filename . '.' . $extension;
+    $targetPath = $uploadDir . '/' . $fullFilename;
+
+    // 6. 執行搬運動作 (核心步驟)
+    // 
+    if (move_uploaded_file($uploadedFile['tmp_name'], $targetPath)) {
+        
+        // 7. 計算相對路徑回傳 (用於存資料庫)
+        $uploadsBasePath = $_SERVER['DOCUMENT_ROOT'] . '/api/uploads/';
+        $relativePath = str_replace($uploadsBasePath, '', $targetPath);
+
+        return [
+            'success' => true,
+            'path' => $relativePath,
+            'message' => '上傳成功'
+        ];
+    } else {
+        return ['success' => false, 'message' => '移動檔案失敗，請檢查權限'];
+    }
+}
+
+
+
 
 // ========== 驗證 POST 請求 ==========
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -86,8 +141,8 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE)
     // 生成檔名：savedcases_{ID}_{timestamp}
     $filename = 'financial_report_' . $reportId . '_' . time();
 
-    // 使用 image_helper 處理圖片
-    $uploadResult = handleImageUpload(
+
+    $uploadResult = handleImageUploadSimple(
         $_FILES['image'],
         UPLOAD_REPORTS_DIR,
         $filename

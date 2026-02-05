@@ -121,7 +121,7 @@ try {
         }
 
 
-        $sqlDonation = "INSERT INTO donations ( 
+        $sqlDonation = "INSERT INTO DONATIONS ( 
                             MEMBER_ID, 
                             AMOUNT,
                             DONATION_DATE,
