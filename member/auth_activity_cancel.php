@@ -19,18 +19,10 @@ $rawInput = file_get_contents("php://input");
 $data = json_decode($rawInput, true);
 $activity_id = $data['activityId'] ?? 0;
 
-// 臨時調試：看看到底收到什麼
 if ($activity_id <= 0) {
     echo json_encode([
         "status" => "error", 
-        "message" => "無效的活動 ID",
-        "debug" => [
-            "request_method" => $_SERVER['REQUEST_METHOD'],
-            "content_type" => $_SERVER['CONTENT_TYPE'] ?? 'not set',
-            "raw_input" => $rawInput,
-            "decoded_data" => $data,
-            "activity_id" => $activity_id
-        ]
+        "message" => "無效的活動 ID"
     ]);
     exit;
 }
