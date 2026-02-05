@@ -35,6 +35,11 @@ $isLocalhost = isset($_SERVER['HTTP_HOST']) && (strpos($_SERVER['HTTP_HOST'], 'l
 define('LINE_CALLBACK_URL', $isLocalhost ? LINE_CALLBACK_URL_DEV : LINE_CALLBACK_URL_PROD);
 define('LINE_STATE_EXPIRE_MINUTES', 10);  // state 有效期限（分鐘）
 
+// ===== 忘記密碼設定 =====
+define('RESET_PWD_EXP_SECONDS', 30 * 60);  // 重設密碼 token 有效期限（30 分鐘）
+define('FRONTEND_BASE_URL', $isLocalhost ? 'http://localhost:5173' : 'https://yourdomain.com/front');  // 前端網址
+define('APP_ENV', getenv('APP_ENV') ?: 'dev');  // 環境：dev（開發）/ prod（正式）
+
 // ===== 其他設定 =====
 // 可以在此處加入更多全域設定，例如：
 // - 上傳檔案大小限制

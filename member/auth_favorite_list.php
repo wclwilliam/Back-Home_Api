@@ -18,6 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                     a.ACTIVITY_TITLE as title,
                     a.ACTIVITY_LOCATION as location,
                     a.ACTIVITY_START_DATETIME as startDate,
+                    a.ACTIVITY_END_DATETIME as endDate,
+                    a.ACTIVITY_SIGNUP_PEOPLE as signupCount,
+                    a.ACTIVITY_MAX_PEOPLE as maxPeople,
                     a.ACTIVITY_COVER_IMAGE as image
                 FROM FAVORITES f
                 JOIN ACTIVITIES a ON f.ACTIVITY_ID = a.ACTIVITY_ID

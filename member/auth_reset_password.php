@@ -142,9 +142,9 @@ try {
      * 5️⃣ 查會員
      */
     $sql = "
-        SELECT member_id, member_email, member_active
-        FROM members
-        WHERE member_id = :id
+        SELECT MEMBER_ID, MEMBER_EMAIL, MEMBER_ACTIVE
+        FROM MEMBERS
+        WHERE MEMBER_ID = :id
         LIMIT 1
     ";
     $stmt = $pdo->prepare($sql);
@@ -155,12 +155,12 @@ try {
         json_out(404, ["error" => "member_not_found"]);
     }
 
-    if ((int)$member['member_active'] !== 1) {
+    if ((int)$member['MEMBER_ACTIVE'] !== 1) {
         json_out(403, ["error" => "account is inactive"]);
     }
 
     // 可選：核對 token email（更嚴謹）
-    if ($emailInToken !== '' && strcasecmp($emailInToken, (string)$member['member_email']) !== 0) {
+    if ($emailInToken !== '' && strcasecmp($emailInToken, (string)$member['MEMBER_EMAIL']) !== 0) {
         json_out(401, ["error" => "invalid_or_expired_token"]);
     }
 
