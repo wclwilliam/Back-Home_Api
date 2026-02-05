@@ -27,8 +27,8 @@
                 exit();
             }
         } else {
-            // --- 情況 B：取得所有資料 ---
-            $sql = "SELECT * FROM `financial_reports` ORDER BY `DATA_YEAR` DESC";
+            // --- 情況 B：取得所有資料 --- 
+            $sql = "SELECT * FROM `FINANCIAL_REPORTS` ORDER BY `DATA_YEAR` DESC";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);

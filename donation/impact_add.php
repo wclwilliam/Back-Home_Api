@@ -11,6 +11,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
+    try {//判斷年分有沒有重複
+        $sql = "SELECT COUNT(*) FROM `IMPACT_METRICS` WHERE `DATA_YEAR` = ?";
+        $checkStmt = $pdo->prepare($sql);
+        $checkStmt->execute([$year]);
+
+        // 使用 fetchColumn() 直接取得 COUNT(*) 的數值
+        $count = $checkStmt->fetchColumn();
+        if ($count > 0) {
+            header('Content-Type: application/json');
+            http_response_code(400);
+            echo json_encode([
+                "success" => false,
+                "message" => "資料年分不可重複"
+            ]);
+            exit();
+        }
+    } catch (PDOException $e) {
+        header('Content-Type: application/json');
+        http_response_code(500);
+        echo json_encode([
+            "success" => false,
+            "message" => "錯誤：" . $e->getMessage()
+        ]);
+        exit();
+    }
+
     // 開啟並讀取 CSV
     if (($handle = fopen($file['tmp_name'], "r")) !== FALSE) {
         $headers = fgetcsv($handle); // 讀取第一行(標頭)

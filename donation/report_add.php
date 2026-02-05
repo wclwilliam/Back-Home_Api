@@ -85,6 +85,7 @@ if (empty(trim($year))) {
 }
 
 
+
 // ========== 驗證圖片上傳 ==========
 if (!isset($_FILES['image']) || $_FILES['image']['error'] === UPLOAD_ERR_NO_FILE) {
     header('Content-Type: application/json');
@@ -92,6 +93,33 @@ if (!isset($_FILES['image']) || $_FILES['image']['error'] === UPLOAD_ERR_NO_FILE
     echo json_encode([
         "success" => false,
         "message" => "請上傳徵信圖片"
+    ]);
+    exit();
+}
+
+
+try {//判斷年分有沒有重複
+    $sql = "SELECT COUNT(*) FROM `FINANCIAL_REPORTS` WHERE `DATA_YEAR` = ?";
+    $checkStmt = $pdo->prepare($sql);
+    $checkStmt->execute([$year]);
+
+    // 使用 fetchColumn() 直接取得 COUNT(*) 的數值
+    $count = $checkStmt->fetchColumn();
+    if ($count > 0) {
+        header('Content-Type: application/json');
+        http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "message" => "資料年分不可重複"
+        ]);
+        exit();
+    }
+} catch (PDOException $e) {
+    header('Content-Type: application/json');
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "錯誤：" . $e->getMessage()
     ]);
     exit();
 }
