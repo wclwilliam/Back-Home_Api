@@ -6,7 +6,7 @@ require_once("../common/conn.php");
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    // 取得前端傳來的 JSON 資料
+    // 取得前端傳來的 JSON 資料 
     $input = json_decode(file_get_contents("php://input"), true);
     
     // 安全檢查：確保必要的參數都有傳過來
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     try {
         if ($action === 'cancel') {
             // 執行取消：改狀態、填入結束日期
-            $sql = "UPDATE subscription SET STATUS = 0, END_DATE = CURDATE() WHERE SUBSCRIPTION_ID = :id";
+            $sql = "UPDATE SUBSCRIPTION SET STATUS = 0, END_DATE = CURDATE() WHERE SUBSCRIPTION_ID = :id";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['id' => $subId]);
         } 
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 throw new Exception("缺少金額參數");
             }
             $newAmount = $input['amount'];
-            $sql = "UPDATE subscription SET AMOUNT = :amount WHERE SUBSCRIPTION_ID = :id";
+            $sql = "UPDATE SUBSCRIPTION SET AMOUNT = :amount WHERE SUBSCRIPTION_ID = :id";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['amount' => $newAmount, 'id' => $subId]);
         }

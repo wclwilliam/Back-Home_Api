@@ -26,7 +26,14 @@ try {
                 a.ACTIVITY_LOCATION as LOCATION,
                 s.ACTIVITY_SVC_HOURS as VOLUNTEER_HOURS,
                 s.ATTENDED,   -- 1:已出席, 0:未出席
-                s.CANCEL      -- 1:已取消, 0:正常
+                s.CANCEL,     -- 1:已取消, 0:正常
+                s.REAL_NAME,
+                s.PHONE,
+                s.EMAIL,
+                s.ID_NUMBER,
+                s.BIRTHDAY,
+                s.EMERGENCY,
+                s.EMERGENCY_TEL
             FROM ACTIVITY_SIGNUPS s
             JOIN ACTIVITIES a ON s.ACTIVITY_ID = a.ACTIVITY_ID
             WHERE s.USER_ID = :member_id 

@@ -12,7 +12,7 @@ if ($member_id <= 0) {
     exit;
 }
 
-// 根據 SQL 結構：使用 TRANSACTION_ID, DONATION_TYPE
+// 根據 SQL 結構：使用 TRANSACTION_ID, DONATION_TYPE 
 $sql = "SELECT 
             TRANSACTION_ID, 
             AMOUNT, 
@@ -20,7 +20,7 @@ $sql = "SELECT
             PAYMENT_METHOD, 
             DONATION_TYPE,
             SUBSCRIPTION_ID
-        FROM donations 
+        FROM DONATIONS 
         WHERE MEMBER_ID = ? 
         ORDER BY DONATION_DATE DESC";
 
