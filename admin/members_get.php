@@ -61,6 +61,9 @@ try {
         exit;
     }
 
+    // 添加狀態文字
+    $row['MEMBER_ACTIVE_TEXT'] = (int)$row['MEMBER_ACTIVE'] === 1 ? '啟用' : '停用';
+
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(["item" => $row], JSON_UNESCAPED_UNICODE);
 
