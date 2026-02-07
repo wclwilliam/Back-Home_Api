@@ -17,17 +17,17 @@ if (isset($_FILES['upload']) && $_FILES['upload']['error'] === UPLOAD_ERR_OK) {
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
     }
-    // 3. 呼叫同學的處理函式
+    // 3. 處理函式
     $result = handleImageUpload($_FILES['upload'], $upload_dir, $pureFilename);
 
     if ($result['success']) {
         // 4. 直接拼湊對應 Vite VITE_FILE_URL 的路徑
         $finalFileName = $pureFilename . ".jpg";
 
-        // 只回傳檔名，或者回傳從 uploads 開始的相對路徑
+        // 只回傳檔名
         echo json_encode([
-            "url" => "news/" . $finalFileName  // 這裡回傳相對路徑
-        ]);
+           "url" => "news/" . $finalFileName  // 這裡不要加斜線開頭
+    ]);
     } else {
         // 處理失敗的錯誤訊息
         http_response_code(500);
