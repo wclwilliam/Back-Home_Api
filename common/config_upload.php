@@ -42,7 +42,8 @@ function initializeUploadDirectories()
     $dirs = [
         UPLOAD_RESCUES_DIR,
         UPLOAD_ACTIVITIES_DIR,
-        UPLOAD_NEWS_DIR
+        UPLOAD_NEWS_DIR,
+        UPLOAD_REPORTS_DIR
     ];
 
     foreach ($dirs as $dir) {
