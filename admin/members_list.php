@@ -117,6 +117,12 @@ try {
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // 為每筆資料添加狀態文字
+    foreach ($rows as &$row) {
+        $row['MEMBER_ACTIVE_TEXT'] = (int)$row['MEMBER_ACTIVE'] === 1 ? '啟用' : '停用';
+    }
+    unset($row);
+
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode([
         "items" => $rows,
