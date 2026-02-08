@@ -30,6 +30,25 @@ try {
         exit;
     }
 
+    // 2. 先查詢資料庫中「目前的狀態」
+    $checkSql = "SELECT `NEWS_STATUS` FROM `NEWS` WHERE `NEWS_ID` = ?";
+    $checkStmt = $pdo->prepare($checkSql);
+    $checkStmt->execute([$id]);
+    $currentRecord = $checkStmt->fetch();
+
+    if (!$currentRecord) {
+        echo json_encode(['success' => false, 'error' => '找不到該文章']);
+        exit;
+    }
+
+    $currentStatus = $currentRecord['NEWS_STATUS'];
+
+    // 💡 核心邏輯：如果目前是草稿，就更新時間；如果是已發布，就維持原樣
+    $timeUpdateSql = "";
+    if ($currentStatus === 'draft') {
+        $timeUpdateSql = ", `NEWS_PUBLISHED_AT` = NOW() ";
+    }
+
     // 3. 處理圖片上傳 (維持你原本的邏輯)
     $imagePath = null;
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -54,6 +73,7 @@ try {
                     `NEWS_CONTENT` = ?, 
                     `NEWS_IMAGE_PATH` = ?, 
                     `NEWS_STATUS` = ?
+                    $timeUpdateSql
                 WHERE `NEWS_ID` = ?";
         $stmt = $pdo->prepare($sql);
         $params = [$title, $category, $content, $imagePath, $status, $id];
@@ -64,16 +84,19 @@ try {
                     `NEWS_CATEGORY` = ?, 
                     `NEWS_CONTENT` = ?, 
                     `NEWS_STATUS` = ?
+                    $timeUpdateSql
                 WHERE `NEWS_ID` = ?";
         $stmt = $pdo->prepare($sql);
         $params = [$title, $category, $content, $status, $id];
     }
 
     if ($stmt->execute($params)) {
+        // 取得當前時間回傳給前端同步畫面
+        $now = date("Y-m-d H:i:s");
         echo json_encode([
             'success' => true, 
             'message' => '更新成功',
-            'debug_id' => $id // 回傳 ID 方便你確認
+            'debug_id' => $id 
         ]);
     } else {
         echo json_encode(['success' => false, 'error' => '資料庫更新失敗']);
