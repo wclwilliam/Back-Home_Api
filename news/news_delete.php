@@ -23,7 +23,7 @@ try {
     $imagePath = $stmtImg->fetchColumn();
 
     if ($imagePath) {
-        $fullPath = '../' . $imagePath;
+        $fullPath = '../uploads/' . $imagePath;
         if (file_exists($fullPath)) {
             unlink($fullPath); // 刪除檔案
         }
