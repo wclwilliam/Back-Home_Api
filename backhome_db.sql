@@ -30,7 +30,7 @@ SET time_zone = "+08:00";
 CREATE TABLE `ACTIVITIES` (
   `ACTIVITY_ID` int(11) NOT NULL COMMENT '活動編號',
   `ACTIVITY_TITLE` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '活動標題',
-  `ACTIVITY_CATEGORY_ID` int(11) NOT NULL COMMENT '類別:1淨灘,2巡守,3照護',
+  `ACTIVITY_CATEGORY_ID` int(11) NOT NULL COMMENT '類別:1淨灘,2照護,3巡守',
   `ACTIVITY_DESCRIPTION` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '活動簡介',
   `ACTIVITY_NOTES` text COLLATE utf8mb4_unicode_ci COMMENT '注意事項',
   `ACTIVITY_LOCATION` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '活動地點',
@@ -100,8 +100,8 @@ CREATE TABLE `ACTIVITY_CATEGORIES` (
 
 INSERT INTO `ACTIVITY_CATEGORIES` (`CATEGORY_ID`, `CATEGORY_VALUE`) VALUES
 (1, '淨灘'),
-(2, '巡守'),
-(3, '照護');
+(2, '照護'),
+(3, '巡守');
 
 -- --------------------------------------------------------
 
@@ -1256,7 +1256,7 @@ CREATE TABLE `RESULT_METRICS` (
   `METRIC_ID` int(11) NOT NULL COMMENT '成果定義編號',
   `METRIC_NAME` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '成果名稱 (如：垃圾總重量)',
   `METRIC_UNIT` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '單位 (如：kg, 隻, 窩)',
-  `ACTIVITY_CATEGORY_ID` int(11) NOT NULL COMMENT '適用活動類別 (1:淨灘, 2:巡守, 3:照護)',
+  `ACTIVITY_CATEGORY_ID` int(11) NOT NULL COMMENT '適用活動類別 (1:淨灘, 2:照護, 3:巡守)',
   `CREATED_AT` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '建立時間'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='成果指標定義表';
 
