@@ -5,11 +5,40 @@ require_once("../common/conn.php");
 
 header('Content-Type: application/json; charset=utf-8');
 
+function getAdminIdFromToken() {
+    $authHeader = '';
+    if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+        $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
+    } elseif (function_exists('getallheaders')) {
+        $headers = getallheaders();
+        $authHeader = $headers['Authorization'] ?? $headers['authorization'] ?? '';
+    }
+
+    if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
+        $tokenStr = $matches[1];
+        $parts = explode('.', $tokenStr);
+
+        if(count($parts) === 3) {
+            $payloadJson = base64_decode(str_replace(['-', '_'], ['+', '/'], $parts[1]));
+            $payload = json_decode($payloadJson, true);
+
+            return $payload['sub'] ?? null;
+
+        }
+    }
+    return null;
+}
 try {
     //檢查請求方式
     if($_SERVER['REQUEST_METHOD'] !== 'POST'){
         throw new Exception('請使用POST方式');
     }
+    $adminId = getAdminIdFromToken();
+
+    if (!$adminId) {
+        throw new Exception("無法取得管理者身分，請重新登入");
+    }
+    
     //接收資料(包括封面圖片)
     $id = isset($_POST['id']) ? $_POST['id'] : '';
     $title = $_POST['title'] ?? '';
@@ -36,7 +65,7 @@ try {
     $statusMap = [
         '草稿' => 0,
         '發布' => 1,
-        '已取消' => 2,
+        '取消' => 2,
     ];
     $statusCode = $statusMap[$statusVal] ?? 0;
 
@@ -73,9 +102,9 @@ try {
             ACTIVITY_LOCATION, ACTIVITY_LOCATION_AREA, 
             ACTIVITY_START_DATETIME, ACTIVITY_END_DATETIME, ACTIVITY_SIGNUP_END_DATETIME,
             ACTIVITY_MAX_PEOPLE, ACTIVITY_STATUS, ACTIVITY_COVER_IMAGE, ADMIN_ID, ACTIVITY_CREATED_AT
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, admin001, NOW())";
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , NOW())";
         $params = [
-            $title, $catId, $description, $notes, $location, $region,$actStartStr, $actEndStr, $signupEndStr, $maxPeople, $statusCode, $imagePath
+            $title, $catId, $description, $notes, $location, $region,$actStartStr, $actEndStr, $signupEndStr, $maxPeople, $statusCode, $imagePath, $adminId
         ];
         $pdo->prepare($sql)->execute($params);
         $newId = $pdo->lastInsertId();
@@ -87,11 +116,13 @@ try {
             ACTIVITY_TITLE=?, ACTIVITY_CATEGORY_ID=?, ACTIVITY_DESCRIPTION=?, ACTIVITY_NOTES=?,
             ACTIVITY_LOCATION=?, ACTIVITY_LOCATION_AREA=?, 
             ACTIVITY_START_DATETIME=?, ACTIVITY_END_DATETIME=?, ACTIVITY_SIGNUP_END_DATETIME=?,
-            ACTIVITY_MAX_PEOPLE=?, ACTIVITY_STATUS=? 
+            ACTIVITY_MAX_PEOPLE=?, ACTIVITY_STATUS=? ,
+            ADMIN_ID=?, ACTIVITY_CREATED_AT=NOW()
         ";
         $params = [
             $title, $catId, $description, $notes, $location, $region,
-            $actStartStr, $actEndStr, $signupEndStr, $maxPeople, $statusCode
+            $actStartStr, $actEndStr, $signupEndStr, $maxPeople, $statusCode,
+            $adminId
         ];
 
         // 如果有上傳新圖片，才加入 SQL 和參數

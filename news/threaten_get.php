@@ -1,5 +1,4 @@
 <?php
-// get_ocean_data.php
 
 // === CORS 設定 ===
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -9,9 +8,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
+header("Cache-Control: no-cache, must-revalidate"); 
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); 
 
-// 關閉錯誤顯示以免破壞 JSON 格式
+// 關閉錯誤顯示
 error_reporting(0);
 ini_set('display_errors', 0);
 
@@ -35,6 +36,22 @@ $sourceIds = [
     '4b6798e3-291e-48b7-87fd-ec68b73a102a',
 ];
 
+
+// === 檢查 curl 是否可用 ===
+if (!function_exists('curl_init')) {
+    echo json_encode([
+        "status" => "error",
+        "message" => "伺服器不支援 curl",
+        "data" => [
+            "plastic_sea" => ["value" => 8000000],
+            "ghost_gear" => ["value" => 640000],
+            "bycatch" => ["value" => 9100000],
+            "lives_lost" => ["value" => 1000000]
+        ]
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 // === 核心：使用 curl_multi 平行抓取 ===
 $mh = curl_multi_init();
 $curl_handles = [];
@@ -46,9 +63,12 @@ foreach ($sourceIds as $id) {
     
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10); // 設定超時
+    curl_setopt($ch, CURLOPT_TIMEOUT, 15); // 增加超時時間
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
     curl_setopt($ch, CURLOPT_HTTPHEADER, ["API-KEY: " . $apiKey]);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // 允許重定向
     
     curl_multi_add_handle($mh, $ch);
     $curl_handles[$id] = $ch;
@@ -57,24 +77,51 @@ foreach ($sourceIds as $id) {
 // 2. 同時執行所有請求
 $running = null;
 do {
-    curl_multi_exec($mh, $running);
-    curl_multi_select($mh);
+    $status = curl_multi_exec($mh, $running);
+    if ($running) {
+        curl_multi_select($mh, 0.1);
+    }
 } while ($running > 0);
 
 // 3. 收集結果並計算總重
 $plastic_total = 0;
+$success_count = 0;
+$error_count = 0;
+$debug_info = [];
 
 foreach ($curl_handles as $id => $ch) {
     $response = curl_multi_getcontent($ch);
-    $data = json_decode($response, true);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curl_error = curl_error($ch);
     
-    // 簡單的錯誤檢查與累加
-    if (is_array($data) && !isset($data['error'])) {
-        foreach ($data as $item) {
-            if (isset($item['清理數量分類(噸)_總計'])) {
-                $weight = str_replace(',', '', $item['清理數量分類(噸)_總計']);
-                $plastic_total += floatval($weight);
+    // 記錄每個請求的狀態
+    $debug_info[$id] = [
+        'http_code' => $http_code,
+        'has_response' => !empty($response),
+        'error' => $curl_error
+    ];
+    
+    if ($curl_error) {
+        $error_count++;
+    } elseif ($http_code !== 200) {
+        $error_count++;
+    } else {
+        $data = json_decode($response, true);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $error_count++;
+        } elseif (is_array($data) && !isset($data['error'])) {
+            $item_count = 0;
+            foreach ($data as $item) {
+                if (isset($item['清理數量分類(噸)_總計'])) {
+                    $weight = str_replace(',', '', $item['清理數量分類(噸)_總計']);
+                    $plastic_total += floatval($weight);
+                    $item_count++;
+                }
             }
+            $success_count++;
+        } else {
+            $error_count++;
         }
     }
     
@@ -85,13 +132,21 @@ foreach ($curl_handles as $id => $ch) {
 curl_multi_close($mh);
 
 // === 處理預設值與格式化 ===
+$using_fallback = false;
 if ($plastic_total == 0) {
-    $plastic_total = 8000000; // 如果 API 全掛，使用預設值
+    $plastic_total = 8000000;
+    $using_fallback = true;
 }
 
-// 這裡維持你原本的資料結構，這樣 Vue 不用改
+// 最終輸出
 $final_output = [
     "status" => "success",
+    "using_fallback" => $using_fallback,
+    "api_stats" => [
+        "success" => $success_count,
+        "failed" => $error_count,
+        "total" => count($sourceIds)
+    ],
     "data" => [
         "plastic_sea" => [
             "value" => round($plastic_total, 0),
@@ -101,6 +156,11 @@ $final_output = [
         "lives_lost" => ["value" => 1000000]
     ]
 ];
+
+// 開發模式：加入除錯資訊
+if (isset($_GET['debug'])) {
+    $final_output['debug'] = $debug_info;
+}
 
 echo json_encode($final_output, JSON_UNESCAPED_UNICODE);
 ?>
