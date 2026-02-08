@@ -12,17 +12,20 @@ if ($member_id <= 0) {
     exit;
 }
 
-// 根據 SQL 結構：使用 TRANSACTION_ID, DONATION_TYPE 
+// 修改 SQL：加入 JOIN 語法取得 SUBSCRIPTION 表的 ORDER_ID
+// 我們為資料表取別名：D (DONATIONS), S (SUBSCRIPTION) 以方便閱讀
 $sql = "SELECT 
-            TRANSACTION_ID, 
-            AMOUNT, 
-            DONATION_DATE, 
-            PAYMENT_METHOD, 
-            DONATION_TYPE,
-            SUBSCRIPTION_ID
-        FROM DONATIONS 
-        WHERE MEMBER_ID = ? 
-        ORDER BY DONATION_DATE DESC";
+            D.TRANSACTION_ID, 
+            D.AMOUNT, 
+            D.DONATION_DATE, 
+            D.PAYMENT_METHOD, 
+            D.DONATION_TYPE,
+            D.SUBSCRIPTION_ID,
+            S.ORDER_ID 
+        FROM DONATIONS D
+        LEFT JOIN SUBSCRIPTION S ON D.SUBSCRIPTION_ID = S.SUBSCRIPTION_ID
+        WHERE D.MEMBER_ID = ? 
+        ORDER BY D.DONATION_DATE DESC";
 
 try {
     // 確保使用 conn.php 定義的 $pdo 變數

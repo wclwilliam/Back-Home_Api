@@ -7,17 +7,13 @@
 
 // ========== 上傳目錄配置 ==========
 
-// 救援案例圖片目錄（實際儲存位置 - 絕對路徑）
-define('UPLOAD_RESCUES_DIR', $_SERVER['DOCUMENT_ROOT'] . '/api/uploads/savedcases');
+$baseDir = dirname(__DIR__) . '/uploads'; 
 
-// 活動圖片目錄
-define('UPLOAD_ACTIVITIES_DIR', $_SERVER['DOCUMENT_ROOT'] . '/api/uploads/actCover');
-
-// 最新消息圖片目錄
-define('UPLOAD_NEWS_DIR', $_SERVER['DOCUMENT_ROOT'] . '/api/uploads/news');
-
-// 徵信資料圖片目錄
-define('UPLOAD_REPORTS_DIR', $_SERVER['DOCUMENT_ROOT'] . '/api/uploads/reports');
+// 2. 定義各個子目錄
+define('UPLOAD_RESCUES_DIR',   $baseDir . '/savedcases');
+define('UPLOAD_ACTIVITIES_DIR', $baseDir . '/actCover');
+define('UPLOAD_NEWS_DIR',       $baseDir . '/news');
+define('UPLOAD_REPORTS_DIR',    $baseDir . '/reports');
 
 // ========== 圖片設定 ==========
 

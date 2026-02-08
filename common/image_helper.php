@@ -189,7 +189,7 @@ function handleImageUpload($uploadedFile, $uploadDir, $filename)
     // 返回相對路徑 (用於資料庫儲存)
     // 移除 /api/uploads/ 前綴，只保留目錄名稱和檔名
     // 例如：savedcases/savedcases_10_xxx.jpg
-    $uploadsBasePath = $_SERVER['DOCUMENT_ROOT'] . '/api/uploads/';
+    $uploadsBasePath = dirname(__DIR__)  . '/uploads';
     $relativePath = str_replace($uploadsBasePath, '', $targetPath);
 
     return [

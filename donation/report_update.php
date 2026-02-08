@@ -53,13 +53,16 @@ function handleImageUploadSimple($uploadedFile, $uploadDir, $filename)
     // 
     if (move_uploaded_file($uploadedFile['tmp_name'], $targetPath)) {
         
-        // 7. 計算相對路徑回傳 (用於存資料庫)
-        $uploadsBasePath = $_SERVER['DOCUMENT_ROOT'] . '/api/uploads/';
-        $relativePath = str_replace($uploadsBasePath, '', $targetPath);
+        // --- 修改這裡 ---
+        // 不要用 str_replace($_SERVER['DOCUMENT_ROOT']...)
+        // 直接用 pathinfo 或簡單的字串組合來取得最後的檔名與路徑
+        
+        // 因為我們知道這是在 reports 資料夾下
+        $relativePath = 'reports/' . $fullFilename; 
 
         return [
             'success' => true,
-            'path' => $relativePath,
+            'path' => $relativePath, // 存入資料庫的會是 reports/xxx.png
             'message' => '上傳成功'
         ];
     } else {
@@ -108,17 +111,6 @@ if (empty(trim($year))) {
 
 // ========== 查詢現有資料 ==========
 try {
-
-
-    if ($count > 0) {
-        // 年份重複的處理邏輯
-        http_response_code(400);
-        echo json_encode(["status" => "error", "message" => "該年份資料已存在"]);
-        exit();
-    }
-
-
-
 
     $checkSql = "SELECT `FILE_PATH` FROM `FINANCIAL_REPORTS` WHERE `FINANCIAL_REPORT_ID` = ?";
     $checkStmt = $pdo->prepare($checkSql);
@@ -174,7 +166,7 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE)
 
     // 刪除舊圖片（如果存在）
     if (!empty($oldImagePath)) {
-        $oldImageFullPath = $_SERVER['DOCUMENT_ROOT'] . '/api/uploads/' . $oldImagePath;
+        $oldImageFullPath = $baseDir . $oldImagePath;
         if (file_exists($oldImageFullPath)) {
             @unlink($oldImageFullPath);
         }
