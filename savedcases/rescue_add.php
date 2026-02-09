@@ -74,8 +74,8 @@ if (!isset($_FILES['image']) || $_FILES['image']['error'] === UPLOAD_ERR_NO_FILE
 
 // ========== 先插入資料庫取得 ID ==========
 try {
-    // 取得今天日期（台北時間）
-    $uploadDate = date('Y-m-d');
+    // 取得上傳日期（優先使用前端傳來的，若無則使用當下完整的 Y-m-d H:i:s）
+    $uploadDate = $_POST['uploadDate'] ?? date('Y-m-d H:i:s');
 
     // 插入基本資料（圖片路徑先留空）
     $sql = "INSERT INTO `RESCUES` 
