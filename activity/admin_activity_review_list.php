@@ -22,8 +22,8 @@ try {
                 R.CREATED_AT,
                 M.MEMBER_REALNAME AS USER_NAME,
                 (
-                SELECT COUNT(*) 
-                FROM ACTIVITY_REVIEWS_LIKES WHERE REVIEW_ID = R.REVIEW_ID
+                R.LIKE_COUNT + 
+                    (SELECT COUNT(*) FROM ACTIVITY_REVIEWS_LIKES L WHERE L.REVIEW_ID = R.REVIEW_ID)
             ) AS LIKE_COUNT
         FROM ACTIVITY_REVIEWS AS R
         LEFT JOIN MEMBERS AS M ON R.USER_ID = M.MEMBER_ID
